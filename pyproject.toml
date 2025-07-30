@@ -1,0 +1,19 @@
+[project]
+name = "gridgpt"
+version = "0.1.0"
+description = "A smart mini crossword generator powered by GPT"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Marie" }]
+dependencies = [
+    "pandas",
+    "numpy",
+    "ipykernel",
+    "openai",
+    "pytest",
+    "black",
+    "isort",
+    "beautifulsoup4",
+    "requests",
+    "python-dotenv",
+]
