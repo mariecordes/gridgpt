@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class CrosswordGenerator:
-    def __init__(self, word_database_path: str = "data/02_intermediary/word_database/word_database_filtered_list.json"):
+    def __init__(self, word_database_path: str = "data/02_intermediary/word_database/word_database_filtered_with_frequencies.json"):
         """Initialize the crossword generator with a word database."""
         self.word_database = self.load_word_database(word_database_path)
         self.words_by_length = self.organize_words_by_length()
@@ -28,11 +28,11 @@ class CrosswordGenerator:
     def organize_words_by_length(self) -> Dict[int, List[str]]:
         """Organize words by length for faster lookup."""
         words_by_length = {}
-        for word in self.word_database:
+        for word, frequency in self.word_database.items():
             length = len(word)
             if length not in words_by_length:
                 words_by_length[length] = []
-            words_by_length[length].append(word.upper())  # Store words in uppercase
+            words_by_length[length].append((word.upper(), frequency))  # Store words in uppercase with their frequency
         return words_by_length
     
     def validate_theme_entry(self, theme_entry: str, min_length: int = 3, max_length: int = 15) -> Tuple[bool, str]:
@@ -213,12 +213,11 @@ class CrosswordGenerator:
                 return word[position]
         return None
     
-    def get_possible_words(self, template: Dict, slot: Dict, fixed_letters: Dict[int, str]) -> List[str]:
+    def get_possible_words(self, slot: Dict, fixed_letters: Dict[int, str]) -> List[str]:
         """
         Get all possible words for a slot given the fixed letters.
         
         Args:
-            template: The crossword template
             slot: The slot to fill
             fixed_letters: Dictionary mapping positions to fixed letters
             
@@ -233,14 +232,14 @@ class CrosswordGenerator:
         # Filter for words that match the fixed letters
         valid_words = []
         
-        for word in all_words:
+        for word, frequency in all_words:
             matches = True
             for pos, letter in fixed_letters.items():
                 if 0 <= pos < len(word) and word[pos] != letter:
                     matches = False
                     break
             if matches:
-                valid_words.append(word)
+                valid_words.append((word, frequency))
         
         return valid_words
     
@@ -294,14 +293,22 @@ class CrosswordGenerator:
                         fixed_letters[pos_in_slot] = letter
             
             # Get possible words for this slot
-            possible_words = self.get_possible_words(result, slot, fixed_letters)
+            possible_words = self.get_possible_words(slot, fixed_letters)
             
             if not possible_words:
                 logger.warning(f"No words available for slot {slot_id} with constraints {fixed_letters}")
                 return None  # Backtracking needed
             
-            # Choose a random word (or use a more sophisticated selection)
-            chosen_word = random.choice(possible_words)
+            # Use weighted random selection based on frequency
+            words = [word for word, _ in possible_words]
+            weights = [freq for _, freq in possible_words]
+            
+            # Choose a word with probability proportional to its frequency
+            chosen_word = random.choices(words, weights=weights, k=1)[0]
+            
+            # For debugging
+            chosen_freq = next(freq for word, freq in possible_words if word == chosen_word)
+            logger.debug(f"Selected word '{chosen_word}' with frequency {chosen_freq}.")
             
             # Place the word in the grid
             cells = slot["cells"]
