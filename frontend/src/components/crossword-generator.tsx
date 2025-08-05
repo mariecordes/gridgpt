@@ -343,10 +343,11 @@ export default function CrosswordGenerator() {
                   ) : (
                     <div>
                       <p className="font-semibold mb-2">
-                        {checkResult.incorrectCount} of {checkResult.totalCount} checked letters need correction.
+                        {/*{checkResult.incorrectCount} of {checkResult.totalCount} checked letters need correction.*/}
+                        Not quite... Keep trying!
                       </p>
                       <p className="text-sm">
-                        Incorrect letters are highlighted in red, correct ones in green.
+                        The crossword is not yet solved. Incorrect letters are highlighted in red, correct ones in green.
                       </p>
                     </div>
                   )}
