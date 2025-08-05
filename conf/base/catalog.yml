@@ -1,0 +1,13 @@
+# === 01 Raw ===
+
+
+# === 02 Intermediary ===
+word_database:
+  all:
+    file_path: data/02_intermediary/word_database/word_database_all.json
+  filtered:
+    file_path: data/02_intermediary/word_database/word_database_filtered_with_frequencies.json
+
+# === 03 Templates ===
+grid_templates: 
+  file_path: data/03_templates/grid_templates.json
