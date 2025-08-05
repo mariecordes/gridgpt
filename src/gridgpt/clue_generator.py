@@ -5,23 +5,17 @@ import logging
 from typing import Dict, List, Tuple, Optional, Any
 import requests
 
-# Required environment variables for Azure OpenAI:
-# AZURE_API_KEY - Your Azure OpenAI API key
-# AZURE_ENDPOINT - Your Azure OpenAI endpoint URL
-# AZURE_API_VERSION - API version (default: 2023-05-15)
-# 
-# Optional:
-# AZURE_GPT4_DEPLOYMENT - Deployment name for GPT-4 model (default: "gpt-4o-mini")
+from .llm_connection import LLMConnection
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class ClueGenerator:
+class ClueGenerator(LLMConnection):
     def __init__(self, clue_database_path: str = "data/02_intermediary/crossword_clues.json"):
-        """Initialize with a clue database if available."""
+        """Initialize clue generator with a clue database if available."""
+        super().__init__()  # Initialize LLM connection
         self.clue_database = self.load_clue_database(clue_database_path)
-        self.llm = None  # Will be initialized when needed
         
     def load_clue_database(self, path: str) -> Dict[str, List[str]]:
         """Load clue database from JSON file if it exists."""
@@ -35,34 +29,6 @@ class ClueGenerator:
         logger.info(f"No clue database found at {path}, will generate all clues")
         return {}
     
-    def init_llm_connection(self, model: str = "gpt-4", api_key: Optional[str] = None):
-        """Initialize the connection to the LLM."""
-        try:
-            from openai import AzureOpenAI
-            
-            # Get Azure OpenAI credentials from environment variables
-            azure_api_key = os.environ.get("AZURE_API_KEY")
-            azure_endpoint = os.environ.get("AZURE_ENDPOINT")
-            azure_api_version = os.environ.get("AZURE_API_VERSION", "2023-05-15")
-            
-            if not azure_api_key or not azure_endpoint:
-                raise ValueError("Missing Azure OpenAI credentials. Please set AZURE_API_KEY and AZURE_ENDPOINT environment variables.")
-            
-            self.llm = AzureOpenAI(
-                api_key=azure_api_key,
-                azure_endpoint=azure_endpoint,
-                api_version=azure_api_version
-            )
-            logger.info(f"Connected to Azure OpenAI model: {model}")
-            return True
-            
-        except ImportError:
-            logger.error("Failed to import OpenAI library. Install it with 'pip install openai'")
-            return False
-        except Exception as e:
-            logger.error(f"Error connecting to LLM: {e}")
-            return False
-    
     def generate_theme_clue(self, word: str, theme: str) -> str:
         """
         Generate a clue for a theme word using the LLM.
@@ -74,10 +40,8 @@ class ClueGenerator:
         Returns:
             Generated clue
         """
-        if not self.llm:
-            success = self.init_llm_connection()
-            if not success:
-                return self.generate_standard_clue(word)
+        if not self.llm_connection_success:
+            return self.generate_standard_clue(word)
         
         try:
             # Create the prompt
