@@ -326,6 +326,15 @@ export default function CrosswordGenerator() {
                 </Button>
                 <Button 
                   onClick={() => {
+                    setCellCorrectness({});
+                    setCheckResult(null);
+                  }}
+                  variant="outline"
+                >
+                  Clear Check
+                </Button>
+                <Button 
+                  onClick={() => {
                     setUserSolution({});
                     setCellCorrectness({});
                     setCheckResult(null);
