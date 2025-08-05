@@ -200,7 +200,7 @@ export default function CrosswordGenerator() {
     return (
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <h3 className="text-lg font-semibold mb-3">Across</h3>
+          <h3 className="text-base font-semibold mb-3">Across</h3>
           <div className="space-y-2">
             {acrossClues.map(([clueId, clue]) => (
               <div key={clueId} className="text-sm">
@@ -214,7 +214,7 @@ export default function CrosswordGenerator() {
         </div>
         
         <div>
-          <h3 className="text-lg font-semibold mb-3">Down</h3>
+          <h3 className="text-base font-semibold mb-3">Down</h3>
           <div className="space-y-2">
             {downClues.map(([clueId, clue]) => (
               <div key={clueId} className="text-sm">
@@ -235,15 +235,15 @@ export default function CrosswordGenerator() {
       {/* Input Form */}
       <Card>
         <CardHeader>
-          <CardTitle>Generate Crossword</CardTitle>
+          <CardTitle className="text-xl font-bold">Generate Crossword</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="theme">Theme</Label>
+              <Label htmlFor="theme" className="text-base font-semibold">Theme</Label>
               <Input
                 id="theme"
-                placeholder="e.g., Space, Food, Movies"
+                placeholder="e.g., space, food, movies"
                 value={formData.theme || ''}
                 onChange={(e) => handleInputChange('theme', e.target.value)}
               />
@@ -261,7 +261,7 @@ export default function CrosswordGenerator() {
             </div> */}
             
             <div className="space-y-2">
-              <Label>Template</Label>
+              <Label className="text-base font-semibold">Template</Label>
               <Select
                 value={formData.template || ''}
                 onValueChange={(value) => handleInputChange('template', value)}
@@ -272,7 +272,8 @@ export default function CrosswordGenerator() {
                 <SelectContent>
                   {templates.map((template) => (
                     <SelectItem key={template.id} value={template.id}>
-                      {template.name} ({template.difficulty})
+                      {/* {template.name} ({template.difficulty}) */}
+                      {template.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -316,7 +317,7 @@ export default function CrosswordGenerator() {
       {crosswordData && (
         <Card>
           <CardHeader>
-            <CardTitle>Crossword Puzzle</CardTitle>
+            <CardTitle className="text-xl font-bold">Crossword</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
@@ -373,7 +374,7 @@ export default function CrosswordGenerator() {
       {crosswordData && (
         <Card>
           <CardHeader>
-            <CardTitle>Clues</CardTitle>
+            <CardTitle className="text-xl font-bold">Clues</CardTitle>
           </CardHeader>
           <CardContent>
             {renderClues()}
