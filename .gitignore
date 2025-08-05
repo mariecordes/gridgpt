@@ -13,6 +13,9 @@ __pycache__/
 *.json
 *.html
 
+# Keep files needed to run program
+!data/02_intermediary/word_database/**
+!data/03_templates/grid_templates.json
 
 # C extensions
 *.so
