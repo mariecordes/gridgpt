@@ -20,9 +20,10 @@ export default function CrosswordGenerator() {
   
   const [crosswordData, setCrosswordData] = useState<CrosswordData | null>(null);
   const [userSolution, setUserSolution] = useState<{ [key: string]: string }>({});
+  const [cellCorrectness, setCellCorrectness] = useState<{ [key: string]: 'correct' | 'incorrect' | 'unchecked' }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [checkResult, setCheckResult] = useState<{ correct: boolean; errors: string[] } | null>(null);
+  const [checkResult, setCheckResult] = useState<{ correct: boolean; incorrectCount: number; totalCount: number } | null>(null);
 
   const templates = [
     { id: '5x5_basic', name: '5x5 Basic', difficulty: 'easy' },
@@ -54,6 +55,7 @@ export default function CrosswordGenerator() {
       const data = await response.json();
       setCrosswordData(data);
       setUserSolution({});
+      setCellCorrectness({});
       setCheckResult(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -72,29 +74,44 @@ export default function CrosswordGenerator() {
   const checkSolution = () => {
     if (!crosswordData || !crosswordData.slots) return;
     
-    const errors: string[] = [];
-    let correct = true;
+    const newCellCorrectness: { [key: string]: 'correct' | 'incorrect' | 'unchecked' } = {};
+    let incorrectCount = 0;
+    let totalCheckedCells = 0;
+    let allCorrect = true;
     
-    // Check each slot against user input
+    // Check each slot against user input (only across slots to avoid double counting)
     Object.entries(crosswordData.filled_slots).forEach(([slotId, correctAnswer]) => {
+      // Only check across slots to avoid counting the same cell multiple times
+      if (!slotId.includes('A')) return;
+      
       // Find the slot data
       const slot = crosswordData.slots?.find(s => s.id === slotId);
       if (!slot) return;
       
-      // Build the user's answer from grid cells
-      let userAnswer = '';
-      slot.cells.forEach(([row, col]) => {
-        const cellValue = userSolution[`${row}-${col}`] || '';
-        userAnswer += cellValue;
+      // Build the user's answer from grid cells and check each cell
+      slot.cells.forEach(([row, col], index) => {
+        const cellKey = `${row}-${col}`;
+        const userValue = userSolution[cellKey] || '';
+        const correctValue = correctAnswer[index] || '';
+        
+        // Count all cells in the crossword, not just filled ones
+        totalCheckedCells++;
+        if (userValue === correctValue && userValue !== '') {
+          newCellCorrectness[cellKey] = 'correct';
+        } else {
+          newCellCorrectness[cellKey] = 'incorrect';
+          incorrectCount++;
+          allCorrect = false;
+        }
       });
-      
-      if (userAnswer !== correctAnswer) {
-        errors.push(`${slotId}: Expected "${correctAnswer}", got "${userAnswer}"`);
-        correct = false;
-      }
     });
     
-    setCheckResult({ correct, errors });
+    setCellCorrectness(newCellCorrectness);
+    setCheckResult({ 
+      correct: allCorrect && totalCheckedCells > 0, 
+      incorrectCount, 
+      totalCount: totalCheckedCells 
+    });
   };
 
   // Helper function to get clue numbers for a cell
@@ -126,13 +143,23 @@ export default function CrosswordGenerator() {
         {crosswordData.grid.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
             const clueNumbers = getClueNumbers(rowIndex, colIndex);
+            const cellKey = `${rowIndex}-${colIndex}`;
+            const correctness = cellCorrectness[cellKey];
+            
+            // Determine cell background color based on correctness
+            let cellBgClass = 'bg-white hover:bg-blue-50';
+            if (correctness === 'correct') {
+              cellBgClass = 'bg-green-100 hover:bg-green-200';
+            } else if (correctness === 'incorrect') {
+              cellBgClass = 'bg-red-100 hover:bg-red-200';
+            }
             
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
                 className={`
                   w-12 h-12 border border-gray-400 relative
-                  ${cell === '#' ? 'bg-black' : 'bg-white hover:bg-blue-50'}
+                  ${cell === '#' ? 'bg-black' : cellBgClass}
                 `}
               >
                 {cell !== '#' && (
@@ -300,6 +327,7 @@ export default function CrosswordGenerator() {
                 <Button 
                   onClick={() => {
                     setUserSolution({});
+                    setCellCorrectness({});
                     setCheckResult(null);
                   }}
                   variant="outline"
@@ -314,12 +342,12 @@ export default function CrosswordGenerator() {
                     <p className="font-semibold">🎉 Congratulations! All answers are correct!</p>
                   ) : (
                     <div>
-                      <p className="font-semibold mb-2">Some answers need correction:</p>
-                      <ul className="text-sm space-y-1">
-                        {checkResult.errors.map((error, index) => (
-                          <li key={index}>• {error}</li>
-                        ))}
-                      </ul>
+                      <p className="font-semibold mb-2">
+                        {checkResult.incorrectCount} of {checkResult.totalCount} checked letters need correction.
+                      </p>
+                      <p className="text-sm">
+                        Incorrect letters are highlighted in red, correct ones in green.
+                      </p>
                     </div>
                   )}
                 </div>
