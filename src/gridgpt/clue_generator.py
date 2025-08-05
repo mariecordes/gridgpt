@@ -2,12 +2,10 @@ import os
 import json
 import random
 import logging
-from typing import Dict, List, Tuple, Optional, Any
-import requests
+from typing import Dict, List
 
 from .llm_connection import LLMConnection
 
-# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 

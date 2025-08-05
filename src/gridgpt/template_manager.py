@@ -1,7 +1,6 @@
 import json
 import random
-from typing import Dict, List, Any
-import os
+from typing import Dict, List
 
 def load_templates(template_file: str = "data/03_templates/grid_templates.json") -> Dict:
     """Load crossword templates from JSON file."""

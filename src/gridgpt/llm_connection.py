@@ -15,7 +15,6 @@ from openai import AzureOpenAI
 from dotenv import load_dotenv
 load_dotenv()  # Load environment variables from .env file
 
-# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import re
 
 def extract_crossword_data(html_content):
     """

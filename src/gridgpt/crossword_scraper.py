@@ -1,14 +1,11 @@
-import requests
-from bs4 import BeautifulSoup
-import json
-import time
-import re
-from typing import Dict, List, Tuple
 import os
-from urllib.parse import urljoin
+import requests
+import json
+import re
 import logging
+from typing import Dict, List
+from bs4 import BeautifulSoup
 
-# Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
