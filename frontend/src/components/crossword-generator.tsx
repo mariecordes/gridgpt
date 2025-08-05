@@ -249,7 +249,8 @@ export default function CrosswordGenerator() {
               />
             </div>
             
-            <div className="space-y-2">
+            {/* TODO: Theme entry component in case we want to make it available to the user to set their own theme entry */}
+            {/* <div className="space-y-2">
               <Label htmlFor="themeEntry">Theme Entry (Optional)</Label>
               <Input
                 id="themeEntry"
@@ -257,7 +258,7 @@ export default function CrosswordGenerator() {
                 value={formData.themeEntry || ''}
                 onChange={(e) => handleInputChange('themeEntry', e.target.value)}
               />
-            </div>
+            </div> */}
             
             <div className="space-y-2">
               <Label>Template</Label>
@@ -277,8 +278,9 @@ export default function CrosswordGenerator() {
                 </SelectContent>
               </Select>
             </div>
-            
-            <div className="space-y-2">
+
+            {/* TODO: Difficulty selection for when this becomes an input parameter (e.g., for template selection, clue generation or crossword generation) */}
+            {/* <div className="space-y-2">
               <Label>Difficulty</Label>
               <Select
                 value={formData.difficulty || 'easy'}
@@ -293,7 +295,7 @@ export default function CrosswordGenerator() {
                   <SelectItem value="hard">Hard</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
           
           <Button 
