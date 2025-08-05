@@ -164,6 +164,9 @@ class ClueGenerator(LLMConnection):
                 # Generate standard clue
                 clues[slot_id] = self.generate_standard_clue(word)
         
+        # Order keys by slot ID
+        clues = {k: clues[k] for k in sorted(clues.keys())}
+        
         # Add the clues to the crossword
         crossword["clues"] = clues
         
