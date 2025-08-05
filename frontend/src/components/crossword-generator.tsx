@@ -205,9 +205,9 @@ export default function CrosswordGenerator() {
             {acrossClues.map(([clueId, clue]) => (
               <div key={clueId} className="text-sm">
                 <span className="font-medium">{clueId}:</span> {clue}
-                {crosswordData.theme_entries[clueId] && (
+                {/* {crosswordData.theme_entries[clueId] && (
                   <Badge variant="secondary" className="ml-2">Theme</Badge>
-                )}
+                )} */}
               </div>
             ))}
           </div>
@@ -219,9 +219,9 @@ export default function CrosswordGenerator() {
             {downClues.map(([clueId, clue]) => (
               <div key={clueId} className="text-sm">
                 <span className="font-medium">{clueId}:</span> {clue}
-                {crosswordData.theme_entries[clueId] && (
+                {/* {crosswordData.theme_entries[clueId] && (
                   <Badge variant="secondary" className="ml-2">Theme</Badge>
-                )}
+                )} */}
               </div>
             ))}
           </div>
