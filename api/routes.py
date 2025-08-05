@@ -8,6 +8,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword
+from src.gridgpt.theme_manager import generate_theme_entry
 from src.gridgpt.template_manager import select_template, load_templates
 from src.gridgpt.clue_generator import generate_mixed_clues
 
@@ -73,13 +74,16 @@ async def generate_crossword(request: GenerateRequest):
             template = select_template(difficulty=request.difficulty)
         else:
             template = select_template()  # Random template
+            
+        # Generate theme entry based on the given theme
+        request.themeEntry = generate_theme_entry(request.theme)
         
-        # Validate theme entry if provided
-        if request.themeEntry:
-            generator = CrosswordGenerator()
-            is_valid, message = generator.validate_theme_entry(request.themeEntry)
-            if not is_valid:
-                raise HTTPException(status_code=400, detail=f"Invalid theme entry: {message}")
+        # # Validate theme entry if provided
+        # if request.themeEntry:
+        #     generator = CrosswordGenerator()
+        #     is_valid, message = generator.validate_theme_entry(request.themeEntry)
+        #     if not is_valid:
+        #         raise HTTPException(status_code=400, detail=f"Invalid theme entry: {message}")
         
         # Generate crossword
         crossword = generate_themed_crossword(template, request.themeEntry)
