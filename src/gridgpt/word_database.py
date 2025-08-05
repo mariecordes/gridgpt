@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def combine_and_filter_words(
-    input_dir: str = "data/01_raw/crossword_words",
+    input_dir: str = "data/01_raw/crossword_tracker",
     output_file: str = "data/02_intermediary/crossword_word_database.json",
     min_frequency: int = 5,
     min_length: int = 3,

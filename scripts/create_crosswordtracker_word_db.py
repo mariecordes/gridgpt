@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.gridgpt.word_database import combine_and_filter_words, save_word_database_formats
 
-INPUT_DIR = "data/01_raw/crossword_words"
+INPUT_DIR = "data/01_raw/crossword_tracker"
 OUTPUT_DIR = "data/02_intermediary/word_database"
 OUTPUT_FILE_ALL = os.path.join(OUTPUT_DIR, "word_database_all.json")
 OUTPUT_FILE_ADDITIONAL = f"{OUTPUT_DIR}/word_database_filtered"

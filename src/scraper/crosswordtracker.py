@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class CrosswordWordScraper:
+class CrosswordTrackerScraper:
     def __init__(self, base_url: str = "http://crosswordtracker.com"):# , delay: float = 1.0):
         self.base_url = base_url
         # self.delay = delay  # Delay between requests to be respectful
@@ -186,8 +186,8 @@ class CrosswordWordScraper:
     
     def save_data(self, data: Dict, filename: str):
         """Save data to JSON file."""
-        os.makedirs("data/01_raw/crossword_words", exist_ok=True)
-        filepath = os.path.join("data/01_raw/crossword_words", filename)
+        os.makedirs("data/01_raw/crossword_tracker", exist_ok=True)
+        filepath = os.path.join("data/01_raw/crossword_tracker", filename)
         
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
@@ -207,8 +207,8 @@ class CrosswordWordScraper:
 
 def main():
     """Main function to run the scraper."""
-    # scraper = CrosswordWordScraper(delay=1.5)  # 1.5 second delay between requests
-    scraper = CrosswordWordScraper()
+    # scraper = CrosswordTrackerScraper(delay=1.5)  # 1.5 second delay between requests
+    scraper = CrosswordTrackerScraper()
     
     # Test with a single letter first
     test_letter = 'A'
@@ -235,8 +235,8 @@ def main():
 
 def scrape_specific_letters(letters: List[str]):
     """Scrape specific letters."""
-    # scraper = CrosswordWordScraper(delay=1.5)
-    scraper = CrosswordWordScraper()
+    # scraper = CrosswordTrackerScraper(delay=1.5)
+    scraper = CrosswordTrackerScraper()
     
     for letter in letters:
         logger.info(f"Scraping letter: {letter}")
@@ -245,8 +245,8 @@ def scrape_specific_letters(letters: List[str]):
 
 def scrape_all_letters_full():
     """Scrape all letters A-Z."""
-    # scraper = CrosswordWordScraper(delay=2.0)  # Longer delay for full scrape
-    scraper = CrosswordWordScraper()
+    # scraper = CrosswordTrackerScraper(delay=2.0)  # Longer delay for full scrape
+    scraper = CrosswordTrackerScraper()
     
     all_data = scraper.scrape_all_letters()
     
