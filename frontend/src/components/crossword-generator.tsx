@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,8 +22,17 @@ export default function CrosswordGenerator() {
   const [userSolution, setUserSolution] = useState<{ [key: string]: string }>({});
   const [cellCorrectness, setCellCorrectness] = useState<{ [key: string]: 'correct' | 'incorrect' | 'unchecked' }>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [checkResult, setCheckResult] = useState<{ correct: boolean; incorrectCount: number; totalCount: number } | null>(null);
+
+  const loadingMessages = [
+    "📚 Finding theme-related words...",
+    "🧩 Filling the crossword grid...",
+    "✨ Generating clever clues...",
+    "🔍 Double-checking everything...",
+    "🎨 Adding finishing touches..."
+  ];
 
   const templates = [
     { id: '5x5_basic', name: '5x5 Basic', difficulty: 'easy' },
@@ -38,6 +47,16 @@ export default function CrosswordGenerator() {
   const generateCrossword = async () => {
     setIsLoading(true);
     setError(null);
+    setLoadingMessage(loadingMessages[0]);
+    
+    // Rotate through loading messages
+    const messageInterval = setInterval(() => {
+      setLoadingMessage(prev => {
+        const currentIndex = loadingMessages.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % loadingMessages.length;
+        return loadingMessages[nextIndex];
+      });
+    }, 1500);
     
     try {
       const response = await fetch('/api/crossword', {
@@ -60,7 +79,9 @@ export default function CrosswordGenerator() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
+      clearInterval(messageInterval);
       setIsLoading(false);
+      setLoadingMessage('');
     }
   };
 
@@ -304,8 +325,21 @@ export default function CrosswordGenerator() {
             disabled={isLoading || !formData.theme}
             className="w-full"
           >
-            {isLoading ? 'Generating...' : 'Generate Crossword'}
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <span>Generating...</span>
+              </div>
+            ) : (
+              'Generate Crossword'
+            )}
           </Button>
+          
+          {isLoading && (
+            <div className="text-center">
+              <p className="text-sm text-gray-600 animate-pulse">{loadingMessage}</p>
+            </div>
+          )}
           
           {error && (
             <div className="text-red-600 text-sm">{error}</div>
