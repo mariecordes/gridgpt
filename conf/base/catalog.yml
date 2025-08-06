@@ -1,12 +1,19 @@
 # === 01 Raw ===
+scraped_data:
+  worddb_com:
+    file_path: data/01_raw/worddb_com/nyt_mini_clues.json
 
 
 # === 02 Intermediary ===
 word_database:
-  all:
-    file_path: data/02_intermediary/word_database/word_database_all.json
+  full:
+    file_path: data/02_intermediary/word_database/word_database_full.json
   filtered:
-    file_path: data/02_intermediary/word_database/word_database_filtered_with_frequencies.json
+    file_path: data/02_intermediary/word_database/word_database_filtered.json
+  frequency:
+    file_path: data/02_intermediary/word_database/word_list_with_frequencies.json
+  # theme:
+  #   file_path: data/02_intermediary/word_database/word_database_filtered_theme.json
 
 # === 03 Templates ===
 grid_templates: 
