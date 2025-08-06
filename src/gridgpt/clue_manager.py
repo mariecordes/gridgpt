@@ -4,10 +4,65 @@ import random
 import logging
 from typing import Dict, List
 
+from .word_database_manager import WordDatabaseManager
 from .llm_connection import LLMConnection
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+class ClueRetriever():
+    def __init__(self, word_db_manager: WordDatabaseManager = None):
+        """Initialize the clue retriever with a word database manager."""
+        if word_db_manager is None:
+            self.word_db_manager = WordDatabaseManager()
+        else:
+            self.word_db_manager = word_db_manager
+    
+    
+    def retrieve_existing_clues(self, crossword: Dict) -> Dict[str, str]:
+        """
+        Retrieve clues for the entire crossword from the word database.
+        
+        Args:
+            crossword: The completed crossword with filled slots
+            
+        Returns:
+            Dictionary of {slot_id: clue} pairs
+        """
+        clues = {}
+        filled_slots = crossword.get("filled_slots", {})
+        
+        logger.info(f"Retrieving clues for {len(filled_slots)} words")
+        
+        # Retrieve clues for each word
+        for slot_id, word in filled_slots.items():
+            available_clues = self.get_available_clues(word)
+            clues[slot_id] = self.select_random_clue(available_clues)
+        
+        # Order keys by slot ID
+        clues = {k: clues[k] for k in sorted(clues.keys())}
+        
+        # Add the clues to the crossword
+        crossword["clues"] = clues
+        
+        return clues
+    
+    
+    def get_available_clues(self, word: str):
+        available_clues = self.word_db_manager.word_database_full.get(word, {}).get("clues", {})
+        
+        # Remove any clues relating to other entries (not suitable for new crossword)
+        available_clues = [clue for clue in available_clues if "Across" not in clue and "Down" not in clue]
+        return available_clues
+    
+    
+    def select_random_clue(self, clues: List):
+        if not clues:
+            return None
+
+        return random.choice(clues) if len(clues) > 1 else clues[0]
+
 
 class ClueGenerator(LLMConnection):
     def __init__(self, clue_database_path: str = "data/02_intermediary/crossword_clues.json"):
@@ -175,3 +230,8 @@ def generate_mixed_clues(filled_grid: Dict, theme: str = None) -> Dict[str, str]
     """Generate mixed clues for the crossword."""
     generator = ClueGenerator()
     return generator.generate_mixed_clues(filled_grid, theme)
+
+def retrieve_existing_clues(filled_grid: Dict, word_db_manager: WordDatabaseManager = None) -> Dict[str, str]:
+    """Retrieve existing clues for the crossword."""
+    retriever = ClueRetriever(word_db_manager)
+    return retriever.retrieve_existing_clues(filled_grid)

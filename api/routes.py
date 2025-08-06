@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword
 from src.gridgpt.theme_manager import generate_theme_entry
 from src.gridgpt.template_manager import select_template, load_templates
-from gridgpt.clue_manager import generate_mixed_clues
+from gridgpt.clue_manager import generate_mixed_clues, retrieve_existing_clues
 from src.gridgpt.utils import load_parameters
 from src.gridgpt.word_database_manager import WordDatabaseManager
 
@@ -117,18 +117,10 @@ async def generate_crossword(request: GenerateRequest):
         # XXX: This is a placeholder for clue generation logic to limit API usage.
         # theme = request.theme or "general knowledge"
         # clues = generate_mixed_clues(crossword, theme)
-        clues = {
-            '1A': 'Aloof or distant in manner',
-            '1D': 'Insect or to annoy someone',
-            '2D': 'A name often associated with music',
-            '3D': 'Departed or went away from a place',
-            '4A': 'Crafts of coffee or beer, depending on your preference',
-            '4D': 'Minor injuries or bruises',
-            '5D': 'Abbreviation for "short-term memory',
-            '6A': 'Not suitable or appropriate',
-            '7A': 'Catch or seize them',
-            '8A': 'Least Squares Sum'
-        }
+        
+        # Retrieve clues
+        # TODO: add choice button on whether to retrieve or generate clues
+        clues = retrieve_existing_clues(crossword, word_db_manager)
         
         # Ensure clues are added to the crossword response
         crossword["clues"] = clues
