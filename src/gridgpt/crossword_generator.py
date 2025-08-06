@@ -8,10 +8,13 @@ from .word_database_manager import WordDatabaseManager
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class CrosswordGenerator(WordDatabaseManager):
-    def __init__(self):
-        """Initialize the crossword generator with a word database."""
-        super().__init__() # Initialize the word database manager
+class CrosswordGenerator:
+    def __init__(self, word_db_manager: WordDatabaseManager = None):
+        """Initialize the crossword generator with a word database manager."""
+        if word_db_manager is None:
+            self.word_db_manager = WordDatabaseManager()
+        else:
+            self.word_db_manager = word_db_manager
     
     def validate_theme_entry(self, theme_entry: str, min_length: int = 3, max_length: int = 15) -> Tuple[bool, str]:
         """
@@ -40,12 +43,12 @@ class CrosswordGenerator(WordDatabaseManager):
             return False, "Theme entry must contain only letters (A-Z)."
         
         # Check if word exists in our database
-        if theme_entry not in self.word_list_with_frequencies and theme_entry.lower() not in self.word_list_with_frequencies:
+        if theme_entry not in self.word_db_manager.word_list_with_frequencies and theme_entry.lower() not in self.word_db_manager.word_list_with_frequencies:
             # Allow multi-word theme entries even if they're not in the database
             if " " in theme_entry:
                 # Just check if all individual words exist
                 individual_words = theme_entry.split()
-                all_valid = all(word in self.word_list_with_frequencies or word.lower() in self.word_list_with_frequencies 
+                all_valid = all(word in self.word_db_manager.word_list_with_frequencies or word.lower() in self.word_db_manager.word_list_with_frequencies 
                                for word in individual_words)
                 if not all_valid:
                     return False, "Theme entry contains words not in our database."
@@ -205,7 +208,7 @@ class CrosswordGenerator(WordDatabaseManager):
         length = slot["length"]
         
         # Get all words of the right length
-        all_words = self.words_by_length.get(length, [])
+        all_words = self.word_db_manager.words_by_length.get(length, [])
         
         # Filter for words that match the fixed letters
         valid_words = []
@@ -362,18 +365,19 @@ def print_grid(grid: List[List[str]]):
         print("| " + " | ".join(cell if cell != "#" else " " for cell in row) + " |")
         print(horizontal_line)
 
-def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attempts: int = 100, backtracking_max_attempts: int = 100) -> Dict:
+def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attempts: int = 100, backtracking_max_attempts: int = 100, word_db_manager: WordDatabaseManager = None) -> Dict:
     """
     Generate a themed crossword puzzle.
     
     Args:
         template: The crossword template to use
         theme_entry: Optional user-provided theme entry
+        word_db_manager: Optional WordDatabaseManager instance to reuse
         
     Returns:
         Generated crossword puzzle
     """
-    generator = CrosswordGenerator()
+    generator = CrosswordGenerator(word_db_manager)
     
     if theme_entry:
         logger.info(f"Generating crossword with theme entry: '{theme_entry}'")

@@ -11,10 +11,14 @@ from .word_database_manager import WordDatabaseManager
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class ThemeManager(WordDatabaseManager):
-    def __init__(self, theme: str):
+class ThemeManager:
+    def __init__(self, theme: str, word_db_manager: WordDatabaseManager = None):
         """Initialize the theme manager class."""
-        super().__init__() # Initialize the word database manager
+        if word_db_manager is None:
+            self.word_db_manager = WordDatabaseManager()
+        else:
+            self.word_db_manager = word_db_manager
+            
         self.theme = theme
         
         self.theme_entry_min_char = 5 # TODO: parameterize
@@ -55,8 +59,8 @@ class ThemeManager(WordDatabaseManager):
         # Filter words
         candidate_words = []
         for length in range(min_chars, max_chars + 1):
-            if length in self.words_by_length:
-                for word, freq in self.words_by_length[length]:
+            if length in self.word_db_manager.words_by_length:
+                for word, freq in self.word_db_manager.words_by_length[length]:
                     if freq >= min_frequency:
                         candidate_words.append(word)
 
@@ -211,17 +215,19 @@ def generate_theme_entry(
     similarity_mode: str = "semantic",
     similarity_threshold: float = 0.5,
     weigh_similarity: bool = True,
+    word_db_manager: WordDatabaseManager = None,
 ) -> str:
     """
     Generate a theme entry according to the given theme.
     
     Args:
         theme: The theme that is used to generate the entry.
+        word_db_manager: Optional WordDatabaseManager instance to reuse
     
     Returns:
         A theme entry in line with the theme (if available)
     """
-    theme_manager = ThemeManager(theme)
+    theme_manager = ThemeManager(theme, word_db_manager)
     
     theme_entries = theme_manager.find_theme_entries(
         min_chars=min_chars,

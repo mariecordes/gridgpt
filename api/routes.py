@@ -12,9 +12,14 @@ from src.gridgpt.theme_manager import generate_theme_entry
 from src.gridgpt.template_manager import select_template, load_templates
 from src.gridgpt.clue_generator import generate_mixed_clues
 from src.gridgpt.utils import load_parameters
+from src.gridgpt.word_database_manager import WordDatabaseManager
 
 router = APIRouter()
 params = load_parameters()
+
+# Create a shared WordDatabaseManager instance to reuse across requests
+# This avoids reloading the database for every request
+word_db_manager = WordDatabaseManager()
 
 # Pydantic models for request/response
 class GenerateRequest(BaseModel):
@@ -89,6 +94,7 @@ async def generate_crossword(request: GenerateRequest):
             similarity_mode=params["theme_entry"]["similarity_mode"],
             similarity_threshold=params["theme_entry"]["similarity_threshold"],
             weigh_similarity=params["theme_entry"]["weigh_similarity"],
+            word_db_manager=word_db_manager,
         )
         
         # # Validate theme entry if provided
@@ -103,7 +109,8 @@ async def generate_crossword(request: GenerateRequest):
             template,
             request.themeEntry,
             max_attempts=params["crossword_generator"]["max_attempts"]["new_crossword"],
-            backtracking_max_attempts=params["crossword_generator"]["max_attempts"]["backtracking"]
+            backtracking_max_attempts=params["crossword_generator"]["max_attempts"]["backtracking"],
+            word_db_manager=word_db_manager
         )
 
         # Generate clues
@@ -189,7 +196,7 @@ async def test_endpoint():
     try:
         # Test basic functionality
         template = select_template(template_id='5x5_basic')
-        generator = CrosswordGenerator()
+        generator = CrosswordGenerator(word_db_manager)
         
         return {
             "status": "success",
