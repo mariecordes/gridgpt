@@ -1,0 +1,18 @@
+word_database:
+  min_frequency: 1
+  min_length: 3
+  max_length: 5
+  exclude_special_chars: True
+
+theme_entry:
+  min_chars: 5
+  max_chars: 5
+  min_frequency: 1
+  similarity_mode: semantic
+  similarity_threshold: 0.5
+  weigh_similarity: True
+
+crossword_generator:
+  max_attempts:
+    new_crossword: 100 # creating a new crossword with a newly placed theme entry
+    backtracking: 100 # backtracking attempts for finding a valid crossword configuration for a placed theme entry

@@ -11,8 +11,10 @@ from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_
 from src.gridgpt.theme_manager import generate_theme_entry
 from src.gridgpt.template_manager import select_template, load_templates
 from src.gridgpt.clue_generator import generate_mixed_clues
+from src.gridgpt.utils import load_parameters
 
 router = APIRouter()
+params = load_parameters()
 
 # Pydantic models for request/response
 class GenerateRequest(BaseModel):
@@ -74,9 +76,20 @@ async def generate_crossword(request: GenerateRequest):
             template = select_template(difficulty=request.difficulty)
         else:
             template = select_template()  # Random template
+        
+        # TODO: add initialization of WordDatabaseManager() here to set up new worddb
+        # then decouple from ThemeManager
             
         # Generate theme entry based on the given theme
-        request.themeEntry = generate_theme_entry(request.theme)
+        request.themeEntry = generate_theme_entry(
+            request.theme,
+            min_chars=params["theme_entry"]["min_chars"],
+            max_chars=params["theme_entry"]["max_chars"],
+            min_frequency=params["theme_entry"]["min_frequency"],
+            similarity_mode=params["theme_entry"]["similarity_mode"],
+            similarity_threshold=params["theme_entry"]["similarity_threshold"],
+            weigh_similarity=params["theme_entry"]["weigh_similarity"],
+        )
         
         # # Validate theme entry if provided
         # if request.themeEntry:
@@ -86,8 +99,13 @@ async def generate_crossword(request: GenerateRequest):
         #         raise HTTPException(status_code=400, detail=f"Invalid theme entry: {message}")
         
         # Generate crossword
-        crossword = generate_themed_crossword(template, request.themeEntry)
-        
+        crossword = generate_themed_crossword(
+            template,
+            request.themeEntry,
+            max_attempts=params["crossword_generator"]["max_attempts"]["new_crossword"],
+            backtracking_max_attempts=params["crossword_generator"]["max_attempts"]["backtracking"]
+        )
+
         # Generate clues
         # XXX: This is a placeholder for clue generation logic to limit API usage.
         # theme = request.theme or "general knowledge"

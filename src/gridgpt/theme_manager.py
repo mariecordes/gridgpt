@@ -30,7 +30,7 @@ class ThemeManager(WordDatabaseManager):
         self,
         min_chars: int = None,
         max_chars: int = None,
-        min_frequency: int = 20,
+        min_frequency: int = 0,
         similarity_mode: str = "semantic",
     ) -> List[Tuple[str, float]]:
         """
@@ -207,7 +207,7 @@ def generate_theme_entry(
     theme: str,
     min_chars: int = None,
     max_chars: int = None,
-    min_frequency: int = 20,
+    min_frequency: int = 0,
     similarity_mode: str = "semantic",
     similarity_threshold: float = 0.5,
     weigh_similarity: bool = True,
