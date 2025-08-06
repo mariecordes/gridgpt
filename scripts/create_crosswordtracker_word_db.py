@@ -5,7 +5,7 @@ import argparse
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.gridgpt.word_database import combine_and_filter_words, save_word_database_formats
+from word_database.crossword_tracker import combine_and_filter_words, save_word_database_formats
 
 INPUT_DIR = "data/01_raw/crossword_tracker"
 OUTPUT_DIR = "data/02_intermediary/word_database"
