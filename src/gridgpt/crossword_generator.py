@@ -3,35 +3,15 @@ import random
 from typing import Dict, List, Tuple, Optional
 import logging
 
+from .word_database_manager import WordDatabaseManager
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class CrosswordGenerator:
-    def __init__(self, word_database_path: str = "data/02_intermediary/word_database/word_database_filtered_with_frequencies.json"):
+class CrosswordGenerator(WordDatabaseManager):
+    def __init__(self):
         """Initialize the crossword generator with a word database."""
-        self.word_database = self.load_word_database(word_database_path)
-        self.words_by_length = self.organize_words_by_length()
-        
-    def load_word_database(self, path: str) -> List[str]:
-        """Load the word database from a JSON file."""
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                words = json.load(f)
-            logger.info(f"Loaded {len(words)} words from database")
-            return words
-        except Exception as e:
-            logger.error(f"Error loading word database from {path}: {e}")
-            return []
-            
-    def organize_words_by_length(self) -> Dict[int, List[str]]:
-        """Organize words by length for faster lookup."""
-        words_by_length = {}
-        for word, frequency in self.word_database.items():
-            length = len(word)
-            if length not in words_by_length:
-                words_by_length[length] = []
-            words_by_length[length].append((word.upper(), frequency))  # Store words in uppercase with their frequency
-        return words_by_length
+        super().__init__() # Initialize the word database manager
     
     def validate_theme_entry(self, theme_entry: str, min_length: int = 3, max_length: int = 15) -> Tuple[bool, str]:
         """
@@ -60,12 +40,12 @@ class CrosswordGenerator:
             return False, "Theme entry must contain only letters (A-Z)."
         
         # Check if word exists in our database
-        if theme_entry not in self.word_database and theme_entry.lower() not in self.word_database:
+        if theme_entry not in self.word_list_with_frequencies and theme_entry.lower() not in self.word_list_with_frequencies:
             # Allow multi-word theme entries even if they're not in the database
             if " " in theme_entry:
                 # Just check if all individual words exist
                 individual_words = theme_entry.split()
-                all_valid = all(word in self.word_database or word.lower() in self.word_database 
+                all_valid = all(word in self.word_list_with_frequencies or word.lower() in self.word_list_with_frequencies 
                                for word in individual_words)
                 if not all_valid:
                     return False, "Theme entry contains words not in our database."
