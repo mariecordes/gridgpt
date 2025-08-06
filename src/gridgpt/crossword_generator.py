@@ -323,7 +323,7 @@ class CrosswordGenerator(WordDatabaseManager):
         logger.error("Failed to fill the grid after multiple attempts")
         return None
     
-    def generate_crossword(self, template: Dict, theme_entry: str = None) -> Dict:
+    def generate_crossword(self, template: Dict, theme_entry: str = None, max_attempts: int = 100) -> Dict:
         """
         Generate a complete crossword puzzle.
         
@@ -349,7 +349,7 @@ class CrosswordGenerator(WordDatabaseManager):
             template_with_theme["theme_entries"] = {}
         
         # Fill the grid
-        filled_crossword = self.backtracking_fill(template_with_theme)
+        filled_crossword = self.backtracking_fill(template_with_theme, max_attempts=max_attempts)
         
         return filled_crossword
 
@@ -362,7 +362,7 @@ def print_grid(grid: List[List[str]]):
         print("| " + " | ".join(cell if cell != "#" else " " for cell in row) + " |")
         print(horizontal_line)
 
-def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attempts: int = 20) -> Dict:
+def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attempts: int = 100, backtracking_max_attempts: int = 100) -> Dict:
     """
     Generate a themed crossword puzzle.
     
@@ -385,7 +385,7 @@ def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attem
         logger.info(f"Attempt {attempt + 1}/{max_attempts} to generate crossword")
         
         try:
-            crossword = generator.generate_crossword(template, theme_entry)
+            crossword = generator.generate_crossword(template, theme_entry, max_attempts=backtracking_max_attempts)
             if crossword:
                 logger.info("Crossword generated successfully")
                 break
