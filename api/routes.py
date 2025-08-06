@@ -52,16 +52,16 @@ async def get_templates():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to load templates: {str(e)}")
 
-@router.post("/validate-theme-entry")
-async def validate_theme_entry(theme_entry: str):
-    """Validate a theme entry."""
-    try:
-        generator = CrosswordGenerator()
-        is_valid, message = generator.validate_theme_entry(theme_entry)
+# @router.post("/validate-theme-entry")
+# async def validate_theme_entry(theme_entry: str):
+#     """Validate a theme entry."""
+#     try:
+#         generator = CrosswordGenerator()
+#         is_valid, message = generator.validate_theme_entry(theme_entry)
         
-        return ValidationResponse(valid=is_valid, message=message)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Validation error: {str(e)}")
+#         return ValidationResponse(valid=is_valid, message=message)
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Validation error: {str(e)}")
 
 @router.post("/generate-crossword")
 async def generate_crossword(request: GenerateRequest):
