@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import logging
 from collections import defaultdict
 from typing import Dict, List
@@ -56,7 +57,8 @@ class WordDatabaseManager:
         min_frequency: int = 5,
         min_length: int = 3,
         max_length: int = 15,
-        exclude_special_chars: bool = True
+        exclude_special_chars: bool = True,
+        exclude_reference_clues: bool = True
     ) -> Dict:
         """
         Filter the word database and save the result.
@@ -86,7 +88,24 @@ class WordDatabaseManager:
             # Apply filtering criteria
             if self._should_include_word(word, frequency, min_frequency, min_length, max_length, exclude_special_chars):
                 filtered_words[word] = data
-        
+
+                if exclude_reference_clues:
+                    # Filter out reference clues like "See 5-Across", "With 12-Down", etc.
+                    reference_pattern = re.compile(
+                        r'\b(?:'
+                        r'(?:see|with|and|like)\s+\d+[-\s]?(?:across|down)(?:es|s)?|'  # "See 5-Across", "With 12-downs", "See 1-acrosses"
+                        r'\d+[-\s]?(?:across|down)(?:es|s)?\b'                         # "5-Across", "12 downs", "1-acrosses"
+                        r')',
+                        re.IGNORECASE
+                    )
+
+                    
+                    filtered_clues = [
+                        clue for clue in filtered_words[word]['clues']
+                        if not reference_pattern.search(clue)
+                    ]
+                    filtered_words[word]['clues'] = filtered_clues if len(filtered_clues) > 0 else ["No clue available."]
+
         logger.info(f"Filtered database contains {len(filtered_words)} words (removed {len(word_database) - len(filtered_words)} words)")
         
         # Save the filtered database
