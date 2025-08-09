@@ -171,9 +171,9 @@ class ClueGenerator(LLMConnection, ClueRetriever):
 
 
 # Helper function for use in main script
-def generate_clues(filled_grid: Dict, theme: str = None) -> Dict[str, str]:
+def generate_clues(filled_grid: Dict, theme: str = None, word_db_manager: WordDatabaseManager = None) -> Dict[str, str]:
     """Generate clues for the crossword."""
-    generator = ClueGenerator()
+    generator = ClueGenerator(word_db_manager=word_db_manager)
     return generator.generate_clues(filled_grid, theme)
 
 def retrieve_existing_clues(filled_grid: Dict, word_db_manager: WordDatabaseManager = None) -> Dict[str, str]:

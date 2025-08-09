@@ -125,7 +125,7 @@ async def generate_crossword(request: GenerateRequest):
 
         # Generate clues based on clue type
         if request.clueType == "generate":
-            clues = generate_clues(crossword, theme)
+            clues = generate_clues(crossword, theme, word_db_manager)
         else:
             clues = retrieve_existing_clues(crossword, word_db_manager)
         
