@@ -27,6 +27,7 @@ class GenerateRequest(BaseModel):
     theme: Optional[str] = "general knowledge"
     themeEntry: Optional[str] = None
     difficulty: Optional[str] = "easy"
+    clueType: Optional[str] = 'existing'
 
 class CrosswordResponse(BaseModel):
     grid: List[List[str]]
@@ -122,12 +123,11 @@ async def generate_crossword(request: GenerateRequest):
             word_db_manager=word_db_manager
         )
 
-        # Generate clues
-        clues = generate_clues(crossword, theme)
-        
-        # Retrieve clues
-        # TODO: add choice button on whether to retrieve or generate clues
-        # clues = retrieve_existing_clues(crossword, word_db_manager)
+        # Generate clues based on clue type
+        if request.clueType == "generate":
+            clues = generate_clues(crossword, theme)
+        else:
+            clues = retrieve_existing_clues(crossword, word_db_manager)
         
         # Ensure clues are added to the crossword response
         crossword["clues"] = clues

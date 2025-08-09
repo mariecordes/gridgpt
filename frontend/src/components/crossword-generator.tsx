@@ -15,7 +15,8 @@ export default function CrosswordGenerator() {
     template: '',
     theme: '',
     themeEntry: '',
-    difficulty: 'easy'
+    difficulty: 'easy',
+    clueType: undefined
   });
   
   const [crosswordData, setCrosswordData] = useState<CrosswordData | null>(null);
@@ -29,7 +30,7 @@ export default function CrosswordGenerator() {
   const loadingMessages = [
     "📚 Finding theme-related words...",
     "🧩 Filling the crossword grid...",
-    "✨ Generating clever clues...",
+    "✨ Writing clever clues...",
     "🔍 Double-checking everything...",
     "🎨 Adding finishing touches..."
   ];
@@ -259,7 +260,7 @@ export default function CrosswordGenerator() {
           <CardTitle className="text-xl font-bold">Generate Crossword</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label className="text-base font-semibold">Template</Label>
               <Select
@@ -267,7 +268,7 @@ export default function CrosswordGenerator() {
                 onValueChange={(value) => handleInputChange('template', value)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a template" />
+                  <SelectValue placeholder="Select grid template" />
                 </SelectTrigger>
                 <SelectContent>
                   {templates.map((template) => (
@@ -276,6 +277,22 @@ export default function CrosswordGenerator() {
                       {template.name}
                     </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-base font-semibold">Clues</Label>
+              <Select
+                value={formData.clueType || ''}
+                onValueChange={(value) => handleInputChange('clueType', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose clue type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="existing">Retrieve existing clues</SelectItem>
+                  <SelectItem value="generate">Generate new clues</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -322,7 +339,7 @@ export default function CrosswordGenerator() {
           
           <Button 
             onClick={generateCrossword} 
-            disabled={isLoading || !formData.template}
+            disabled={isLoading || !formData.template || !formData.clueType}
             className="w-full"
           >
             {isLoading ? (
