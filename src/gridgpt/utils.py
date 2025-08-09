@@ -26,3 +26,13 @@ def load_parameters(path="conf/base/parameters.yml") -> Dict:
     return params
 
 
+def load_prompts(path="conf/base/prompts.yml") -> Dict:
+    """
+    Load prompt templates from YAML files.
+    
+    Returns:
+        A dict containing prompt templates depending on the input path
+    """
+    with open(path, "r") as file:
+        prompt_lib = yaml.safe_load(file)
+    return prompt_lib
