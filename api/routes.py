@@ -74,13 +74,17 @@ async def get_templates():
 async def generate_crossword(request: GenerateRequest):
     """Generate a themed crossword puzzle."""
     try:
+        # XXX: in case template choice should become optional
+        # # Select template
+        # if request.template:
+        #     template = select_template(template_id=request.template)
+        # elif request.difficulty:
+        #     template = select_template(difficulty=request.difficulty)
+        # else:
+        #     template = select_template()  # Random template
+        
         # Select template
-        if request.template:
-            template = select_template(template_id=request.template)
-        elif request.difficulty:
-            template = select_template(difficulty=request.difficulty)
-        else:
-            template = select_template()  # Random template
+        template = select_template(template_id=request.template)
         
         # TODO: add initialization of WordDatabaseManager() here to set up new worddb
         # then decouple from ThemeManager

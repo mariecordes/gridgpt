@@ -322,7 +322,7 @@ export default function CrosswordGenerator() {
           
           <Button 
             onClick={generateCrossword} 
-            disabled={isLoading || !formData.theme}
+            disabled={isLoading || !formData.template}
             className="w-full"
           >
             {isLoading ? (
