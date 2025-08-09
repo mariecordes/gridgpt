@@ -261,27 +261,6 @@ export default function CrosswordGenerator() {
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="theme" className="text-base font-semibold">Theme</Label>
-              <Input
-                id="theme"
-                placeholder="e.g., space, food, movies"
-                value={formData.theme || ''}
-                onChange={(e) => handleInputChange('theme', e.target.value)}
-              />
-            </div>
-            
-            {/* TODO: Theme entry component in case we want to make it available to the user to set their own theme entry */}
-            {/* <div className="space-y-2">
-              <Label htmlFor="themeEntry">Theme Entry (Optional)</Label>
-              <Input
-                id="themeEntry"
-                placeholder="e.g., ASTRONAUT, PIZZA"
-                value={formData.themeEntry || ''}
-                onChange={(e) => handleInputChange('themeEntry', e.target.value)}
-              />
-            </div> */}
-            
-            <div className="space-y-2">
               <Label className="text-base font-semibold">Template</Label>
               <Select
                 value={formData.template || ''}
@@ -300,6 +279,27 @@ export default function CrosswordGenerator() {
                 </SelectContent>
               </Select>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="theme" className="text-base font-semibold">Theme (optional)</Label>
+              <Input
+                id="theme"
+                placeholder="e.g., space, food, movies"
+                value={formData.theme || ''}
+                onChange={(e) => handleInputChange('theme', e.target.value)}
+              />
+            </div>
+            
+            {/* TODO: Theme entry component in case we want to make it available to the user to set their own theme entry */}
+            {/* <div className="space-y-2">
+              <Label htmlFor="themeEntry">Theme Entry (Optional)</Label>
+              <Input
+                id="themeEntry"
+                placeholder="e.g., ASTRONAUT, PIZZA"
+                value={formData.themeEntry || ''}
+                onChange={(e) => handleInputChange('themeEntry', e.target.value)}
+              />
+            </div> */}
 
             {/* TODO: Difficulty selection for when this becomes an input parameter (e.g., for template selection, clue generation or crossword generation) */}
             {/* <div className="space-y-2">
