@@ -68,7 +68,7 @@ export default function CrosswordGenerator() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate crossword');
+        throw new Error('Failed to generate crossword. Please try again.');
       }
 
       const data = await response.json();
