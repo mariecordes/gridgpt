@@ -37,8 +37,7 @@ class ClueRetriever():
         
         # Retrieve clues for each word
         for slot_id, word in filled_slots.items():
-            available_clues = self.get_available_clues(word)
-            clues[slot_id] = self.select_random_clue(available_clues)
+            clues[slot_id] = self.retrieve_clue(word)
         
         # Order keys by slot ID
         clues = {k: clues[k] for k in sorted(clues.keys())}
@@ -47,6 +46,12 @@ class ClueRetriever():
         crossword["clues"] = clues
         
         return clues
+    
+    
+    def retrieve_clue(self, word: str):
+        available_clues = self.get_available_clues(word)
+        selected_clue = self.select_random_clue(available_clues)
+        return selected_clue if selected_clue else f"Clue could not be retrieved. The answer is {word.upper()}"
     
     
     def get_available_clues(self, word: str):
@@ -60,7 +65,6 @@ class ClueRetriever():
     def select_random_clue(self, clues: List):
         if not clues:
             return None
-
         return random.choice(clues) if len(clues) > 1 else clues[0]
 
 

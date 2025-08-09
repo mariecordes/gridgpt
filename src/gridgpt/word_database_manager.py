@@ -98,13 +98,11 @@ class WordDatabaseManager:
                         r')',
                         re.IGNORECASE
                     )
-
                     
-                    filtered_clues = [
+                    filtered_words[word]['clues'] = [
                         clue for clue in filtered_words[word]['clues']
                         if not reference_pattern.search(clue)
                     ]
-                    filtered_words[word]['clues'] = filtered_clues if len(filtered_clues) > 0 else ["No clue available."]
 
         logger.info(f"Filtered database contains {len(filtered_words)} words (removed {len(word_database) - len(filtered_words)} words)")
         
