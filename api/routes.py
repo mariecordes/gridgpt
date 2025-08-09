@@ -86,21 +86,26 @@ async def generate_crossword(request: GenerateRequest):
         # Select template
         template = select_template(template_id=request.template)
         
-        # TODO: add initialization of WordDatabaseManager() here to set up new worddb
-        # then decouple from ThemeManager
+        # Manage theme and theme entry
+        if request.theme:
+            theme = request.theme
             
-        # Generate theme entry based on the given theme
-        request.themeEntry = generate_theme_entry(
-            request.theme,
-            min_chars=params["theme_entry"]["min_chars"],
-            max_chars=params["theme_entry"]["max_chars"],
-            min_frequency=params["theme_entry"]["min_frequency"],
-            similarity_mode=params["theme_entry"]["similarity_mode"],
-            similarity_threshold=params["theme_entry"]["similarity_threshold"],
-            weigh_similarity=params["theme_entry"]["weigh_similarity"],
-            word_db_manager=word_db_manager,
-        )
+            # Generate theme entry based on the given theme
+            request.themeEntry = generate_theme_entry(
+                request.theme,
+                min_chars=params["theme_entry"]["min_chars"],
+                max_chars=params["theme_entry"]["max_chars"],
+                min_frequency=params["theme_entry"]["min_frequency"],
+                similarity_mode=params["theme_entry"]["similarity_mode"],
+                similarity_threshold=params["theme_entry"]["similarity_threshold"],
+                weigh_similarity=params["theme_entry"]["weigh_similarity"],
+                word_db_manager=word_db_manager,
+            )
         
+        else:
+            theme = "no theme"
+            request.themeEntry = None
+
         # # Validate theme entry if provided
         # if request.themeEntry:
         #     generator = CrosswordGenerator()
@@ -118,7 +123,6 @@ async def generate_crossword(request: GenerateRequest):
         )
 
         # Generate clues
-        theme = request.theme or "no theme"
         clues = generate_clues(crossword, theme)
         
         # Retrieve clues
