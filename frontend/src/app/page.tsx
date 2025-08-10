@@ -29,7 +29,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-800 underline"
             >
-              New York Times The Mini Crossword
+              NYT's The Mini Crossword
             </a>
           </p>
         </div>
