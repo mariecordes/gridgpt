@@ -194,7 +194,7 @@ async def test_endpoint():
     """Test endpoint to verify the API is working."""
     try:
         # Test basic functionality
-        template = select_template(template_id='5x5_basic')
+        template = select_template(template_id='5x5_blocked_corners')
         generator = CrosswordGenerator(word_db_manager)
         
         return {

@@ -36,9 +36,9 @@ export default function CrosswordGenerator() {
   ];
 
   const templates = [
-    { id: '5x5_basic', name: '5x5 Basic', difficulty: 'easy' },
-    { id: '5x5_t_shape', name: '5x5 T-Shape', difficulty: 'medium' },
-    { id: '5x5_corners', name: '5x5 Corner Black Squares', difficulty: 'hard' }
+    { id: '5x5_blocked_corners', name: '5x5 Blocked Corners', difficulty: 'easy' },
+    { id: '5x5_bottom_pillars', name: '5x5 Bottom Pillars', difficulty: 'medium' },
+    { id: '5x5_diagonal_cut', name: '5x5 Diagonal Cut', difficulty: 'hard' }
   ];
 
   const handleInputChange = (field: keyof GenerateRequest, value: string) => {

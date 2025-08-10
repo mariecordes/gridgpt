@@ -1,8 +1,8 @@
 {
   "templates": [
     {
-      "id": "5x5_basic",
-      "name": "5x5 Basic Template",
+      "id": "5x5_blocked_corners",
+      "name": "5x5 Blocked Corners",
       "size": [5, 5],
       "grid": [
         ["#", "X", "X", "X", "#"],
@@ -26,12 +26,12 @@
       ],
       "theme_slots": ["4A", "6A", "7A", "1D", "2D", "3D"],
       "difficulty": "easy",
-      "description": "Classic 5x5 grid with symmetrical black squares"
+      "description": "Classic 5x5 grid with symmetrical black squares in each corner"
     },
 
     {
-      "id": "5x5_t_shape",
-      "name": "5x5 T-Shape",
+      "id": "5x5_bottom_pillars",
+      "name": "5x5 Bottom Pillars",
       "size": [5, 5],
       "grid": [
         ["X", "X", "X", "X", "X"],
@@ -55,12 +55,12 @@
       ],
       "theme_slots": ["1A", "6A", "7A", "2D", "3D", "4D"],
       "difficulty": "medium",
-      "description": "T-shaped 5x5 grid with lower corner black squares"
+      "description": "T-shaped 5x5 grid with two stacked black square pillars in each lower corner"
     },
     
     {
-      "id": "5x5_corners",
-      "name": "5x5 Corner Black Squares",
+      "id": "5x5_diagonal_cut",
+      "name": "5x5 Diagonal Cut",
       "size": [5, 5],
       "grid": [
         ["#", "#", "X", "X", "X"],
@@ -86,7 +86,7 @@
       ],
       "theme_slots": ["5A", "1D"],
       "difficulty": "hard",
-      "description": "5x5 with corner black squares"
+      "description": "Diagonal 5x5 grid with black squares in two opposite corners"
     }
   ]
 }
