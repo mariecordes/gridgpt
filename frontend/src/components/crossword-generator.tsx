@@ -301,7 +301,7 @@ export default function CrosswordGenerator() {
               <Label htmlFor="theme" className="text-base font-semibold">Theme (optional)</Label>
               <Input
                 id="theme"
-                placeholder="e.g., space, food, movies"
+                placeholder="e.g., food, music, space"
                 value={formData.theme || ''}
                 onChange={(e) => handleInputChange('theme', e.target.value)}
               />
