@@ -11,7 +11,14 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class WordDatabaseManager:
-    def __init__(self, min_frequency: int = 1, min_length: int = 3, max_length: int = 5, exclude_special_chars: bool = True):
+    def __init__(
+        self,
+        min_frequency: int = 1,
+        min_length: int = 3,
+        max_length: int = 5,
+        exclude_special_chars: bool = True,
+        exclude_reference_clues: bool = True,
+    ):
         """Initialize the word database manager with a word database."""
         
         # Get word database path from catalog
@@ -32,7 +39,8 @@ class WordDatabaseManager:
             min_frequency=min_frequency,
             min_length=min_length,
             max_length=max_length,
-            exclude_special_chars=exclude_special_chars
+            exclude_special_chars=exclude_special_chars,
+            exclude_reference_clues=exclude_reference_clues
         )
         self.word_list_with_frequencies = self.create_word_list_with_frequencies(self.word_database_filtered, db_frequency_path)
         self.words_by_length = self.organize_words_by_length()
