@@ -7,12 +7,11 @@ def load_templates(template_file: str = "data/03_templates/grid_templates.json")
     with open(template_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def select_template(example_grids: Dict = None, template_id: str = None, difficulty: str = None) -> Dict:
+def select_template(template_id: str = None, difficulty: str = None) -> Dict:
     """
     Select a template structure from examples.
     
     Args:
-        example_grids: Optional dict of example grids (for compatibility)
         template_id: Specific template ID to select
         difficulty: Filter by difficulty level ('easy', 'medium', 'hard')
     
