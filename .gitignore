@@ -17,6 +17,10 @@ __pycache__/
 !data/02_intermediary/word_database/**
 !data/03_templates/grid_templates.json
 
+# Keep files needed to run frontend
+!*frontend/package.json
+!*frontend/package-lock.json
+
 # C extensions
 *.so
 
