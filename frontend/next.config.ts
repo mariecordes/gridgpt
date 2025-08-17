@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  outputFileTracingRoot: '.',
+  // Remove any complex configurations for now
 }
 
 module.exports = nextConfig
