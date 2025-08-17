@@ -1,15 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import GridPreview from '@/components/ui/grid-preview';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
-import { API_BASE_URL } from '@/lib/utils';
 
 export default function CrosswordGenerator() {
   const [formData, setFormData] = useState<GenerateRequest>({
@@ -61,7 +59,8 @@ export default function CrosswordGenerator() {
     }, 1500);
     
     try {
-      const response = await fetch('/api/crossword', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/crossword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +143,7 @@ export default function CrosswordGenerator() {
     const clueNumbers: string[] = [];
     
     // Check all slots to see if this cell is a starting position
-    crosswordData.slots.forEach((slot: any) => {
+    crosswordData.slots.forEach((slot: { id: string; start: [number, number] }) => {
       const [startRow, startCol] = slot.start;
       if (startRow === rowIndex && startCol === colIndex) {
         // Extract number from slot ID (e.g., "1A" -> "1", "10D" -> "10")
