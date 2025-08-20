@@ -5,6 +5,7 @@ description = "A smart mini crossword generator powered by GPT"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Marie" }]
+
 dependencies = [
     "pandas",
     "numpy",
@@ -18,13 +19,13 @@ dependencies = [
     "beautifulsoup4>=4.12.0",
     "requests>=2.31.0",
     "python-dotenv>=1.0.0",
+
     # FastAPI and related dependencies
     "fastapi>=0.104.1",
     "uvicorn[standard]>=0.24.0",
     "pydantic>=2.4.0",
     "python-multipart>=0.0.6",
-    # CORS support
-    "python-cors>=1.7.0",
+
     # Optional: for testing FastAPI endpoints
     "httpx>=0.25.0",
 ]
