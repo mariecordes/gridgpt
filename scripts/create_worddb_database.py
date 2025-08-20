@@ -4,8 +4,8 @@ import os
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from word_database.worddb import WordDBProcessor
-from gridgpt.utils import load_catalog
+from src.word_database.worddb import WordDBProcessor
+from src.gridgpt.utils import load_catalog
 
 
 def main():

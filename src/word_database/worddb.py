@@ -203,14 +203,9 @@ class WordDBProcessor:
         
         # Save the database
         self.save_database(word_database, output_file)
-        
-        # Create filtered versions
-        output_dir = os.path.dirname(output_file)
-        self.create_filtered_databases(word_database, output_dir)
-        
+                
         # Print statistics
-        stats = self.get_statistics(word_database)
-        self.print_statistics(stats)
+        logger.info(self.get_statistics(word_database))
         
         return word_database
     
