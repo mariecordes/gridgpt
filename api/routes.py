@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword
 from src.gridgpt.theme_manager import generate_theme_entry
 from src.gridgpt.template_manager import select_template, load_templates
-from gridgpt.clue_manager import retrieve_existing_clues, generate_clues
+from src.gridgpt.clue_manager import retrieve_existing_clues, generate_clues
 from src.gridgpt.utils import load_parameters
 from src.gridgpt.word_database_manager import WordDatabaseManager
 
