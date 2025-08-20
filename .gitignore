@@ -18,7 +18,7 @@ __pycache__/
 /notebooks/**/*.json
 
 # Keep files needed to run program
-!data/02_intermediary/word_database/**
+!data/02_intermediary/word_database/word_database_full.json
 !data/03_templates/grid_templates.json
 
 # Keep all frontend files explicitly
