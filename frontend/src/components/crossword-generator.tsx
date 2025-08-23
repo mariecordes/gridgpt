@@ -251,6 +251,7 @@ export default function CrosswordGenerator() {
       incorrectCount, 
       totalCount: totalCheckedCells 
     });
+    // Clear selection when all answers are correct so users can see the green feedback
   };
 
   // Helper function to get clue numbers for a cell
