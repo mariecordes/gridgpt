@@ -98,11 +98,12 @@ class WordDatabaseManager:
                 filtered_words[word] = data
 
                 if exclude_reference_clues:
-                    # Filter out reference clues like "See 5-Across", "With 12-Down", etc.
+                    # Filter out reference clues like "See 5-Across", "With 12-Down", "circled letters", "circled squares", "shaded letters", "shaded squares", etc.
                     reference_pattern = re.compile(
                         r'\b(?:'
                         r'(?:see|with|and|like)\s+\d+[-\s]?(?:across|down)(?:es|s)?|'  # "See 5-Across", "With 12-downs", "See 1-acrosses"
-                        r'\d+[-\s]?(?:across|down)(?:es|s)?\b'                         # "5-Across", "12 downs", "1-acrosses"
+                        r'\d+[-\s]?(?:across|down)(?:es|s)?\b|'                        # "5-Across", "12 downs", "1-acrosses"
+                        r'(?:circled|shaded)\s+(?:letters?|squares?)'                  # "circled letters", "circled squares", "shaded letters", "shaded squares"
                         r')',
                         re.IGNORECASE
                     )
