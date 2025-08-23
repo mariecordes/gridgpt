@@ -363,15 +363,21 @@ export default function CrosswordGenerator() {
                   currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
                 }`}
                 onClick={() => {
-                  setCurrentSlot(clueId);
-                  setCurrentDirection('across');
-                  // Focus on first cell of this slot
-                  const slot = crosswordData.slots?.find(s => s.id === clueId);
-                  if (slot) {
-                    const firstCell = slot.cells[0];
-                    const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
-                    if (firstInput) {
-                      firstInput.focus();
+                  if (currentSlot === clueId) {
+                    // Deselect if clicking on currently selected clue
+                    setCurrentSlot(null);
+                  } else {
+                    // Select the clue
+                    setCurrentSlot(clueId);
+                    setCurrentDirection('across');
+                    // Focus on first cell of this slot
+                    const slot = crosswordData.slots?.find(s => s.id === clueId);
+                    if (slot) {
+                      const firstCell = slot.cells[0];
+                      const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
+                      if (firstInput) {
+                        firstInput.focus();
+                      }
                     }
                   }
                 }}
@@ -392,15 +398,21 @@ export default function CrosswordGenerator() {
                   currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
                 }`}
                 onClick={() => {
-                  setCurrentSlot(clueId);
-                  setCurrentDirection('down');
-                  // Focus on first cell of this slot
-                  const slot = crosswordData.slots?.find(s => s.id === clueId);
-                  if (slot) {
-                    const firstCell = slot.cells[0];
-                    const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
-                    if (firstInput) {
-                      firstInput.focus();
+                  if (currentSlot === clueId) {
+                    // Deselect if clicking on currently selected clue
+                    setCurrentSlot(null);
+                  } else {
+                    // Select the clue
+                    setCurrentSlot(clueId);
+                    setCurrentDirection('down');
+                    // Focus on first cell of this slot
+                    const slot = crosswordData.slots?.find(s => s.id === clueId);
+                    if (slot) {
+                      const firstCell = slot.cells[0];
+                      const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
+                      if (firstInput) {
+                        firstInput.focus();
+                      }
                     }
                   }
                 }}
