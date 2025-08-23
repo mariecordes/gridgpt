@@ -10,6 +10,43 @@ import GridPreview from '@/components/ui/grid-preview';
 import CollapsibleAbout from '@/components/ui/collapsible-about';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
 
+// Helper function to find the next empty cell in a slot
+const findNextEmptyInSlot = (slot: any, currentIndex: number, direction: number, userSolution: { [key: string]: string } = {}) => {
+  const cells = slot.cells;
+  let index = currentIndex + direction;
+  
+  while (index >= 0 && index < cells.length) {
+    const [row, col] = cells[index];
+    const cellKey = `${row}-${col}`;
+    if (!userSolution[cellKey] || userSolution[cellKey] === '') {
+      return index;
+    }
+    index += direction;
+  }
+  
+  return -1; // No empty cell found
+};
+
+// Helper function to find the first empty cell in a slot (for Tab navigation)
+const findNextEmptyCell = (slot: any, startIndex: number, userSolution: { [key: string]: string } = {}) => {
+  const cells = slot.cells;
+  
+  // Start from beginning if startIndex is -1, or from startIndex + 1
+  let index = startIndex === -1 ? 0 : startIndex + 1;
+  
+  while (index < cells.length) {
+    const [row, col] = cells[index];
+    const cellKey = `${row}-${col}`;
+    if (!userSolution[cellKey] || userSolution[cellKey] === '') {
+      return cells[index];
+    }
+    index++;
+  }
+  
+  // If no empty cell found, return first cell
+  return cells[0];
+};
+
 export default function CrosswordGenerator() {
   const [formData, setFormData] = useState<GenerateRequest>({
     template: '',
@@ -28,6 +65,7 @@ export default function CrosswordGenerator() {
   const [checkResult, setCheckResult] = useState<{ correct: boolean; incorrectCount: number; totalCount: number } | null>(null);
   const [currentSlot, setCurrentSlot] = useState<string | null>(null);
   const [currentDirection, setCurrentDirection] = useState<'across' | 'down'>('across');
+  const [lastNavigationDirection, setLastNavigationDirection] = useState<string | null>(null);
 
   const loadingMessages = [
     "📚 Finding theme-related words...",
@@ -97,16 +135,22 @@ export default function CrosswordGenerator() {
       [gridKey]: value.toUpperCase()
     }));
 
-    // Auto-advance to next cell in current slot
+    // Auto-advance to next empty cell in current slot
     if (value && currentSlot && crosswordData?.slots) {
       const slot = crosswordData.slots.find(s => s.id === currentSlot);
       if (slot) {
         const currentCellIndex = slot.cells.findIndex(([row, col]) => `${row}-${col}` === gridKey);
-        if (currentCellIndex !== -1 && currentCellIndex < slot.cells.length - 1) {
-          const nextCell = slot.cells[currentCellIndex + 1];
-          const nextInput = document.querySelector(`input[data-cell="${nextCell[0]}-${nextCell[1]}"]`) as HTMLInputElement;
-          if (nextInput) {
-            nextInput.focus();
+        if (currentCellIndex !== -1) {
+          // Update userSolution first for correct empty cell detection
+          const updatedSolution = { ...userSolution, [gridKey]: value.toUpperCase() };
+          const nextEmptyIndex = findNextEmptyInSlot(slot, currentCellIndex, 1, updatedSolution);
+          
+          if (nextEmptyIndex >= 0) {
+            const nextCell = slot.cells[nextEmptyIndex];
+            const nextInput = document.querySelector(`input[data-cell="${nextCell[0]}-${nextCell[1]}"]`) as HTMLInputElement;
+            if (nextInput) {
+              nextInput.focus();
+            }
           }
         }
       }
@@ -165,16 +209,81 @@ export default function CrosswordGenerator() {
       setCurrentSlot(nextSlot.id);
       setCurrentDirection(nextSlot.direction);
       
-      // Focus on first cell of next slot
-      const firstCell = nextSlot.cells[0];
-      const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
-      if (firstInput) {
-        firstInput.focus();
+      // Focus on first empty cell of next slot
+      const firstEmptyCell = findNextEmptyCell(nextSlot, -1, userSolution);
+      if (firstEmptyCell) {
+        const firstInput = document.querySelector(`input[data-cell="${firstEmptyCell[0]}-${firstEmptyCell[1]}"]`) as HTMLInputElement;
+        if (firstInput) {
+          firstInput.focus();
+        }
       }
+      
+      setLastNavigationDirection(null);
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
       e.preventDefault();
       
       const [row, col] = gridKey.split('-').map(Number);
+      
+      // Check if this is the first arrow key press in this direction
+      const isFirstPress = lastNavigationDirection !== e.key;
+      
+      if (isFirstPress) {
+        // First press: try to switch direction
+        const slotsAtCell = crosswordData.slots.filter(slot => 
+          slot.cells.some(([r, c]) => r === row && c === col)
+        );
+        
+        let targetDirection: 'across' | 'down' | null = null;
+        
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          targetDirection = 'down';
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          targetDirection = 'across';
+        }
+        
+        if (targetDirection && currentDirection !== targetDirection) {
+          // Switch to the other direction if available
+          const targetSlot = slotsAtCell.find(s => s.direction === targetDirection);
+          if (targetSlot) {
+            setCurrentSlot(targetSlot.id);
+            setCurrentDirection(targetDirection);
+            setLastNavigationDirection(e.key);
+            return;
+          }
+        }
+      }
+      
+      // Second press or no direction change: navigate within current word or move to next/prev cell
+      if (currentSlot && isFirstPress) {
+        // Navigate within current word to next/prev empty cell
+        const slot = crosswordData.slots.find(s => s.id === currentSlot);
+        if (slot) {
+          const currentCellIndex = slot.cells.findIndex(([r, c]) => r === row && c === col);
+          let targetCellIndex = -1;
+          
+          if ((e.key === 'ArrowRight' && currentDirection === 'across') || 
+              (e.key === 'ArrowDown' && currentDirection === 'down')) {
+            // Move forward in word
+            targetCellIndex = findNextEmptyInSlot(slot, currentCellIndex, 1, userSolution);
+          } else if ((e.key === 'ArrowLeft' && currentDirection === 'across') || 
+                     (e.key === 'ArrowUp' && currentDirection === 'down')) {
+            // Move backward in word
+            targetCellIndex = findNextEmptyInSlot(slot, currentCellIndex, -1, userSolution);
+          }
+          
+          if (targetCellIndex >= 0) {
+            const targetCell = slot.cells[targetCellIndex];
+            const targetInput = document.querySelector(`input[data-cell="${targetCell[0]}-${targetCell[1]}"]`) as HTMLInputElement;
+            if (targetInput) {
+              targetInput.focus();
+              setLastNavigationDirection(e.key);
+              return;
+            }
+          }
+        }
+      }
+      
+      // If no word navigation or second press with same direction, move grid-wise
       let newRow = row;
       let newCol = col;
       
@@ -198,6 +307,8 @@ export default function CrosswordGenerator() {
         newInput.focus();
         handleCellClick(`${newRow}-${newCol}`);
       }
+      
+      setLastNavigationDirection(e.key);
     } else if (e.key === 'Backspace' && !(e.currentTarget as HTMLInputElement).value) {
       // Move to previous cell on backspace if current cell is empty
       if (currentSlot) {
@@ -213,6 +324,9 @@ export default function CrosswordGenerator() {
           }
         }
       }
+      setLastNavigationDirection(null);
+    } else {
+      setLastNavigationDirection(null);
     }
   };
 
