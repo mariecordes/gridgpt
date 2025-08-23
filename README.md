@@ -262,3 +262,46 @@ Some of my ideas for future updates and enhancements are:
 - Allow inclusion of words that are not listed in the word database (i.e., new entries; potentially with LLM verification)
 - Expand templates to different sizes than the plain 5x5 Mini set-up, or even allow flexible user creation of a grid template
 - Integrate other LLM providers
+
+## About
+
+Hi fellow crossword enthusiasts! I'm Marie, a data scientist based in Berlin with a huge passion for all sorts of games and riddles – especially crosswords.
+
+There's something magical about that perfect "aha!" moment when a tricky clue finally clicks – it's similar to when you finally fix that elusive bug that's been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
+
+So naturally, I thought: why not combine my love for puzzles with my passion for all things data and engineering?
+
+That's how GridGPT was born!
+
+### How It Works
+
+GridGPT builds crosswords through a pipeline that blends real data, embeddings, optimization, and LLMs:
+
+📚 **Crossword database:** A curated set of published words and clues ensures authenticity and quality.
+
+🎯 **Theme matching:** Embeddings rank database words by semantic similarity to your theme, picking atheme entry that initializes the grid.
+
+🤖 **Backfill optimization:** A custom algorithm fills the grid via constraint satisfaction, keeping every intersection valid and solvable.
+
+✍️ **Clue generation:** Choose between:
+
+- **Retrieved:** Randomly selected, authentic clues pulled from the database
+- **Generated:** AI-crafted clues from OpenAI, prompted for theme-alignment, fairness and wit
+
+### Background
+
+I built GridGPT to mix data science optimization with LLM creativity – essentially creating a completely new, unique puzzle at the click of a button.
+
+This is a hobby project born from curiosity: what happens when you blend algorithmic thinking with AI creativity?
+
+Now, let me be clear – this in no way substitutes the brilliant human creativity and clever wordplay that goes into creating those delightful crosswords that professional constructors make. Human-made crosswords have soul, wit, and those perfect "gotcha!" moments that only come from genuine craftsmanship.
+
+GridGPT is more like a fun experiment in computational creativity – for those moments when you want a quick puzzle fix, you're curious about a specific theme, or just seeing what an AI thinks makes a good crossword clue.
+
+Whether you’re new to crosswords or a seasoned solver, enjoy exploring!
+
+### Tech Stack
+
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
+- **Backend:** Python FastAPI with OpenAI integration
+- **Data:** Scraped word database from [WordDB](https://www.worddb.com/)
