@@ -105,7 +105,7 @@ export default function CollapsibleAbout() {
                             <strong>Retrieved:</strong> Authentic clues randomly pulled from the database
                         </li>
                         <li>
-                            <strong>Generated:</strong> AI-crafted clues from OpenAI, prompted for theme alignment, fairness, and wit
+                            <strong>Generated:</strong> LLM-generated clues, prompted for theme alignment, fairness, and wit
                         </li>
                     </ul>
                 </div>
@@ -145,7 +145,7 @@ export default function CollapsibleAbout() {
                     <strong>Frontend:</strong> Next.js, React, TypeScript, Tailwind CSS
                 </p>
                 <p className="mb-3">
-                    <strong>Backend:</strong> Python FastAPI with OpenAI integration
+                    <strong>Backend:</strong> Python FastAPI with OpenAI API integration
                 </p>
                 <p className="mb-3">
                     <strong>Data:</strong> Scraped word database from <a href="https://www.worddb.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">WordDB</a>

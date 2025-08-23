@@ -297,7 +297,7 @@ GridGPT builds crosswords through a pipeline that blends real data, embeddings, 
 ✍️ **Clue generation:** Choose between:
 
 - **Retrieved:** Randomly selected, authentic clues pulled from the database
-- **Generated:** AI-crafted clues from OpenAI, prompted for theme-alignment, fairness and wit
+- **Generated:** LLM-generated clues, prompted for theme-alignment, fairness and wit
 
 ### Background
 
@@ -314,5 +314,5 @@ Whether you’re new to crosswords or a seasoned solver, enjoy exploring!
 ### Tech Stack
 
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS
-- **Backend:** Python FastAPI with OpenAI integration
+- **Backend:** Python FastAPI with OpenAI API integration
 - **Data:** Scraped word database from [WordDB](https://www.worddb.com/)
