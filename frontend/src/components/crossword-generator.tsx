@@ -474,12 +474,12 @@ export default function CrosswordGenerator() {
     return (
       <div className="grid md:grid-cols-2 gap-6">
         <div>
-          <h3 className="text-base font-semibold mb-3">Across</h3>
-          <div className="space-y-2">
+          <h3 className="text-base font-semibold mb-2">Across</h3>
+          <div className="space-y-1">
             {acrossClues.map(([clueId, clue]) => (
               <div 
                 key={clueId} 
-                className={`text-sm p-2 rounded cursor-pointer transition-colors ${
+                className={`text-sm px-2 py-1 rounded cursor-pointer transition-colors ${
                   currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
                 }`}
                 onClick={() => {
@@ -509,12 +509,12 @@ export default function CrosswordGenerator() {
         </div>
         
         <div>
-          <h3 className="text-base font-semibold mb-3">Down</h3>
-          <div className="space-y-2">
+          <h3 className="text-base font-semibold mb-2">Down</h3>
+          <div className="space-y-1">
             {downClues.map(([clueId, clue]) => (
               <div 
                 key={clueId} 
-                className={`text-sm p-2 rounded cursor-pointer transition-colors ${
+                className={`text-sm px-2 py-1 rounded cursor-pointer transition-colors ${
                   currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
                 }`}
                 onClick={() => {
