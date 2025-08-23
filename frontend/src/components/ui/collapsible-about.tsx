@@ -7,16 +7,15 @@ import { ChevronDown, ChevronRight } from 'lucide-react';
 interface CollapsibleSectionProps {
   title: string;
   children: React.ReactNode;
-  defaultOpen?: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-function CollapsibleSection({ title, children, defaultOpen = false }: CollapsibleSectionProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
+function CollapsibleSection({ title, children, isOpen, onToggle }: CollapsibleSectionProps) {
   return (
     <div className="border-b border-gray-200 last:border-b-0">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onToggle}
         className="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 transition-colors rounded-sm px-2"
       >
         <span className="font-semibold text-gray-900">{title}</span>
@@ -36,6 +35,12 @@ function CollapsibleSection({ title, children, defaultOpen = false }: Collapsibl
 }
 
 export default function CollapsibleAbout() {
+  const [openSection, setOpenSection] = useState<string>('The Story'); // Default to "The Story" being open
+
+  const handleToggle = (sectionTitle: string) => {
+    setOpenSection(openSection === sectionTitle ? '' : sectionTitle);
+  };
+
   return (
     <Card className="flex-1 flex flex-col">
       <CardHeader>
@@ -43,7 +48,11 @@ export default function CollapsibleAbout() {
       </CardHeader>
       <CardContent className="flex-1 flex flex-col">
         <div className="space-y-0">
-            <CollapsibleSection title="The Story" defaultOpen={true}>
+            <CollapsibleSection 
+              title="The Story" 
+              isOpen={openSection === 'The Story'}
+              onToggle={() => handleToggle('The Story')}
+            >
                 <div>
                 <p className="mb-4">
                     Hi fellow crossword enthusiasts! I'm Marie, a data scientist based in Berlin with a huge passion for all sorts of games and riddles – especially crosswords.
@@ -60,7 +69,11 @@ export default function CollapsibleAbout() {
                 </div>
             </CollapsibleSection>
 
-            <CollapsibleSection title="How it Works">
+            <CollapsibleSection 
+              title="How it Works"
+              isOpen={openSection === 'How it Works'}
+              onToggle={() => handleToggle('How it Works')}
+            >
                 <div>
                     <p className="mb-3">
                         GridGPT builds crosswords through a pipeline that blends real data, embeddings, optimization, and LLMs:
@@ -84,7 +97,11 @@ export default function CollapsibleAbout() {
                 </div>
             </CollapsibleSection>
             
-            <CollapsibleSection title="Background">
+            <CollapsibleSection 
+              title="Background"
+              isOpen={openSection === 'Background'}
+              onToggle={() => handleToggle('Background')}
+            >
                 <div>
                     <p className="mb-3">
                         I built GridGPT to mix data science optimization with LLM creativity – essentially creating a completely new, unique puzzle at the click of a button.
@@ -104,7 +121,11 @@ export default function CollapsibleAbout() {
                 </div>
             </CollapsibleSection> 
 
-            <CollapsibleSection title="Tech Stack">
+            <CollapsibleSection 
+              title="Tech Stack"
+              isOpen={openSection === 'Tech Stack'}
+              onToggle={() => handleToggle('Tech Stack')}
+            >
                 <div>
                 <p className="mb-3">
                     <strong>Frontend:</strong> Next.js, React, TypeScript, Tailwind CSS
