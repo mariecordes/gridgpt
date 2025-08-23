@@ -194,26 +194,35 @@ class CrosswordGenerator:
                 return word[position]
         return None
     
-    def get_possible_words(self, slot: Dict, fixed_letters: Dict[int, str]) -> List[str]:
+    def get_possible_words(self, slot: Dict, fixed_letters: Dict[int, str], used_words: set = None) -> List[str]:
         """
-        Get all possible words for a slot given the fixed letters.
+        Get all possible words for a slot given the fixed letters and excluding already used words.
         
         Args:
             slot: The slot to fill
             fixed_letters: Dictionary mapping positions to fixed letters
+            used_words: Set of words already used in the grid
             
         Returns:
-            List of possible words that match the constraints
+            List of possible words that match the constraints and are not already used
         """
         length = slot["length"]
         
         # Get all words of the right length
         all_words = self.word_db_manager.words_by_length.get(length, [])
         
-        # Filter for words that match the fixed letters
+        # Initialize used_words set if not provided
+        if used_words is None:
+            used_words = set()
+        
+        # Filter for words that match the fixed letters and are not already used
         valid_words = []
         
         for word, frequency in all_words:
+            # Skip if word is already used
+            if word in used_words:
+                continue
+                
             matches = True
             for pos, letter in fixed_letters.items():
                 if 0 <= pos < len(word) and word[pos] != letter:
@@ -238,6 +247,9 @@ class CrosswordGenerator:
         result = template_with_theme.copy()
         result["grid"] = [row.copy() for row in template_with_theme["grid"]]
         result["filled_slots"] = template_with_theme.get("filled_slots", {}).copy()
+        
+        # Track used words to prevent duplicates
+        used_words = set(result["filled_slots"].values())
         
         # Get all slots
         all_slots = result["slots"]
@@ -273,11 +285,11 @@ class CrosswordGenerator:
                     if letter:
                         fixed_letters[pos_in_slot] = letter
             
-            # Get possible words for this slot
-            possible_words = self.get_possible_words(slot, fixed_letters)
+            # Get possible words for this slot (excluding already used words)
+            possible_words = self.get_possible_words(slot, fixed_letters, used_words)
             
             if not possible_words:
-                logger.warning(f"No words available for slot {slot_id} with constraints {fixed_letters}")
+                logger.warning(f"No words available for slot {slot_id} with constraints {fixed_letters} and {len(used_words)} used words")
                 return None  # Backtracking needed
             
             # Use weighted random selection based on frequency
@@ -297,12 +309,13 @@ class CrosswordGenerator:
                 row, col = cell
                 result["grid"][row][col] = chosen_word[i]
             
-            # Add to filled slots
+            # Add to filled slots and used words
             result["filled_slots"][slot_id] = chosen_word
+            used_words.add(chosen_word)
             
-            logger.debug(f"Filled slot {slot_id} with '{chosen_word}'")
+            logger.debug(f"Filled slot {slot_id} with '{chosen_word}' (total used words: {len(used_words)})")
         
-        logger.info(f"Grid filled successfully with {len(result['filled_slots'])} words")
+        logger.info(f"Grid filled successfully with {len(result['filled_slots'])} unique words")
         return result
     
     def backtracking_fill(self, template_with_theme: Dict, max_attempts: int = 20) -> Dict:
