@@ -16,20 +16,30 @@ function CollapsibleSection({ title, children, isOpen, onToggle }: CollapsibleSe
     <div className="border-b border-gray-200 last:border-b-0">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 transition-colors rounded-sm px-2"
+        className="w-full flex items-center justify-between py-3 text-left transition-all duration-200 rounded-sm px-2 hover:bg-gray-50"
       >
-        <span className="font-semibold text-gray-900">{title}</span>
-        {isOpen ? (
-          <ChevronDown className="h-4 w-4 text-gray-500" />
-        ) : (
-          <ChevronRight className="h-4 w-4 text-gray-500" />
-        )}
+        <span className="font-semibold text-gray-900 transition-colors duration-200">
+          {title}
+        </span>
+        <div className="transition-transform duration-200">
+          {isOpen ? (
+            <ChevronDown className="h-4 w-4 text-gray-500 transition-colors duration-200" />
+          ) : (
+            <ChevronRight className="h-4 w-4 text-gray-500" />
+          )}
+        </div>
       </button>
-      {isOpen && (
+      <div 
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          isOpen 
+            ? 'max-h-screen opacity-100 transform translate-y-0' 
+            : 'max-h-0 opacity-0 transform -translate-y-2'
+        }`}
+      >
         <div className="pb-4 px-2 text-sm text-gray-700 leading-relaxed">
           {children}
         </div>
-      )}
+      </div>
     </div>
   );
 }
