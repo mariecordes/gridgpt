@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import GridPreview from '@/components/ui/grid-preview';
+import CollapsibleAbout from '@/components/ui/collapsible-about';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
 
 export default function CrosswordGenerator() {
@@ -253,13 +254,15 @@ export default function CrosswordGenerator() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Input Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl font-bold">Generate Crossword</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+      {/* Main Content - Left Side */}
+      <div className="flex-1 lg:flex-[2] space-y-6">
+        {/* Input Form */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl font-bold">Generate Crossword</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
           <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label className="text-base font-semibold">Template</Label>
@@ -423,17 +426,23 @@ export default function CrosswordGenerator() {
         </Card>
       )}
 
-      {/* Clues */}
-      {crosswordData && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-bold">Clues</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {renderClues()}
-          </CardContent>
-        </Card>
-      )}
+        {/* Clues */}
+        {crosswordData && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-bold">Clues</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {renderClues()}
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* About Section - Right Side */}
+      <div className="w-full lg:w-80 xl:w-[360px] flex">
+        <CollapsibleAbout />
+      </div>
     </div>
   );
 }
