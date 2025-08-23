@@ -255,7 +255,7 @@ export default function CrosswordGenerator() {
       }
       
       // Second press or no direction change: navigate within current word or move to next/prev cell
-      if (currentSlot && isFirstPress) {
+      if (currentSlot) {
         // Navigate within current word to next/prev empty cell
         const slot = crosswordData.slots.find(s => s.id === currentSlot);
         if (slot) {
@@ -284,7 +284,7 @@ export default function CrosswordGenerator() {
         }
       }
       
-      // If no word navigation or second press with same direction, move grid-wise
+      // If no word navigation, move grid-wise but preserve current direction if it exists at new cell
       let newRow = row;
       let newCol = col;
       
@@ -306,7 +306,22 @@ export default function CrosswordGenerator() {
       const newInput = document.querySelector(`input[data-cell="${newRow}-${newCol}"]`) as HTMLInputElement;
       if (newInput) {
         newInput.focus();
-        handleCellClick(`${newRow}-${newCol}`);
+        
+        // Try to maintain current direction at new cell
+        const slotsAtNewCell = crosswordData.slots.filter(slot => 
+          slot.cells.some(([r, c]) => r === newRow && c === newCol)
+        );
+        
+        // Check if current direction exists at new cell
+        const sameDirectionSlot = slotsAtNewCell.find(s => s.direction === currentDirection);
+        if (sameDirectionSlot) {
+          // Keep the same direction
+          setCurrentSlot(sameDirectionSlot.id);
+          // currentDirection stays the same
+        } else {
+          // Fall back to cell click behavior if current direction not available
+          handleCellClick(`${newRow}-${newCol}`);
+        }
       }
       
       setLastNavigationDirection(e.key);
