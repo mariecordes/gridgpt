@@ -145,19 +145,25 @@ export default function CrosswordGenerator() {
     if (e.key === 'Tab') {
       e.preventDefault();
       
-      // Navigate through slots
-      const currentSlots = crosswordData.slots.filter(s => s.direction === currentDirection);
-      const currentIndex = currentSlots.findIndex(s => s.id === currentSlot);
+      // Create ordered list: all across clues first, then all down clues
+      const acrossSlots = crosswordData.slots.filter(s => s.direction === 'across');
+      const downSlots = crosswordData.slots.filter(s => s.direction === 'down');
+      const allSlotsInOrder = [...acrossSlots, ...downSlots];
+      
+      const currentIndex = allSlotsInOrder.findIndex(s => s.id === currentSlot);
       
       let nextIndex;
       if (e.shiftKey) {
-        nextIndex = currentIndex > 0 ? currentIndex - 1 : currentSlots.length - 1;
+        // Shift+Tab: go backwards
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : allSlotsInOrder.length - 1;
       } else {
-        nextIndex = currentIndex < currentSlots.length - 1 ? currentIndex + 1 : 0;
+        // Tab: go forwards
+        nextIndex = currentIndex < allSlotsInOrder.length - 1 ? currentIndex + 1 : 0;
       }
       
-      const nextSlot = currentSlots[nextIndex];
+      const nextSlot = allSlotsInOrder[nextIndex];
       setCurrentSlot(nextSlot.id);
+      setCurrentDirection(nextSlot.direction);
       
       // Focus on first cell of next slot
       const firstCell = nextSlot.cells[0];
