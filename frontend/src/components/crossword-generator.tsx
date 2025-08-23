@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import GridPreview from '@/components/ui/grid-preview';
 import CollapsibleAbout from '@/components/ui/collapsible-about';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
+import colors from '@/lib/colors';
 
 // Helper function to find the next empty cell in a slot
 const findNextEmptyInSlot = (slot: any, currentIndex: number, direction: number, userSolution: { [key: string]: string } = {}) => {
@@ -403,7 +404,10 @@ export default function CrosswordGenerator() {
     if (!crosswordData) return null;
 
     return (
-      <div className="grid grid-cols-5 gap-0 w-fit mx-auto border-2 border-gray-800">
+      <div 
+        className="grid grid-cols-5 gap-0 w-fit mx-auto"
+        style={{ border: `2px solid ${colors.gridBorder}` }}
+      >
         {crosswordData.grid.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
             const clueNumbers = getClueNumbers(rowIndex, colIndex);
@@ -416,22 +420,38 @@ export default function CrosswordGenerator() {
             );
             
             // Determine cell background color based on correctness and selection
-            let cellBgClass = 'bg-white hover:bg-blue-50';
+            let cellBgColor = colors.emptyCell;
+            let cellHoverColor = colors.cellHover;
+            
             if (correctness === 'correct') {
-              cellBgClass = 'bg-green-100 hover:bg-green-200';
+              cellBgColor = colors.correctAnswer;
+              cellHoverColor = colors.correctHover;
             } else if (correctness === 'incorrect') {
-              cellBgClass = 'bg-red-100 hover:bg-red-200';
+              cellBgColor = colors.incorrectAnswer;
+              cellHoverColor = colors.incorrectHover;
             } else if (isInCurrentSlot) {
-              cellBgClass = 'bg-blue-100 hover:bg-blue-150';
+              cellBgColor = colors.slotHighlight;
+              cellHoverColor = colors.slotHover;
             }
             
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className={`
-                  w-12 h-12 border border-gray-400 relative
-                  ${cell === '#' ? 'bg-black' : cellBgClass}
-                `}
+                className="w-12 h-12 border relative transition-colors hover:cursor-pointer"
+                style={{ 
+                  backgroundColor: cell === '#' ? colors.blockedCell : cellBgColor,
+                  borderColor: colors.gridCell
+                }}
+                onMouseEnter={(e) => {
+                  if (cell !== '#') {
+                    e.currentTarget.style.backgroundColor = cellHoverColor;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (cell !== '#') {
+                    e.currentTarget.style.backgroundColor = cellBgColor;
+                  }
+                }}
                 onClick={() => handleCellClick(cellKey)}
               >
                 {cell !== '#' && (
@@ -448,11 +468,17 @@ export default function CrosswordGenerator() {
                       type="text"
                       maxLength={1}
                       data-cell={cellKey}
-                      className="w-full h-full text-center border-none outline-none text-lg font-bold pt-2 bg-transparent focus:bg-yellow-100 transition-colors"
+                      className="w-full h-full text-center border-none outline-none text-lg font-bold pt-2 bg-transparent transition-colors"
+                      style={{ textTransform: 'uppercase' }}
                       value={userSolution[cellKey] || ''}
                       onChange={(e) => handleCellChange(cellKey, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, cellKey)}
-                      style={{ textTransform: 'uppercase' }}
+                      onFocus={(e) => {
+                        e.target.style.backgroundColor = colors.activeCell;
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                      }}
                       placeholder=""
                     />
                   </>
@@ -479,9 +505,21 @@ export default function CrosswordGenerator() {
             {acrossClues.map(([clueId, clue]) => (
               <div 
                 key={clueId} 
-                className={`text-sm px-2 py-1 rounded cursor-pointer transition-colors ${
-                  currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
-                }`}
+                className="text-sm px-2 py-1 rounded cursor-pointer transition-colors"
+                style={{
+                  backgroundColor: currentSlot === clueId ? colors.slotHighlight : 'transparent',
+                  border: currentSlot === clueId ? `1px solid ${colors.selectedClueBorder}` : '1px solid transparent'
+                }}
+                onMouseEnter={(e) => {
+                  if (currentSlot !== clueId) {
+                    e.currentTarget.style.backgroundColor = colors.clueHover;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentSlot !== clueId) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
+                }}
                 onClick={() => {
                   if (currentSlot === clueId) {
                     // Deselect if clicking on currently selected clue
@@ -514,9 +552,21 @@ export default function CrosswordGenerator() {
             {downClues.map(([clueId, clue]) => (
               <div 
                 key={clueId} 
-                className={`text-sm px-2 py-1 rounded cursor-pointer transition-colors ${
-                  currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
-                }`}
+                className="text-sm px-2 py-1 rounded cursor-pointer transition-colors"
+                style={{
+                  backgroundColor: currentSlot === clueId ? colors.slotHighlight : 'transparent',
+                  border: currentSlot === clueId ? `1px solid ${colors.selectedClueBorder}` : '1px solid transparent'
+                }}
+                onMouseEnter={(e) => {
+                  if (currentSlot !== clueId) {
+                    e.currentTarget.style.backgroundColor = colors.clueHover;
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentSlot !== clueId) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
+                }}
                 onClick={() => {
                   if (currentSlot === clueId) {
                     // Deselect if clicking on currently selected clue
@@ -698,7 +748,13 @@ export default function CrosswordGenerator() {
               </div>
               
               {checkResult && (
-                <div className={`p-4 rounded-md ${checkResult.correct ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                <div 
+                  className="p-4 rounded-md"
+                  style={{
+                    backgroundColor: checkResult.correct ? colors.correctAnswer : colors.incorrectAnswer,
+                    color: checkResult.correct ? colors.textSuccess : colors.textError
+                  }}
+                >
                   {checkResult.correct ? (
                     <p className="font-semibold">🎉 Congratulations! All answers are correct!</p>
                   ) : (
