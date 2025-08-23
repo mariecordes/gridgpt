@@ -59,9 +59,9 @@ export default function CollapsibleAbout() {
       <CardContent className="flex-1 flex flex-col">
         <div className="space-y-0">
             <CollapsibleSection 
-              title="The Story" 
-              isOpen={openSection === 'The Story'}
-              onToggle={() => handleToggle('The Story')}
+              title="Welcome" 
+              isOpen={openSection === 'Welcome'}
+              onToggle={() => handleToggle('Welcome')}
             >
                 <div>
                 <p className="mb-4">
@@ -80,9 +80,9 @@ export default function CollapsibleAbout() {
             </CollapsibleSection>
 
             <CollapsibleSection 
-              title="How it Works"
-              isOpen={openSection === 'How it Works'}
-              onToggle={() => handleToggle('How it Works')}
+              title="How it works"
+              isOpen={openSection === 'How it works'}
+              onToggle={() => handleToggle('How it works')}
             >
                 <div>
                     <p className="mb-3">
@@ -132,9 +132,9 @@ export default function CollapsibleAbout() {
             </CollapsibleSection> 
 
             <CollapsibleSection 
-              title="Tech Stack"
-              isOpen={openSection === 'Tech Stack'}
-              onToggle={() => handleToggle('Tech Stack')}
+              title="Tech stack"
+              isOpen={openSection === 'Tech stack'}
+              onToggle={() => handleToggle('Tech stack')}
             >
                 <div>
                 <p className="mb-3">
