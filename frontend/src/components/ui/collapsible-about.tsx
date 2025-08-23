@@ -68,7 +68,7 @@ export default function CollapsibleAbout() {
                     Hi fellow crossword enthusiasts! I'm Marie, a data scientist based in Berlin with a huge passion for all sorts of games and riddles – especially crosswords.
                 </p>
                 <p className="mb-4">
-                    There's something magical about that perfect "aha!" moment when a tricky clue finally clicks – it's similar to when you finally fix that elusive bug that's been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
+                    There's something magical about that perfect "aha!" moment when a tricky clue finally clicks – it's similar to when you finally fix that frustrating bug that's been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
                 </p>
                 <p className="mb-4">
                     So naturally, I thought: why not combine my love for puzzles with my passion for all things data and engineering?
@@ -150,7 +150,7 @@ export default function CollapsibleAbout() {
                     <strong>Deployment:</strong> Vercel (frontend) + Render (backend)
                 </p>
                 <p className="mb-3">
-                    💻 <strong>Code:</strong> Check out the repository here: <a href="https://github.com/mariecordes/gridgpt" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">gridgpt</a>
+                    <strong>Code:</strong> Check out the repository here: <a href="https://github.com/mariecordes/gridgpt" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">gridgpt</a>
                 </p>
                 </div>
             </CollapsibleSection>

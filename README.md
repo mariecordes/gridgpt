@@ -278,7 +278,7 @@ Some of my ideas for future updates and enhancements are:
 
 Hi fellow crossword enthusiasts! I'm Marie, a data scientist based in Berlin with a huge passion for all sorts of games and riddles – especially crosswords.
 
-There's something magical about that perfect "aha!" moment when a tricky clue finally clicks – it's similar to when you finally fix that elusive bug that's been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
+There's something magical about that perfect "aha!" moment when a tricky clue finally clicks – it's similar to when you finally fix that frustrating bug that's been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
 
 So naturally, I thought: why not combine my love for puzzles with my passion for all things data and engineering?
 
