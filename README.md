@@ -2,6 +2,17 @@
 
 A smart mini crossword generator powered by GPT that creates themed crossword puzzles with AI-generated clues. GridGPT combines intelligent word placement algorithms with natural language processing to generate engaging crossword puzzles.
 
+## Table of Contents
+
+- [Features](#features)
+- [Architecture](#architecture)
+- [Quick Start](#quick-start)
+- [Word Database Setup](#word-database-setup)
+- [Backend Architecture](#backend-architecture)
+- [Frontend Architecture](#frontend-architecture)
+- [Development](#development)
+- [About](#about)
+
 ## Features
 
 - 🧩 **Smart Grid Generation**: Creates crossword grids using various templates and patterns
