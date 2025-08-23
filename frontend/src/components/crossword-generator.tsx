@@ -253,13 +253,15 @@ export default function CrosswordGenerator() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Input Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl font-bold">Generate Crossword</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+    <div className="flex gap-6 items-start">
+      {/* Main Content - Left Side */}
+      <div className="flex-1 space-y-6">
+        {/* Input Form */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl font-bold">Generate Crossword</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
           <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label className="text-base font-semibold">Template</Label>
@@ -423,17 +425,43 @@ export default function CrosswordGenerator() {
         </Card>
       )}
 
-      {/* Clues */}
-      {crosswordData && (
-        <Card>
+        {/* Clues */}
+        {crosswordData && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-bold">Clues</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {renderClues()}
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* About Section - Right Side */}
+      <div className="w-80 flex">
+        <Card className="flex-1 flex flex-col">
           <CardHeader>
-            <CardTitle className="text-xl font-bold">Clues</CardTitle>
+            <CardTitle className="text-xl font-bold">About</CardTitle>
           </CardHeader>
-          <CardContent>
-            {renderClues()}
+          <CardContent className="flex-1 flex flex-col justify-between">
+            <div className="text-sm text-gray-700 leading-relaxed">
+              <p className="mb-4">
+                Hi fellow crossword enthusiasts! I'm Marie, a data scientist based in Berlin with a huge passion for all sorts of games and riddles – especially crosswords.
+              </p>
+              <p className="mb-4">
+                There's something magical about that perfect "aha!" moment when a tricky clue finally clicks – it's similar to when you finally squash that elusive bug that's been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
+              </p>
+              <p className="mb-4">
+                So naturally, I thought: why not combine my love for puzzles with my passion for all things data and engineering?
+              </p>
+              <p className="font-medium text-gray-900">
+                That's how GridGPT was born!
+              </p>
+            </div>
           </CardContent>
         </Card>
-      )}
+      </div>
     </div>
   );
 }
