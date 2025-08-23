@@ -251,7 +251,11 @@ export default function CrosswordGenerator() {
       incorrectCount, 
       totalCount: totalCheckedCells 
     });
+
     // Clear selection when all answers are correct so users can see the green feedback
+    if (allCorrect && totalCheckedCells > 0) {
+      setCurrentSlot(null);
+    }
   };
 
   // Helper function to get clue numbers for a cell
@@ -293,12 +297,12 @@ export default function CrosswordGenerator() {
             
             // Determine cell background color based on correctness and selection
             let cellBgClass = 'bg-white hover:bg-blue-50';
-            if (isInCurrentSlot) {
-              cellBgClass = 'bg-blue-100 hover:bg-blue-150';
-            } else if (correctness === 'correct') {
+            if (correctness === 'correct') {
               cellBgClass = 'bg-green-100 hover:bg-green-200';
             } else if (correctness === 'incorrect') {
               cellBgClass = 'bg-red-100 hover:bg-red-200';
+            } else if (isInCurrentSlot) {
+              cellBgClass = 'bg-blue-100 hover:bg-blue-150';
             }
             
             return (
