@@ -45,7 +45,7 @@ function CollapsibleSection({ title, children, isOpen, onToggle }: CollapsibleSe
 }
 
 export default function CollapsibleAbout() {
-  const [openSection, setOpenSection] = useState<string>('The Story'); // Default to "The Story" being open
+  const [openSection, setOpenSection] = useState<string>('How it works'); // Default to "How it works" being open
 
   const handleToggle = (sectionTitle: string) => {
     setOpenSection(openSection === sectionTitle ? '' : sectionTitle);
