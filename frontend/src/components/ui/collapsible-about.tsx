@@ -100,9 +100,13 @@ export default function CollapsibleAbout() {
                     <p className="mb-3">
                         ✍️ <strong>Clue generation:</strong> Choose between:
                     </p>
-                    <ul className="ml-4 mb-3 space-y-2 text-sm">
-                        <li><strong>Retrieved:</strong> Randomly selected, authentic clues pulled from the database</li>
-                        <li><strong>Generated:</strong> AI-crafted clues from OpenAI, prompted for theme-alignment, fairness and wit</li>
+                    <ul className="list-disc ml-6 mb-3 space-y-2 text-sm">
+                        <li>
+                            <strong>Retrieved:</strong> Authentic clues randomly pulled from the database
+                        </li>
+                        <li>
+                            <strong>Generated:</strong> AI-crafted clues from OpenAI, prompted for theme alignment, fairness, and wit
+                        </li>
                     </ul>
                 </div>
             </CollapsibleSection>
