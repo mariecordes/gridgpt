@@ -26,6 +26,8 @@ export default function CrosswordGenerator() {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [checkResult, setCheckResult] = useState<{ correct: boolean; incorrectCount: number; totalCount: number } | null>(null);
+  const [currentSlot, setCurrentSlot] = useState<string | null>(null);
+  const [currentDirection, setCurrentDirection] = useState<'across' | 'down'>('across');
 
   const loadingMessages = [
     "📚 Finding theme-related words...",
@@ -78,6 +80,8 @@ export default function CrosswordGenerator() {
       setUserSolution({});
       setCellCorrectness({});
       setCheckResult(null);
+      setCurrentSlot(null);
+      setCurrentDirection('across');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -92,6 +96,118 @@ export default function CrosswordGenerator() {
       ...prev,
       [gridKey]: value.toUpperCase()
     }));
+
+    // Auto-advance to next cell in current slot
+    if (value && currentSlot && crosswordData?.slots) {
+      const slot = crosswordData.slots.find(s => s.id === currentSlot);
+      if (slot) {
+        const currentCellIndex = slot.cells.findIndex(([row, col]) => `${row}-${col}` === gridKey);
+        if (currentCellIndex !== -1 && currentCellIndex < slot.cells.length - 1) {
+          const nextCell = slot.cells[currentCellIndex + 1];
+          const nextInput = document.querySelector(`input[data-cell="${nextCell[0]}-${nextCell[1]}"]`) as HTMLInputElement;
+          if (nextInput) {
+            nextInput.focus();
+          }
+        }
+      }
+    }
+  };
+
+  const handleCellClick = (gridKey: string) => {
+    if (!crosswordData?.slots) return;
+
+    const [row, col] = gridKey.split('-').map(Number);
+    const slotsAtCell = crosswordData.slots.filter(slot => 
+      slot.cells.some(([r, c]) => r === row && c === col)
+    );
+
+    if (slotsAtCell.length > 0) {
+      // If clicking on the current slot, toggle direction
+      if (currentSlot && slotsAtCell.some(s => s.id === currentSlot)) {
+        const otherSlot = slotsAtCell.find(s => s.id !== currentSlot);
+        if (otherSlot) {
+          setCurrentSlot(otherSlot.id);
+          setCurrentDirection(otherSlot.direction);
+        }
+      } else {
+        // Default to across first, then down
+        const acrossSlot = slotsAtCell.find(s => s.direction === 'across');
+        const slotToSelect = acrossSlot || slotsAtCell[0];
+        setCurrentSlot(slotToSelect.id);
+        setCurrentDirection(slotToSelect.direction);
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, gridKey: string) => {
+    if (!crosswordData?.slots) return;
+
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      
+      // Navigate through slots
+      const currentSlots = crosswordData.slots.filter(s => s.direction === currentDirection);
+      const currentIndex = currentSlots.findIndex(s => s.id === currentSlot);
+      
+      let nextIndex;
+      if (e.shiftKey) {
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : currentSlots.length - 1;
+      } else {
+        nextIndex = currentIndex < currentSlots.length - 1 ? currentIndex + 1 : 0;
+      }
+      
+      const nextSlot = currentSlots[nextIndex];
+      setCurrentSlot(nextSlot.id);
+      
+      // Focus on first cell of next slot
+      const firstCell = nextSlot.cells[0];
+      const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
+      if (firstInput) {
+        firstInput.focus();
+      }
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      
+      const [row, col] = gridKey.split('-').map(Number);
+      let newRow = row;
+      let newCol = col;
+      
+      switch (e.key) {
+        case 'ArrowLeft':
+          newCol = Math.max(0, col - 1);
+          break;
+        case 'ArrowRight':
+          newCol = Math.min(4, col + 1);
+          break;
+        case 'ArrowUp':
+          newRow = Math.max(0, row - 1);
+          break;
+        case 'ArrowDown':
+          newRow = Math.min(4, row + 1);
+          break;
+      }
+      
+      const newInput = document.querySelector(`input[data-cell="${newRow}-${newCol}"]`) as HTMLInputElement;
+      if (newInput) {
+        newInput.focus();
+        handleCellClick(`${newRow}-${newCol}`);
+      }
+    } else if (e.key === 'Backspace' && !(e.currentTarget as HTMLInputElement).value) {
+      // Move to previous cell on backspace if current cell is empty
+      if (currentSlot) {
+        const slot = crosswordData.slots.find(s => s.id === currentSlot);
+        if (slot) {
+          const currentCellIndex = slot.cells.findIndex(([row, col]) => `${row}-${col}` === gridKey);
+          if (currentCellIndex > 0) {
+            const prevCell = slot.cells[currentCellIndex - 1];
+            const prevInput = document.querySelector(`input[data-cell="${prevCell[0]}-${prevCell[1]}"]`) as HTMLInputElement;
+            if (prevInput) {
+              prevInput.focus();
+            }
+          }
+        }
+      }
+    }
   };
 
   const checkSolution = () => {
@@ -169,9 +285,16 @@ export default function CrosswordGenerator() {
             const cellKey = `${rowIndex}-${colIndex}`;
             const correctness = cellCorrectness[cellKey];
             
-            // Determine cell background color based on correctness
+            // Check if this cell is part of the currently selected slot
+            const isInCurrentSlot = currentSlot && crosswordData.slots?.find(s => 
+              s.id === currentSlot && s.cells.some(([r, c]) => r === rowIndex && c === colIndex)
+            );
+            
+            // Determine cell background color based on correctness and selection
             let cellBgClass = 'bg-white hover:bg-blue-50';
-            if (correctness === 'correct') {
+            if (isInCurrentSlot) {
+              cellBgClass = 'bg-blue-100 hover:bg-blue-150';
+            } else if (correctness === 'correct') {
               cellBgClass = 'bg-green-100 hover:bg-green-200';
             } else if (correctness === 'incorrect') {
               cellBgClass = 'bg-red-100 hover:bg-red-200';
@@ -184,6 +307,7 @@ export default function CrosswordGenerator() {
                   w-12 h-12 border border-gray-400 relative
                   ${cell === '#' ? 'bg-black' : cellBgClass}
                 `}
+                onClick={() => handleCellClick(cellKey)}
               >
                 {cell !== '#' && (
                   <>
@@ -198,9 +322,11 @@ export default function CrosswordGenerator() {
                     <input
                       type="text"
                       maxLength={1}
+                      data-cell={cellKey}
                       className="w-full h-full text-center border-none outline-none text-lg font-bold pt-2 bg-transparent focus:bg-yellow-100 transition-colors"
-                      value={userSolution[`${rowIndex}-${colIndex}`] || ''}
-                      onChange={(e) => handleCellChange(`${rowIndex}-${colIndex}`, e.target.value)}
+                      value={userSolution[cellKey] || ''}
+                      onChange={(e) => handleCellChange(cellKey, e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(e, cellKey)}
                       style={{ textTransform: 'uppercase' }}
                       placeholder=""
                     />
@@ -226,11 +352,26 @@ export default function CrosswordGenerator() {
           <h3 className="text-base font-semibold mb-3">Across</h3>
           <div className="space-y-2">
             {acrossClues.map(([clueId, clue]) => (
-              <div key={clueId} className="text-sm">
+              <div 
+                key={clueId} 
+                className={`text-sm p-2 rounded cursor-pointer transition-colors ${
+                  currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
+                }`}
+                onClick={() => {
+                  setCurrentSlot(clueId);
+                  setCurrentDirection('across');
+                  // Focus on first cell of this slot
+                  const slot = crosswordData.slots?.find(s => s.id === clueId);
+                  if (slot) {
+                    const firstCell = slot.cells[0];
+                    const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
+                    if (firstInput) {
+                      firstInput.focus();
+                    }
+                  }
+                }}
+              >
                 <span className="font-medium">{clueId}:</span> {clue}
-                {/* {crosswordData.theme_entries[clueId] && (
-                  <Badge variant="secondary" className="ml-2">Theme</Badge>
-                )} */}
               </div>
             ))}
           </div>
@@ -240,11 +381,26 @@ export default function CrosswordGenerator() {
           <h3 className="text-base font-semibold mb-3">Down</h3>
           <div className="space-y-2">
             {downClues.map(([clueId, clue]) => (
-              <div key={clueId} className="text-sm">
+              <div 
+                key={clueId} 
+                className={`text-sm p-2 rounded cursor-pointer transition-colors ${
+                  currentSlot === clueId ? 'bg-blue-100 border border-blue-300' : 'hover:bg-gray-50'
+                }`}
+                onClick={() => {
+                  setCurrentSlot(clueId);
+                  setCurrentDirection('down');
+                  // Focus on first cell of this slot
+                  const slot = crosswordData.slots?.find(s => s.id === clueId);
+                  if (slot) {
+                    const firstCell = slot.cells[0];
+                    const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
+                    if (firstInput) {
+                      firstInput.focus();
+                    }
+                  }
+                }}
+              >
                 <span className="font-medium">{clueId}:</span> {clue}
-                {/* {crosswordData.theme_entries[clueId] && (
-                  <Badge variant="secondary" className="ml-2">Theme</Badge>
-                )} */}
               </div>
             ))}
           </div>
