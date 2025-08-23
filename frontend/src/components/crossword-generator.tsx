@@ -60,7 +60,7 @@ export default function CrosswordGenerator() {
     
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/crossword`, {
+      const response = await fetch(`${apiUrl}/api/generate-crossword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
