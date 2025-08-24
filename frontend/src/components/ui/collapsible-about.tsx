@@ -65,16 +65,16 @@ export default function CollapsibleAbout() {
             >
                 <div>
                 <p className="mb-4">
-                    Hi fellow crossword enthusiasts! I'm Marie, a data scientist based in Berlin with a huge passion for all sorts of games and riddles – especially crosswords.
+                    Hi fellow crossword enthusiasts! I&apos;m Marie, a data scientist based in Berlin with a huge passion for all sorts of games and riddles – especially crosswords.
                 </p>
                 <p className="mb-4">
-                    There's something magical about that perfect "aha!" moment when a tricky clue finally clicks – it's similar to when you finally fix that frustrating bug that's been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
+                    There&apos;s something magical about that perfect &quot;aha!&quot; moment when a tricky clue finally clicks – it&apos;s similar to when you finally fix that frustrating bug that&apos;s been haunting your code for hours, or when your data pipeline runs flawlessly from start to finish.
                 </p>
                 <p className="mb-4">
                     So naturally, I thought: why not combine my love for puzzles with my passion for all things data and engineering?
                 </p>
                 <p className="font-medium text-gray-900">
-                    That's how GridGPT was born!
+                    That&apos;s how GridGPT was born!
                 </p>
                 </div>
             </CollapsibleSection>
@@ -124,10 +124,10 @@ export default function CollapsibleAbout() {
                         This is a hobby project born from curiosity: what happens when you blend algorithmic thinking with AI creativity?
                     </p>
                     <p className="mb-3">
-                        Now, let me be clear – this in no way substitutes the brilliant human creativity and clever wordplay that goes into creating those delightful crosswords that professional constructors make. Human-made crosswords have soul, wit, and those perfect "gotcha!" moments that only come from genuine craftsmanship.
+                        Now, let me be clear – this in no way substitutes the brilliant human creativity and clever wordplay that goes into creating those delightful crosswords that professional constructors make. Human-made crosswords have soul, wit, and those perfect &quot;gotcha!&quot; moments that only come from genuine craftsmanship.
                     </p>
                     <p className="mb-3">
-                        GridGPT is more like a fun experiment in computational creativity – for those moments when you want a quick puzzle fix, you're curious about a specific theme, or just seeing what an AI thinks makes a good crossword clue.
+                        GridGPT is more like a fun experiment in computational creativity – for those moments when you want a quick puzzle fix, you&apos;re curious about a specific theme, or just seeing what an AI thinks makes a good crossword clue.
                     </p>
                     <p className="mb-3">
                         Whether you’re new to crosswords or a seasoned solver, enjoy exploring!

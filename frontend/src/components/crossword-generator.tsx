@@ -12,7 +12,7 @@ import { CrosswordData, GenerateRequest } from '@/lib/types';
 import colors from '@/lib/colors';
 
 // Helper function to find the next empty cell in a slot
-const findNextEmptyInSlot = (slot: any, currentIndex: number, direction: number, userSolution: { [key: string]: string } = {}) => {
+const findNextEmptyInSlot = (slot: { cells: [number, number][] }, currentIndex: number, direction: number, userSolution: { [key: string]: string } = {}) => {
   const cells = slot.cells;
   let index = currentIndex + direction;
   
@@ -29,7 +29,7 @@ const findNextEmptyInSlot = (slot: any, currentIndex: number, direction: number,
 };
 
 // Helper function to find the first empty cell in a slot (for Tab navigation)
-const findNextEmptyCell = (slot: any, startIndex: number, userSolution: { [key: string]: string } = {}) => {
+const findNextEmptyCell = (slot: { cells: [number, number][] }, startIndex: number, userSolution: { [key: string]: string } = {}) => {
   const cells = slot.cells;
   
   // Start from beginning if startIndex is -1, or from startIndex + 1
