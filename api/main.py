@@ -10,7 +10,7 @@ app = FastAPI(
 
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://gridgpt.vercel.app/",
+    "https://gridgpt.vercel.app",
 ]
 
 # Add CORS middleware to allow frontend to connect
