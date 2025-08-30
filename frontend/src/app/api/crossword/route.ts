@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     
     // Use environment variable for backend URL, fallback to production
-    const backendUrl = process.env.BACKEND_URL || 'https://gridgpt-backend.vercel.app';
+    const backendUrl = process.env.BACKEND_URL || 'https://gridgpt.onrender.com';
     
     // Forward request to your Python backend
     const response = await fetch(`${backendUrl}/api/generate-crossword`, {
