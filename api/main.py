@@ -21,19 +21,27 @@ app = FastAPI(
     version="1.0.0"
 )
 
-ALLOWED_ORIGINS = [
+DEFAULT_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://gridgpt.vercel.app",
 ]
 
-# Add CORS middleware to allow frontend to connect
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # allow everything
+extra_origins = os.getenv("EXTRA_CORS_ORIGINS", "")
+if extra_origins:
+    DEFAULT_ALLOWED_ORIGINS.extend([o.strip() for o in extra_origins.split(",") if o.strip()])
+
+allow_all = os.getenv("ALLOW_ALL_CORS", "false").lower() in {"1", "true", "yes"}
+
+cors_args = dict(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+if allow_all:
+    app.add_middleware(CORSMiddleware, allow_origins=["*"], **cors_args)
+else:
+    app.add_middleware(CORSMiddleware, allow_origins=DEFAULT_ALLOWED_ORIGINS, **cors_args)
 
 # Include API routes
 app.include_router(router, prefix="/api")
