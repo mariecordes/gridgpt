@@ -109,7 +109,7 @@ class ClueGenerator(LLMConnection, ClueRetriever):
             return self.retrieve_clue(word)
         
         try:
-            deployment_name = os.environ.get("AZURE_GPT4_DEPLOYMENT", "gpt-4o-mini")
+            model_override = os.environ.get("OPENAI_CLUE_MODEL")  # optional override
             
             # Retrieve existing clues for reference
             reference_clues = self.get_available_clues(word)
@@ -121,13 +121,13 @@ class ClueGenerator(LLMConnection, ClueRetriever):
             )
 
             response = self.llm.chat.completions.create(
-                model=deployment_name,
+                model=model_override or self.model_name,
                 messages=[
                     {"role": "system", "content": self.prompt['system_prompt']},
                     {"role": "user", "content": formatted_prompt}
                 ],
                 max_tokens=50,
-                temperature=0.7
+                temperature=0.7,
             )
             
             # Extract the clue from the response
