@@ -13,9 +13,10 @@ __pycache__/
 # *.json
 *.html
 
-# Generally ignore json files in data and notebook 
+# Generally ignore json and npy files in data and notebook 
 /data/**/*.json
 /notebooks/**/*.json
+/data/**/*.npy
 
 # Keep files needed to run program
 !data/02_intermediary/word_database/word_database_full.json

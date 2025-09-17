@@ -4,7 +4,8 @@ import logging
 import random
 
 from difflib import SequenceMatcher
-from sentence_transformers import SentenceTransformer
+
+from .embedding_provider import OpenAIEmbeddingProvider
 
 from .word_database_manager import WordDatabaseManager
 
@@ -24,8 +25,14 @@ class ThemeManager:
         self.theme_entry_min_char = 5 # TODO: parameterize
         self.theme_entry_max_char = 5 # TODO: parameterize
         
-        self.model = SentenceTransformer('all-MiniLM-L6-v2') # TODO: parameterize model
-        self.theme_embedding = self.model.encode(theme, convert_to_numpy=True)
+        # Initialize embedding provider (lazy creation of word embeddings file if missing)
+        try:
+            self.embedding_provider = OpenAIEmbeddingProvider()
+        except Exception as e:
+            logger.warning(f"Failed to initialize OpenAIEmbeddingProvider: {e}")
+            self.embedding_provider = None
+
+        self.theme_embedding = None  # will be computed lazily for semantic mode
         
         self._theme_entries_cache = None # Cache for theme entries to avoid recomputing
     
@@ -72,12 +79,38 @@ class ThemeManager:
 
         # Compute similarities
         if similarity_mode == "semantic":
-            word_embeddings = self.model.encode(candidate_words, convert_to_numpy=True, batch_size=64)
-            theme_emb = self.theme_embedding
-            similarities = np.dot(word_embeddings, theme_emb) / (
-                np.linalg.norm(word_embeddings, axis=1) * np.linalg.norm(theme_emb)
-            )
-            theme_entries = list(zip(candidate_words, similarities.tolist()))
+            if self.embedding_provider is None:
+                raise RuntimeError("Semantic similarity requested but embedding provider unavailable.")
+
+            # Compute theme embedding if not already
+            if self.theme_embedding is None:
+                self.theme_embedding = self.embedding_provider.embed([self.theme])[0]
+
+            # Retrieve precomputed word embeddings and corresponding word list
+            word_matrix = self.embedding_provider.get_word_embeddings()  # (N, D) fp16
+            provider_words = self.embedding_provider.get_word_list()     # list of uppercase words
+            index_map = {w: i for i, w in enumerate(provider_words)}
+
+            selected_vectors = []
+            filtered_words_for_vectors = []
+            for w in candidate_words:
+                idx = index_map.get(w.upper())
+                if idx is not None:
+                    selected_vectors.append(word_matrix[idx])
+                    filtered_words_for_vectors.append(w)
+
+            if not selected_vectors:
+                logger.warning("No candidate words had precomputed embeddings.")
+                return []
+
+            word_embeddings = np.array(selected_vectors)
+            theme_emb = self.theme_embedding.astype(np.float32)
+            # Normalize cosine similarity
+            if word_embeddings.dtype != np.float32:
+                word_embeddings = word_embeddings.astype(np.float32)
+            denom = (np.linalg.norm(word_embeddings, axis=1) * np.linalg.norm(theme_emb) + 1e-12)
+            similarities = (word_embeddings @ theme_emb) / denom
+            theme_entries = list(zip(filtered_words_for_vectors, similarities.tolist()))
 
         elif similarity_mode == "string":
             theme_entries = [
@@ -117,10 +150,12 @@ class ThemeManager:
         if mode == "semantic":
             if theme_embedding is None:
                 raise ValueError("theme_embedding must be provided for semantic similarity.")
-            word_embedding = self.model.encode(word, convert_to_numpy=True)
+            if self.embedding_provider is None:
+                raise RuntimeError("Embedding provider unavailable for semantic similarity.")
+            word_vec = self.embedding_provider.embed([word])[0]
             return float(
-                np.dot(word_embedding, theme_embedding) /
-                (np.linalg.norm(word_embedding) * np.linalg.norm(theme_embedding))
+                np.dot(word_vec, theme_embedding) /
+                (np.linalg.norm(word_vec) * np.linalg.norm(theme_embedding) + 1e-12)
             )
         
         elif mode == "string":
