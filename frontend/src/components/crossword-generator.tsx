@@ -108,8 +108,8 @@ export default function CrosswordGenerator() {
     }, 1500);
     
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/generate-crossword`, {
+  // Use internal Next.js route handler proxy; backend base URL resolved server-side via BACKEND_URL
+  const response = await fetch(`/api/crossword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
