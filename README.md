@@ -1,5 +1,9 @@
 # GridGPT
 
+🚀 **Live App:** https://gridgpt.vercel.app/ 
+
+> 📌 **Note:** Best experienced on a desktop or laptop browser. Mobile layout optimizations are not yet implemented.
+
 A smart mini crossword generator powered by GPT that creates themed crossword puzzles with AI-generated clues. GridGPT combines intelligent word placement algorithms with natural language processing to generate engaging crossword puzzles.
 
 ## Table of Contents
@@ -69,9 +73,8 @@ The project consists of three main components:
 3. **Configure environment**
    ```bash
    cp .env.sample .env
-
-   # Add your OpenAI Azure endpoint and API key to .env
-
+   # Edit .env and add your OPENAI_API_KEY (from platform.openai.com or proxy)
+   # Optional: set OPENAI_DEFAULT_MODEL / OPENAI_CLUE_MODEL if you want overrides
    source .env
    ```
 
@@ -83,9 +86,9 @@ The project consists of three main components:
 
 ### Running the Application
 
-1. **Start the backend API**
+1. **Start the backend API** (development)
    ```bash
-   python run_api.py
+   python run_api.py  # or: uvicorn api.main:app --reload
    ```
 
 2. **Start the frontend** (in a new terminal)
@@ -234,6 +237,56 @@ template = select_template(template_id="5x5_diagonal_cut")
 
 ## Development
 
+### Environment Variables
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `OPENAI_API_KEY` | Yes | Auth for embeddings & clue generation |
+| `OPENAI_DEFAULT_MODEL` | No | Base chat/LLM model (default: `gpt-4o-mini`) |
+| `OPENAI_CLUE_MODEL` | No | Alternate model specifically for clue generation |
+| `OPENAI_BASE_URL` | No | Custom proxy / self-hosted gateway base URL |
+| `BACKEND_URL` | No | Server-side target used by Next.js internal proxy route (`/api/crossword`) |
+| `ALLOW_ALL_CORS` | No | Set to `true` ONLY for quick local testing (overrides allowlist) |
+| `EXTRA_CORS_ORIGINS` | No | Comma-separated extra allowed origins |
+
+Removed: `NEXT_PUBLIC_API_URL` (frontend now proxies internally, no direct browser exposure of backend).
+
+### Embeddings & Caching
+
+Embeddings (OpenAI `text-embedding-3-small`) are cached on first build:
+
+Cached files:
+- `data/02_intermediary/word_database/word_embeddings_fp16.npy`
+- `data/02_intermediary/word_database/word_index.json`
+
+Generation requests only embed the theme phrase; similarity is computed over the cached matrix.
+
+#### Precompute (optional but recommended for deploy)
+```bash
+python -m scripts.precompute_embeddings --verbose
+# or
+make precompute
+```
+Idempotent; add `--force` to rebuild.
+
+### Makefile Shortcuts
+```bash
+make develop         # install deps + editable package
+make precompute      # build embeddings cache
+make build-backend   # deps + embeddings (deploy helper)
+make dev-backend     # uvicorn with reload
+make dev-frontend    # Next.js dev
+make clean           # remove embedding artifacts
+make clean-and-build-backend  # clean then rebuild
+```
+
+### Deployment
+
+- **Backend:** Railway (FastAPI). Build command `make build-backend` and start command `uvicorn api.main:app --host 0.0.0.0 --port $PORT`.
+- **Frontend:** Vercel. Client calls go to `/api/crossword` (server-side proxy using `BACKEND_URL`).
+- **CORS:** Restricted allowlist (localhost + production domain). Expand via `EXTRA_CORS_ORIGINS` or temporarily with `ALLOW_ALL_CORS=true`.
+- **Embeddings:** Precompute step eliminates first-request latency.
+
 ### Project Structure
 ```
 gridgpt/
@@ -314,5 +367,6 @@ Whether you’re new to crosswords or a seasoned solver, enjoy exploring!
 ### Tech Stack
 
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS
-- **Backend:** Python FastAPI with OpenAI API integration
+- **Backend:** Python FastAPI with OpenAI API integration (Railway hosted)
 - **Data:** Scraped word database from [WordDB](https://www.worddb.com/)
+- **Deploy:** Railway (backend) & Vercel (frontend)
