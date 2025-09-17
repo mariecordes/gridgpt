@@ -9,7 +9,7 @@ theme_entry:
   max_chars: 5
   min_frequency: 1
   similarity_mode: semantic
-  similarity_threshold: 0.5
+  similarity_threshold: 0.35
   weigh_similarity: True
 
 crossword_generator:
