@@ -151,7 +151,7 @@ export default function CollapsibleAbout() {
                     <strong>Data:</strong> Scraped word database from <a href="https://www.worddb.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">WordDB</a>
                 </p>
                 <p className="mb-3">
-                    <strong>Deployment:</strong> Vercel (frontend) + Render (backend)
+                    <strong>Deployment:</strong> Railway (backend) & Vercel (frontend)
                 </p>
                 <p className="mb-3">
                     <strong>Code:</strong> Check out the repository here: <a href="https://github.com/mariecordes/gridgpt" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">gridgpt</a>
