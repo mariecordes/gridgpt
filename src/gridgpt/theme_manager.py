@@ -43,6 +43,7 @@ class ThemeManager:
         max_chars: int = None,
         min_frequency: int = 0,
         similarity_mode: str = "semantic",
+    exclude_substring: bool = True,
     ) -> List[Tuple[str, float]]:
         """
         Find all possible theme entries with scoring of theme similarity.
@@ -63,13 +64,25 @@ class ThemeManager:
 
         logger.info(f"Finding theme entries for '{self.theme}' using '{similarity_mode}' similarity")
 
-        # Filter words
+        # Filter words (length + frequency)
         candidate_words = []
         for length in range(min_chars, max_chars + 1):
             if length in self.word_db_manager.words_by_length:
                 for word, freq in self.word_db_manager.words_by_length[length]:
                     if freq >= min_frequency:
                         candidate_words.append(word)
+
+        # Optional: exclude words that are substring related to theme (either direction)
+        if exclude_substring:
+            theme_l = self.theme.lower()
+            before_count = len(candidate_words)
+            candidate_words = [
+                w for w in candidate_words
+                if (w.lower() not in theme_l) and (theme_l not in w.lower())
+            ]
+            logger.info(
+                f"Excluded {before_count - len(candidate_words)} candidates due to substring relation with theme '{self.theme}'."
+            )
 
         logger.info(f"Filtered to {len(candidate_words)} candidates")
 
@@ -189,7 +202,8 @@ class ThemeManager:
         threshold: float = 0.1,
         weigh_similarity: bool = True,
         min_chars: int = None,
-        max_chars: int = None
+    max_chars: int = None,
+    sampling_temperature: float = 0.7,
     ) -> List[str]:
         """
         Choose theme entries randomly from available options.
@@ -223,9 +237,26 @@ class ThemeManager:
         
         for _ in range(min(number_of_theme_entries, len(filtered_entries))):
             if weigh_similarity:
-                # Weight selection by similarity scores
+                # Temperature-based weighting to avoid always picking the absolute top
                 words, scores = zip(*filtered_entries)
-                selected_word = random.choices(words, weights=scores, k=1)[0]
+                scores_arr = np.array(scores, dtype=np.float32)
+                # Normalize scores between 0 and 1 for stability
+                if scores_arr.size > 1:
+                    min_s = scores_arr.min()
+                    max_s = scores_arr.max()
+                    if max_s - min_s > 1e-9:
+                        norm_scores = (scores_arr - min_s) / (max_s - min_s)
+                    else:
+                        norm_scores = np.ones_like(scores_arr)
+                else:
+                    norm_scores = np.ones_like(scores_arr)
+                # Apply temperature (lower temperature -> more greedy). Use softmax.
+                if sampling_temperature <= 0:
+                    sampling_temperature = 0.01
+                logits = norm_scores / sampling_temperature
+                exp_logits = np.exp(logits - logits.max())
+                probs = exp_logits / exp_logits.sum()
+                selected_word = random.choices(words, weights=probs, k=1)[0]
             else:
                 # Uniform random selection
                 selected_word = random.choice(filtered_entries)[0]
