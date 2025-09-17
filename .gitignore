@@ -22,6 +22,9 @@ __pycache__/
 !data/02_intermediary/word_database/word_database_full.json
 !data/03_templates/grid_templates.json
 
+# Ignore all log files
+/logs/**/*
+
 # Keep all frontend files explicitly
 !frontend/**/*
 

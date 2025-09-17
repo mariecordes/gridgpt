@@ -1,5 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
+import sys
+
+# Ensure root in path for util import BEFORE other imports that log
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.append(ROOT_DIR)
+
+from src.gridgpt.utils import init_logging  # type: ignore
+
+# Initialize logging (append mode) before importing router
+init_logging(overwrite=False)
+
 from .routes import router
 
 app = FastAPI(
