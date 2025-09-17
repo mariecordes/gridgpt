@@ -63,11 +63,12 @@
   },
   "ACTED": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Misbehaved, with \"up\"",
       "Pantomimed",
       "Participated in a play",
+      "Performed in a play",
       "Performed on Broadway, say",
       "Played a role",
       "Pretended to be",
@@ -80,7 +81,8 @@
       "2019-08-06",
       "2020-03-16",
       "2022-08-21",
-      "2025-08-01"
+      "2025-08-01",
+      "2025-09-13"
     ]
   },
   "JESSE": {
@@ -952,7 +954,7 @@
   },
   "CDS": {
     "length": 3,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "Composition of many a music library",
       "Items in a music library, for short",
@@ -961,6 +963,7 @@
       "Music collectibles, for short",
       "Music player inserts",
       "Music purchases before the streaming era",
+      "Music purchases of the ’90s and early 2000s",
       "Section of a music store, maybe",
       "Technology largely outmoded by iTunes and Spotify",
       "Things housed in jewel cases",
@@ -981,7 +984,8 @@
       "2023-07-12",
       "2024-04-27",
       "2024-06-22",
-      "2025-08-04"
+      "2025-08-04",
+      "2025-09-08"
     ]
   },
   "TOPIC": {
@@ -1448,13 +1452,14 @@
   },
   "OUTER": {
     "length": 5,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "North Carolina's ___ Banks",
       "Not inner",
       "Peripheral",
       "With 1-Down, what the James Webb Telescope photographs",
       "With 7-Across, what's visible in the night sky",
+      "Word with space or Banks",
       "___ Banks, N.C.",
       "___ Banks, North Carolina",
       "___ space"
@@ -1469,7 +1474,8 @@
       "2022-08-08",
       "2022-12-01",
       "2023-07-02",
-      "2025-08-06"
+      "2025-08-06",
+      "2025-09-17"
     ]
   },
   "DECAF": {
@@ -1951,9 +1957,10 @@
   },
   "MOE": {
     "length": 3,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "\"Meenie miney\" follower",
+      "Barkeep on \"The Simpsons\"",
       "Bartender on \"The Simpsons\"",
       "Bully in \"Calvin and Hobbes\"",
       "One of the Three Stooges",
@@ -1964,7 +1971,8 @@
       "2021-12-11",
       "2024-02-28",
       "2025-06-06",
-      "2025-07-02"
+      "2025-07-02",
+      "2025-08-22"
     ]
   },
   "SPEW": {
@@ -3068,7 +3076,7 @@
   },
   "ADORE": {
     "length": 5,
-    "frequency": 29,
+    "frequency": 30,
     "clues": [
       "Absolutely love",
       "Deeply love",
@@ -3080,6 +3088,7 @@
       "Love to bits",
       "Love to pieces",
       "Love, love, love",
+      "Profoundly love",
       "Really like",
       "Really love"
     ],
@@ -3112,7 +3121,8 @@
       "2025-01-01",
       "2025-02-19",
       "2025-07-16",
-      "2025-07-21"
+      "2025-07-21",
+      "2025-08-28"
     ]
   },
   "TIMEX": {
@@ -3357,11 +3367,12 @@
   },
   "USUAL": {
     "length": 5,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "Customary",
       "Ordinary",
       "Par for the course",
+      "Regular patron's order, with \"the\"",
       "Same old, same old",
       "Same restaurant order as always, with \"the\"",
       "Standard",
@@ -3378,7 +3389,8 @@
       "2023-03-30",
       "2023-04-30",
       "2024-05-09",
-      "2025-01-02"
+      "2025-01-02",
+      "2025-08-26"
     ]
   },
   "SAMBA": {
@@ -3715,7 +3727,7 @@
   },
   "BRR": {
     "length": 3,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "\"I'm fr-fr-freezing!\"",
       "\"It is freezing in here!\"",
@@ -3724,6 +3736,7 @@
       "\"It's freezing!\"",
       "\"T-t-t-turn up the heat!\"",
       "Comment with a shiver",
+      "Sound of winter",
       "Winter exclamation",
       "Word with a shiver",
       "[I'm freezing!]",
@@ -3743,7 +3756,8 @@
       "2023-12-29",
       "2025-01-04",
       "2025-04-16",
-      "2025-08-10"
+      "2025-08-10",
+      "2025-09-01"
     ]
   },
   "ODE": {
@@ -4380,12 +4394,13 @@
   },
   "SEMI": {
     "length": 4,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "18-wheeler",
       "Event before the final",
       "Game before a final",
-      "Penultimate tournament game"
+      "Penultimate tournament game",
+      "Vehicle that might frustrate highway drivers when it moves into the passing lane"
     ],
     "dates": [
       "2014-11-20",
@@ -4393,12 +4408,13 @@
       "2016-12-01",
       "2018-09-03",
       "2019-07-06",
-      "2025-01-06"
+      "2025-01-06",
+      "2025-09-02"
     ]
   },
   "PARIS": {
     "length": 5,
-    "frequency": 18,
+    "frequency": 20,
     "clues": [
       "#PrayFor___",
       "2024 Olympics host city",
@@ -4410,6 +4426,8 @@
       "Home to the Louvre",
       "Home to the Louvre Museum",
       "Host of the 2024 Summer Olympics",
+      "It's been called the \"City of Light\" and the \"City of Love\"",
+      "Seine city",
       "Site of the 2024 Summer Olympics",
       "Vogue ___ (French magazine)",
       "Where Charles Lindbergh flew in the first solo, nonstop transatlantic flight",
@@ -4435,13 +4453,16 @@
       "2024-11-13",
       "2025-01-06",
       "2025-03-26",
-      "2025-04-26"
+      "2025-04-26",
+      "2025-08-25",
+      "2025-09-14"
     ]
   },
   "STORM": {
     "length": 5,
-    "frequency": 12,
+    "frequency": 13,
     "clues": [
+      "Bad time to head outside with a tall metal rod",
       "Hurricane Matthew, e.g.",
       "Hurricane or blizzard",
       "Leave angrily, with \"out\"",
@@ -4466,7 +4487,8 @@
       "2022-11-29",
       "2023-06-25",
       "2025-01-06",
-      "2025-02-25"
+      "2025-02-25",
+      "2025-09-11"
     ]
   },
   "HANOI": {
@@ -4785,7 +4807,7 @@
   },
   "IDEAL": {
     "length": 5,
-    "frequency": 22,
+    "frequency": 23,
     "clues": [
       "\"In an ___ world ...\"",
       "10 on a scale of 1-10",
@@ -4795,6 +4817,7 @@
       "It doesn't get any better than this!",
       "Just the way it should be",
       "Like the best-case scenario",
+      "Optimal",
       "Perfect",
       "Perfect for the situation",
       "Platonic ___",
@@ -4823,7 +4846,8 @@
       "2024-11-26",
       "2024-12-26",
       "2025-01-07",
-      "2025-05-06"
+      "2025-05-06",
+      "2025-09-16"
     ]
   },
   "PULL": {
@@ -5303,12 +5327,14 @@
   },
   "FEATS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Extraordinary achievements"
+      "Extraordinary achievements",
+      "Major accomplishments"
     ],
     "dates": [
-      "2025-01-09"
+      "2025-01-09",
+      "2025-09-14"
     ]
   },
   "TORSO": {
@@ -5512,7 +5538,7 @@
   },
   "OLIVE": {
     "length": 5,
-    "frequency": 29,
+    "frequency": 30,
     "clues": [
       "About 80% of this harvested fruit is turned into oil",
       "Black pizza topping",
@@ -5568,7 +5594,8 @@
       "2025-01-10",
       "2025-01-17",
       "2025-02-28",
-      "2025-06-16"
+      "2025-06-16",
+      "2025-09-07"
     ]
   },
   "KNELT": {
@@ -6395,10 +6422,11 @@
   },
   "EDGY": {
     "length": 4,
-    "frequency": 12,
+    "frequency": 13,
     "clues": [
       "Avant-garde",
       "Boundary-pushing, as humor",
+      "Comedically risky",
       "Like a bold haircut or piercing",
       "Like much of Bill Maher's comedy",
       "On the boundaries of acceptable behavior",
@@ -6417,7 +6445,8 @@
       "2022-12-29",
       "2023-09-07",
       "2024-10-19",
-      "2025-01-14"
+      "2025-01-14",
+      "2025-08-25"
     ]
   },
   "TSA": {
@@ -6620,11 +6649,12 @@
   },
   "AROSE": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Came up",
       "Got out of bed",
-      "Got up"
+      "Got up",
+      "Suddenly came up, as an issue"
     ],
     "dates": [
       "2017-11-24",
@@ -6632,7 +6662,8 @@
       "2020-05-05",
       "2022-11-14",
       "2024-03-17",
-      "2025-01-15"
+      "2025-01-15",
+      "2025-09-02"
     ]
   },
   "LOOSE": {
@@ -7900,7 +7931,7 @@
   },
   "EMAIL": {
     "length": 5,
-    "frequency": 40,
+    "frequency": 42,
     "clues": [
       "\"Mountain\" upon returning from vacation",
       "An automated one might begin \"I'm out of the office until ...\"",
@@ -7923,6 +7954,7 @@
       "Newsletter medium",
       "One might end with \"Best,\"",
       "One might get \"buried\" online",
+      "One might start \"Hope you are well\"",
       "Part of the Sony hack",
       "Screen writing?",
       "Service from AOL or Microsoft Outlook",
@@ -7932,6 +7964,7 @@
       "Something in an \"Unread\" folder",
       "Something sent in a Listserv",
       "Something to wade through post-vacation",
+      "Something you might \"Mark as read\"",
       "Subject of a recent Hillary Clinton controversy",
       "The first one was sent in 1971",
       "Topic of the \"inbox zero\" movement",
@@ -7981,7 +8014,9 @@
       "2024-08-14",
       "2024-11-29",
       "2025-01-20",
-      "2025-02-26"
+      "2025-02-26",
+      "2025-08-21",
+      "2025-08-29"
     ]
   },
   "CURSE": {
@@ -8569,7 +8604,7 @@
   },
   "MAINE": {
     "length": 5,
-    "frequency": 19,
+    "frequency": 20,
     "clues": [
       "\"The Pine Tree State\"",
       "Easternmost of the 50 states",
@@ -8588,6 +8623,7 @@
       "Only U.S. state to border exactly one other state",
       "Only U.S. state with a monosyllabic name",
       "Only state that went for both Biden and a Republican senator in 2020",
+      "Where Belgrade (pop. 3,250) and Stockholm (pop. 250) can be found in the U.S.",
       "Where Susan Collins is senator"
     ],
     "dates": [
@@ -8609,7 +8645,8 @@
       "2022-05-13",
       "2023-03-07",
       "2023-06-09",
-      "2025-01-23"
+      "2025-01-23",
+      "2025-09-16"
     ]
   },
   "EPEES": {
@@ -9507,7 +9544,7 @@
   },
   "ALERT": {
     "length": 5,
-    "frequency": 25,
+    "frequency": 26,
     "clues": [
       "\"Your account has been hacked,\" for example",
       "A \"presidential\" one was sent to every phone last week",
@@ -9522,6 +9559,7 @@
       "Push notification, for example",
       "Smartphone notification",
       "Spoiler ___",
+      "Text notification, e.g.",
       "Tip off",
       "Vigilant",
       "Warn",
@@ -9555,7 +9593,8 @@
       "2024-09-17",
       "2024-11-12",
       "2024-11-26",
-      "2025-01-27"
+      "2025-01-27",
+      "2025-09-04"
     ]
   },
   "LINES": {
@@ -9908,7 +9947,7 @@
   },
   "AGAVE": {
     "length": 5,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "Desert plant",
       "Desert plant used to make tequila",
@@ -9916,6 +9955,7 @@
       "Plant from which mezcal is distilled",
       "Plant from which tequila is made",
       "Plant that makes tequila",
+      "Plant that yields mezcal",
       "Plant that's a source for tequila or mescal",
       "Plant used to make tequila",
       "Tequila plant"
@@ -9931,7 +9971,8 @@
       "2022-11-11",
       "2024-11-13",
       "2025-01-28",
-      "2025-06-26"
+      "2025-06-26",
+      "2025-08-24"
     ]
   },
   "FAZES": {
@@ -12223,7 +12264,7 @@
   },
   "FRY": {
     "length": 3,
-    "frequency": 9,
+    "frequency": 10,
     "clues": [
       "Cook in oil",
       "Cook in the pan",
@@ -12231,6 +12272,7 @@
       "Food item dipped in ketchup",
       "French ___",
       "Go to the beach without sunscreen, say",
+      "Loose item at the bottom of a fast-food bag, perhaps",
       "Loose morsel in a fast-food bag"
     ],
     "dates": [
@@ -12242,7 +12284,8 @@
       "2023-06-18",
       "2023-11-08",
       "2025-02-09",
-      "2025-05-25"
+      "2025-05-25",
+      "2025-09-04"
     ]
   },
   "CROCI": {
@@ -12272,12 +12315,14 @@
   },
   "CLASH": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Conflict jarringly, as colors"
+      "Conflict jarringly, as colors",
+      "What yellow and purple do, some say"
     ],
     "dates": [
-      "2025-02-10"
+      "2025-02-10",
+      "2025-09-08"
     ]
   },
   "TETE": {
@@ -13011,7 +13056,7 @@
   },
   "ONION": {
     "length": 5,
-    "frequency": 27,
+    "frequency": 28,
     "clues": [
       "\"Bloomin'\" item at Outback Steakhouse",
       "\"Caramelized\" vegetable",
@@ -13033,6 +13078,7 @@
       "This might bring you to tears",
       "Vegetable combined with celery and carrot to form \"mirepoix\"",
       "Vegetable with rings",
+      "Vegetable you might wear cooking goggles to cut",
       "Veggie bit on an everything bagel",
       "Whopper topper",
       "With \"The,\" source of the headline \"Yahoo! Launches Soul-Search Engine\"",
@@ -13066,7 +13112,8 @@
       "2025-02-14",
       "2025-05-23",
       "2025-05-26",
-      "2025-08-14"
+      "2025-08-14",
+      "2025-08-31"
     ]
   },
   "NOMAD": {
@@ -13220,12 +13267,13 @@
   },
   "KENT": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
       "Clark ___ a.k.a. Superman"
     ],
     "dates": [
-      "2025-02-15"
+      "2025-02-15",
+      "2025-08-25"
     ]
   },
   "FUNFACT": {
@@ -13418,7 +13466,7 @@
   },
   "FLOOR": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Elevator choice",
       "Elevator selection",
@@ -13428,7 +13476,8 @@
       "2019-09-10",
       "2019-10-22",
       "2022-04-28",
-      "2025-02-16"
+      "2025-02-16",
+      "2025-09-04"
     ]
   },
   "TURKS": {
@@ -13594,11 +13643,12 @@
   },
   "ALL": {
     "length": 3,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "\"___ in favor ...\"",
       "100%",
       "Each and every one",
+      "How many roads lead to Rome, it's said",
       "Opposite of none",
       "The whole enchilada",
       "The whole thing"
@@ -13614,7 +13664,8 @@
       "2024-02-01",
       "2024-08-17",
       "2024-12-14",
-      "2025-02-17"
+      "2025-02-17",
+      "2025-08-27"
     ]
   },
   "VISA": {
@@ -13962,7 +14013,7 @@
   },
   "LOTUS": {
     "length": 5,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Cross-legged meditation pose",
       "Cross-legged yoga pose",
@@ -13970,6 +14021,7 @@
       "Legs-intertwined meditative position",
       "Sacred flower in Hinduism and Buddhism",
       "See 7-Across",
+      "TV's \"The White ___\"",
       "Yoga pose with crossed legs"
     ],
     "dates": [
@@ -13980,7 +14032,8 @@
       "2023-02-22",
       "2023-03-23",
       "2024-10-29",
-      "2025-02-19"
+      "2025-02-19",
+      "2025-08-21"
     ]
   },
   "TRACT": {
@@ -14049,7 +14102,7 @@
   },
   "ALT": {
     "length": 3,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Ctrl-___-Del",
       "Ctrl-___-Delete",
@@ -14067,7 +14120,8 @@
       "2021-08-10",
       "2024-05-04",
       "2024-08-01",
-      "2025-02-19"
+      "2025-02-19",
+      "2025-09-06"
     ]
   },
   "EST": {
@@ -14142,14 +14196,16 @@
   },
   "BABKA": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Dessert described as \"half-bread, half-cake\"",
+      "Loaf with a chocolate swirl",
       "Spongy cake that's a phonetic inverse of 6-Across"
     ],
     "dates": [
       "2017-11-30",
-      "2025-02-20"
+      "2025-02-20",
+      "2025-08-26"
     ]
   },
   "ABLED": {
@@ -14508,7 +14564,7 @@
   },
   "LSD": {
     "length": 3,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "\"Acid\"",
       "\"Lucy in the Sky With Diamonds\" subject, supposedly",
@@ -14520,7 +14576,8 @@
       "Psychedelic drug",
       "The drug acid, by another name",
       "Tripping drug",
-      "Trippy drug"
+      "Trippy drug",
+      "Trippy drug, for short"
     ],
     "dates": [
       "2014-10-04",
@@ -14533,7 +14590,8 @@
       "2024-01-27",
       "2024-10-18",
       "2024-12-17",
-      "2025-02-22"
+      "2025-02-22",
+      "2025-08-29"
     ]
   },
   "MINDFUL": {
@@ -17878,7 +17936,7 @@
   },
   "SLY": {
     "length": 3,
-    "frequency": 37,
+    "frequency": 39,
     "clues": [
       "Acting deviously",
       "Adjective for a fox",
@@ -17937,7 +17995,9 @@
       "2024-08-15",
       "2024-08-30",
       "2025-03-11",
-      "2025-05-23"
+      "2025-05-23",
+      "2025-08-21",
+      "2025-08-31"
     ]
   },
   "DEW": {
@@ -18088,7 +18148,7 @@
   },
   "ERASE": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "\"Don't ___,\" teacher's message in chalk to a janitor",
       "*ake off *he board",
@@ -18100,6 +18160,7 @@
       "Remove, as pencil marks",
       "Shake an Etch A Sketch",
       "Undo pencil marks",
+      "What many pencils can do that magic markers can't",
       "Wipe chalk from",
       "Wipe off a blackboard",
       "Wipe off the blackboard",
@@ -18119,7 +18180,8 @@
       "2023-05-16",
       "2023-05-26",
       "2024-07-11",
-      "2025-03-12"
+      "2025-03-12",
+      "2025-08-24"
     ]
   },
   "WONKA": {
@@ -18202,7 +18264,7 @@
   },
   "PULSE": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Heart rate",
       "Heart throb",
@@ -18215,7 +18277,8 @@
       "2021-03-22",
       "2022-01-16",
       "2022-07-15",
-      "2025-03-13"
+      "2025-03-13",
+      "2025-08-26"
     ]
   },
   "SPATS": {
@@ -18298,8 +18361,9 @@
   },
   "DATES": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
+      "1/23/45 and 6/7/89",
       "Answers to historical trivia questions, maybe",
       "First ones might be awkward",
       "Palm tree fruits",
@@ -18314,7 +18378,8 @@
       "2022-04-13",
       "2022-12-12",
       "2023-07-02",
-      "2025-03-13"
+      "2025-03-13",
+      "2025-09-17"
     ]
   },
   "UPS": {
@@ -19409,10 +19474,11 @@
   },
   "GOAT": {
     "length": 4,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Animal with a beard",
       "Best to ever do it, informally",
+      "Billy or nanny",
       "Cheese sometimes called chèvre",
       "Grown-up kid?",
       "Petting zoo animal",
@@ -19426,7 +19492,8 @@
       "2023-09-28",
       "2023-10-05",
       "2024-12-16",
-      "2025-03-19"
+      "2025-03-19",
+      "2025-09-15"
     ]
   },
   "MAYO": {
@@ -19866,10 +19933,11 @@
   },
   "EXILE": {
     "length": 5,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "Banish from a country",
       "Banishment from one's country",
+      "Cast out from a country",
       "Force out of the country",
       "Forced banishment",
       "Kick out of the country",
@@ -19892,7 +19960,8 @@
       "2021-06-21",
       "2023-02-01",
       "2024-11-11",
-      "2025-03-23"
+      "2025-03-23",
+      "2025-08-22"
     ]
   },
   "SINEW": {
@@ -20482,7 +20551,7 @@
   },
   "GAS": {
     "length": 3,
-    "frequency": 34,
+    "frequency": 35,
     "clues": [
       "\"Now we're cookin' with ___!\"",
       "\"Now we're cooking with ___!\"",
@@ -20500,6 +20569,7 @@
       "Helium or hydrogen",
       "Helium or oxygen",
       "Hydrogen or helium",
+      "Jupiter or Saturn, primarily",
       "Pedal next to the brake",
       "Purchase at the pump",
       "Regular, plus or premium",
@@ -20549,7 +20619,8 @@
       "2024-08-01",
       "2024-10-17",
       "2024-11-05",
-      "2025-03-27"
+      "2025-03-27",
+      "2025-09-06"
     ]
   },
   "DONT": {
@@ -20670,11 +20741,12 @@
   },
   "STALE": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Lacking crunch, as potato chips",
       "Like chips that have been out too long",
       "Like crackers after the box is left open",
+      "Like crackers that have lost some crunch",
       "Like week-old bread",
       "No longer crisp, as potato chips"
     ],
@@ -20683,7 +20755,8 @@
       "2017-03-10",
       "2017-07-13",
       "2017-08-02",
-      "2025-03-28"
+      "2025-03-28",
+      "2025-09-09"
     ]
   },
   "PORES": {
@@ -21021,11 +21094,12 @@
   },
   "SAW": {
     "length": 3,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Horror franchise with an 11th film planned for 2025",
       "It has sharp teeth",
       "Noticed",
+      "Observed",
       "Tool with teeth",
       "What big teeth it has!"
     ],
@@ -21034,7 +21108,8 @@
       "2023-01-21",
       "2024-11-06",
       "2025-03-29",
-      "2025-05-09"
+      "2025-05-09",
+      "2025-09-06"
     ]
   },
   "ABCD": {
@@ -21768,9 +21843,10 @@
   },
   "AVID": {
     "length": 4,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Enthusiastic",
+      "Enthusiastic, as a fan",
       "Fervent",
       "Passionate"
     ],
@@ -21779,7 +21855,8 @@
       "2018-05-14",
       "2019-07-15",
       "2022-05-15",
-      "2025-04-02"
+      "2025-04-02",
+      "2025-09-15"
     ]
   },
   "NEXUS": {
@@ -22446,7 +22523,7 @@
   },
   "SEE": {
     "length": 3,
-    "frequency": 36,
+    "frequency": 37,
     "clues": [
       "\"Long time no ___!\"",
       "\"Long time, no ___\"",
@@ -22458,6 +22535,7 @@
       "\"What'd I tell you?\"",
       "\"You get my point now?\"",
       "\"You get my point?\"",
+      "\"You get what I'm saying?\"",
       "\"You understand?\"",
       "\"___ what I did there?\"",
       "\"___ what I'm sayin?\"",
@@ -22514,7 +22592,8 @@
       "2023-09-12",
       "2023-09-28",
       "2024-12-14",
-      "2025-04-06"
+      "2025-04-06",
+      "2025-09-14"
     ]
   },
   "SOLOS": {
@@ -22909,7 +22988,7 @@
   },
   "CRAB": {
     "length": 4,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Animal symbol of Cancer",
       "Cranky crustacean",
@@ -22917,6 +22996,7 @@
       "Lion : Leo :: ___ : Cancer",
       "Meat in a California roll",
       "SpongeBob's boss is one",
+      "SpongeBob's boss, for one",
       "Ten-legged sea creature",
       "What the \"spider\" actually is in a spider roll"
     ],
@@ -22928,7 +23008,8 @@
       "2023-04-24",
       "2023-10-25",
       "2024-07-02",
-      "2025-04-08"
+      "2025-04-08",
+      "2025-08-28"
     ]
   },
   "BRITS": {
@@ -23083,8 +23164,9 @@
   },
   "DIRT": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
+      "Gossip that's \"dished\"",
       "Habitat for a worm",
       "What a vacuum cleaner sucks up",
       "Word after \"cheap as\" or \"old as\""
@@ -23092,7 +23174,8 @@
     "dates": [
       "2021-05-13",
       "2024-11-15",
-      "2025-04-09"
+      "2025-04-09",
+      "2025-09-15"
     ]
   },
   "ANNIE": {
@@ -24239,12 +24322,13 @@
   },
   "ROMEO": {
     "length": 5,
-    "frequency": 16,
+    "frequency": 17,
     "clues": [
       "\"But soft! What light through yonder window breaks?\" speaker",
       "\"What light through yonder window breaks?\" speaker",
       "Doomed Shakespearean lover",
       "Famous character who's told \"'Tis but thy name that is my enemy\"",
+      "Famous star-crossed lover",
       "Juliet's love in Shakespeare",
       "Juliet's lover",
       "Lover boy",
@@ -24272,7 +24356,8 @@
       "2024-09-08",
       "2024-09-25",
       "2024-12-15",
-      "2025-04-15"
+      "2025-04-15",
+      "2025-09-05"
     ]
   },
   "VENUS": {
@@ -24732,9 +24817,10 @@
   },
   "SCARY": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Frightening",
+      "How a leap of faith might feel",
       "Like graveyards at night",
       "Like horror movies",
       "Like the \"Paranormal Activity\" movies",
@@ -24746,7 +24832,8 @@
       "2021-06-02",
       "2021-07-15",
       "2021-09-14",
-      "2025-04-18"
+      "2025-04-18",
+      "2025-08-24"
     ]
   },
   "YES": {
@@ -24930,7 +25017,7 @@
   },
   "WEST": {
     "length": 4,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "\"Wild, wild\" place",
       "Best coast for sunsets",
@@ -24945,6 +25032,7 @@
       "One of the four regions in a March Madness bracket",
       "Opposite of 6-Down, on a map",
       "Toward the setting sun",
+      "W, as in Waze?",
       "With 7- and 5-Across, 2021 film remake of a classic 1957 musical"
     ],
     "dates": [
@@ -24961,7 +25049,8 @@
       "2023-03-17",
       "2023-09-05",
       "2024-09-28",
-      "2025-04-19"
+      "2025-04-19",
+      "2025-09-09"
     ]
   },
   "ALLTHAT": {
@@ -25183,7 +25272,7 @@
   },
   "IRAQ": {
     "length": 4,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "\"The Hurt Locker\" setting",
       "Baghdad's country",
@@ -25191,6 +25280,7 @@
       "Country excluded from the second iteration of Trump's travel ban",
       "Country through which the Tigris and Euphrates flow",
       "Country with the smallest border along the Persian Gulf (36 miles)",
+      "Only four-letter country with a \"Q\" in its name",
       "Region examined in the Times magazine story \"Fractured Lands: How the Arab World Came Apart\"",
       "Saddam Hussein's land",
       "Saudi Arabia's northern neighbor"
@@ -25205,7 +25295,8 @@
       "2020-01-29",
       "2021-03-05",
       "2022-11-01",
-      "2025-04-20"
+      "2025-04-20",
+      "2025-08-21"
     ]
   },
   "BAY": {
@@ -25238,7 +25329,7 @@
   },
   "ABOVE": {
     "length": 5,
-    "frequency": 20,
+    "frequency": 21,
     "clues": [
       "All of the ___",
       "Go ___ and beyond",
@@ -25277,7 +25368,8 @@
       "2023-09-29",
       "2024-02-25",
       "2024-06-21",
-      "2025-04-21"
+      "2025-04-21",
+      "2025-09-02"
     ]
   },
   "SMART": {
@@ -25456,7 +25548,7 @@
   },
   "OREOS": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "Black-and-white cookies",
       "Black-and-white snacks",
@@ -25482,7 +25574,8 @@
       "2023-10-15",
       "2024-02-14",
       "2024-04-21",
-      "2025-04-22"
+      "2025-04-22",
+      "2025-09-09"
     ]
   },
   "NOD": {
@@ -26830,7 +26923,7 @@
   },
   "STY": {
     "length": 3,
-    "frequency": 35,
+    "frequency": 36,
     "clues": [
       "Hogs' enclosure",
       "Home for a hog",
@@ -26886,7 +26979,8 @@
       "2024-11-23",
       "2024-12-17",
       "2025-04-29",
-      "2025-07-07"
+      "2025-07-07",
+      "2025-08-25"
     ]
   },
   "AROMAS": {
@@ -27588,12 +27682,14 @@
   },
   "LISTEN": {
     "length": 6,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "\"Look, here's the thing ...\"",
       "Appropriate anagram of 5-Across"
     ],
     "dates": [
-      "2025-05-03"
+      "2025-05-03",
+      "2025-09-13"
     ]
   },
   "OLYMPUS": {
@@ -27959,14 +28055,15 @@
   },
   "ELIOT": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "\"The Waste Land\" poet",
       "George ___, \"Middlemarch\" author",
       "George ___, pen name of the Victorian writer Mary Ann Evans",
       "Poet T.S. ___",
       "Poet who created J. Alfred Prufrock",
-      "T.S. ___, Nobel-winning poet"
+      "T.S. ___, Nobel-winning poet",
+      "Writer T. S. ___"
     ],
     "dates": [
       "2016-01-06",
@@ -27975,7 +28072,8 @@
       "2023-02-27",
       "2025-05-05",
       "2025-07-08",
-      "2025-08-19"
+      "2025-08-19",
+      "2025-09-09"
     ]
   },
   "DINE": {
@@ -28234,8 +28332,9 @@
   },
   "IRS": {
     "length": 3,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
+      "Busy org. on April 15th",
       "Govt. agency that's busy this time of year",
       "Org. that really ought to give you a break?",
       "Org. whose website has a \"Where's My Refund?\" section",
@@ -28250,7 +28349,8 @@
       "2020-06-16",
       "2021-04-10",
       "2022-01-19",
-      "2025-05-07"
+      "2025-05-07",
+      "2025-09-10"
     ]
   },
   "ARDOR": {
@@ -28355,13 +28455,15 @@
   },
   "SQUID": {
     "length": 5,
-    "frequency": 10,
+    "frequency": 12,
     "clues": [
       "\"___ Game\" (Netflix's most-watched series)",
       "Calamari, basically",
       "Colossal ___, animal with nature's largest eyes (12-16 inches in diameter)",
       "Colossal ___, marine animal filmed in its natural habitat for the first time in 2025",
       "Food for a sperm whale",
+      "Ink-squirting creature",
+      "Likely inspiration for the mythical kraken",
       "Main prey for the world's largest predator, the sperm whale",
       "Sea creature that can change color to camouflage",
       "Source of edible ink",
@@ -28378,7 +28480,9 @@
       "2023-05-25",
       "2023-12-23",
       "2024-08-06",
-      "2025-05-08"
+      "2025-05-08",
+      "2025-08-21",
+      "2025-09-12"
     ]
   },
   "FURRY": {
@@ -28853,12 +28957,13 @@
   },
   "SPF": {
     "length": 3,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "*anning le**ers",
       "30, 45 or 50, on a beach bottle: Abbr.",
       "Coppertone letters",
       "Letters on a sunscreen bottle",
+      "No. on a sunscreen bottle",
       "Rating on a Hawaiian Tropic bottle, for short",
       "Sunscreen bottle abbr.",
       "Sunscreen bottle inits.",
@@ -28876,7 +28981,8 @@
       "2024-02-09",
       "2024-07-28",
       "2024-12-13",
-      "2025-05-10"
+      "2025-05-10",
+      "2025-08-29"
     ]
   },
   "MELLOWS": {
@@ -29012,7 +29118,7 @@
   },
   "INDIA": {
     "length": 5,
-    "frequency": 23,
+    "frequency": 24,
     "clues": [
       "\"Slumdog Millionaire\" setting",
       "Biggest democracy in the world",
@@ -29035,7 +29141,8 @@
       "Where 75% of the world's wild tigers live",
       "Where Bengali and Gujarati are spoken",
       "Where roughly one-sixth of the world's population lives",
-      "World's largest democracy"
+      "World's largest democracy",
+      "World's most populous country since 2023"
     ],
     "dates": [
       "2014-11-23",
@@ -29060,7 +29167,8 @@
       "2023-11-08",
       "2024-12-01",
       "2025-05-11",
-      "2025-06-09"
+      "2025-06-09",
+      "2025-09-15"
     ]
   },
   "COATS": {
@@ -30815,9 +30923,10 @@
   },
   "HITME": {
     "length": 5,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "\"I'd like another card,\" in blackjack",
+      "\"I'll have another card,\" in blackjack",
       "\"I'll take a card,\" in blackjack",
       "Blackjack player's request for another card",
       "Blackjack request",
@@ -30833,7 +30942,8 @@
       "2018-04-15",
       "2019-07-14",
       "2021-02-03",
-      "2025-05-22"
+      "2025-05-22",
+      "2025-09-16"
     ]
   },
   "IMEAN": {
@@ -31143,7 +31253,7 @@
   },
   "ELS": {
     "length": 3,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "Above-the-street trains",
       "Chicago trains",
@@ -31152,6 +31262,7 @@
       "Hollow center?",
       "L L L L",
       "Letters after \"kays\"",
+      "Letters after kays",
       "They're capitaLized in this cLue"
     ],
     "dates": [
@@ -31164,7 +31275,8 @@
       "2021-09-04",
       "2023-02-15",
       "2023-12-03",
-      "2025-05-24"
+      "2025-05-24",
+      "2025-09-16"
     ]
   },
   "PEONIES": {
@@ -31236,10 +31348,11 @@
   },
   "STEP": {
     "length": 4,
-    "frequency": 16,
+    "frequency": 17,
     "clues": [
       "\"___ right up ...\"",
       "Aerobics class with an elevated block",
+      "Aerobics class with platforms",
       "Armstrong's \"small\" stride",
       "Big first for a baby",
       "Bit of choreography",
@@ -31269,7 +31382,8 @@
       "2020-06-18",
       "2020-08-14",
       "2022-10-20",
-      "2025-05-24"
+      "2025-05-24",
+      "2025-09-09"
     ]
   },
   "GOSEE": {
@@ -32364,10 +32478,11 @@
   },
   "HOST": {
     "length": 4,
-    "frequency": 15,
+    "frequency": 16,
     "clues": [
       "Airbnb operator",
       "Game show figure",
+      "George Carlin, for the first episode of \"Saturday Night Live\"",
       "John Oliver or Trevor Noah",
       "Late-night personality",
       "Late-night show V.I.P.",
@@ -32396,7 +32511,8 @@
       "2023-07-10",
       "2023-09-02",
       "2024-03-19",
-      "2025-06-01"
+      "2025-06-01",
+      "2025-09-11"
     ]
   },
   "KAUAI": {
@@ -33058,13 +33174,14 @@
   },
   "HYPE": {
     "length": 4,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "\"Don't believe the ___\"",
       "Exaggerated fanfare",
       "Extremely fired up, slangily",
       "Flashy promotion",
       "It builds before an anticipated movie release",
+      "Overblown promotion",
       "P.R. buzz",
       "Very excited, in slang"
     ],
@@ -33075,7 +33192,8 @@
       "2020-09-06",
       "2021-09-27",
       "2022-03-23",
-      "2025-06-05"
+      "2025-06-05",
+      "2025-09-08"
     ]
   },
   "POUCH": {
@@ -33362,7 +33480,7 @@
   },
   "ARE": {
     "length": 3,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "\"My lips ___ sealed\"",
       "\"We ___ the 99%\"",
@@ -33390,7 +33508,8 @@
       "2021-02-06",
       "2021-12-25",
       "2024-08-31",
-      "2025-06-07"
+      "2025-06-07",
+      "2025-08-27"
     ]
   },
   "OVA": {
@@ -33486,10 +33605,11 @@
   },
   "CHRIS": {
     "length": 5,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Connecticut senator Murphy",
       "Hayes of MSNBC",
+      "Hemsworth or Pratt",
       "Pratt of \"Parks and Recreation\"",
       "Rock of \"Top Five\"",
       "Rock star comedian?",
@@ -33505,7 +33625,8 @@
       "2018-04-14",
       "2021-09-01",
       "2022-08-11",
-      "2025-06-07"
+      "2025-06-07",
+      "2025-09-02"
     ]
   },
   "OAK": {
@@ -33972,9 +34093,10 @@
   },
   "ALIEN": {
     "length": 5,
-    "frequency": 31,
+    "frequency": 32,
     "clues": [
       "\"Men in Black\" creature",
+      "\"___ vs. Predator\" (2004 sci-fi film)",
       "1979 film with the tagline \"In space, no one can hear you scream\"",
       "1979 sci-fi blockbuster",
       "1979 sci-fi hit starring Sigourney Weaver",
@@ -34031,7 +34153,8 @@
       "2023-06-20",
       "2023-10-10",
       "2024-09-30",
-      "2025-06-10"
+      "2025-06-10",
+      "2025-08-22"
     ]
   },
   "SASS": {
@@ -36251,8 +36374,9 @@
   },
   "PLS": {
     "length": 3,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
+      "Opposite of \"thx,\" in texting",
       "Opposite of \"ty,\" in texts",
       "Texting counterpart of \"thx\"",
       "Texting opposite of \"thx\""
@@ -36260,7 +36384,8 @@
     "dates": [
       "2020-02-29",
       "2021-01-25",
-      "2025-06-23"
+      "2025-06-23",
+      "2025-08-23"
     ]
   },
   "TIED": {
@@ -36441,12 +36566,13 @@
   },
   "STORE": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "App ___",
       "Apple ___ (site of a Genius Bar)",
       "Buyer be where?",
       "Corner ___ (phrase suggested by the circled letters)",
+      "H&M or Home Depot",
       "JCPenney or Family Dollar",
       "Macy's, Kohl's or Lowe's",
       "Mall directory listing",
@@ -36470,7 +36596,8 @@
       "2021-01-17",
       "2021-08-15",
       "2024-01-29",
-      "2025-06-25"
+      "2025-06-25",
+      "2025-09-09"
     ]
   },
   "HOWDY": {
@@ -37517,13 +37644,14 @@
   },
   "YEESH": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "\"Hoo boy!\"",
       "\"Oof, that makes me cringe!\"",
       "\"Oof, that's bad!\"",
       "\"That is ... not good\"",
-      "\"What a joke!\""
+      "\"What a joke!\"",
+      "\"You've gotta be kidding me!\""
     ],
     "dates": [
       "2019-08-29",
@@ -37531,7 +37659,8 @@
       "2022-01-25",
       "2022-06-15",
       "2022-11-21",
-      "2025-07-08"
+      "2025-07-08",
+      "2025-08-24"
     ]
   },
   "EBBS": {
@@ -37793,7 +37922,7 @@
   },
   "EQUAL": {
     "length": 5,
-    "frequency": 21,
+    "frequency": 22,
     "clues": [
       "\"All things being ___ ...\"",
       "=",
@@ -37836,7 +37965,8 @@
       "2022-04-18",
       "2023-02-19",
       "2025-07-11",
-      "2025-07-22"
+      "2025-07-22",
+      "2025-09-03"
     ]
   },
   "SIGN": {
@@ -38287,16 +38417,18 @@
   },
   "SWAMP": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Home for alligators and herons",
+      "Nickname for the Florida Gators football stadium, with \"the\"",
       "Shrek's home",
       "Washington D.C., per a modern metaphor"
     ],
     "dates": [
       "2016-08-07",
       "2017-11-17",
-      "2025-07-14"
+      "2025-07-14",
+      "2025-08-22"
     ]
   },
   "TEMPE": {
@@ -38445,11 +38577,12 @@
   },
   "FUNGI": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Mushrooms and such",
       "Organisms that have been called \"the grand recyclers of the planet\"",
       "Organisms that help trees \"talk\" to each other underground",
+      "Organisms that sound like someone you'd enjoy hanging out with",
       "Q: Why did the mushroom get invited to the party? A: Because he's a ___",
       "Q: Why was the mushroom invited to parties? A: He was a real ___!"
     ],
@@ -38460,7 +38593,8 @@
       "2023-03-11",
       "2023-06-05",
       "2024-05-17",
-      "2025-07-15"
+      "2025-07-15",
+      "2025-09-03"
     ]
   },
   "YET": {
@@ -38705,7 +38839,7 @@
   },
   "MESS": {
     "length": 4,
-    "frequency": 20,
+    "frequency": 21,
     "clues": [
       "Clutter",
       "Complete pandemonium",
@@ -38741,7 +38875,8 @@
       "2023-06-12",
       "2023-10-04",
       "2024-05-15",
-      "2025-07-17"
+      "2025-07-17",
+      "2025-09-13"
     ]
   },
   "GLOBE": {
@@ -38928,7 +39063,7 @@
   },
   "TIE": {
     "length": 3,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "\"How to ___ a ___,\" popular Google search",
       "20-20, e.g.",
@@ -38937,6 +39072,7 @@
       "Gift in a long, thin box",
       "Knotted neckwear",
       "Matching consideration for a suit",
+      "Matching item for a groomsman",
       "Odd article of clothing to wear with a tank top",
       "Reason for extra innings",
       "Result of Sanders/Clinton in Iowa, effectively",
@@ -38956,7 +39092,8 @@
       "2021-08-25",
       "2021-12-10",
       "2024-02-17",
-      "2025-07-19"
+      "2025-07-19",
+      "2025-09-15"
     ]
   },
   "EXT": {
@@ -39951,7 +40088,7 @@
   },
   "SPY": {
     "length": 3,
-    "frequency": 35,
+    "frequency": 36,
     "clues": [
       "2015 Melissa McCarthy movie",
       "Austin Powers or James Bond",
@@ -39971,6 +40108,7 @@
       "John le Carré's \"The ___ Who Came in From the Cold\"",
       "Many a John le Carré character",
       "Many a John le Carré protagonist",
+      "Many a character on Apple TV+'s \"Slow Horses\" or Netflix's \"Black Doves\"",
       "Observe in secret",
       "One gathering enemy intel",
       "One who's always bugging people?",
@@ -40017,7 +40155,8 @@
       "2023-02-06",
       "2023-09-10",
       "2023-09-14",
-      "2025-07-26"
+      "2025-07-26",
+      "2025-08-30"
     ]
   },
   "RTS": {
@@ -40090,8 +40229,9 @@
   },
   "IKEA": {
     "length": 4,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
+      "Big name in flat-pack furniture",
       "Crate & Barrel rival",
       "Furniture chain that also sells Swedish meatballs",
       "Furniture chain with a blue-and-yellow logo",
@@ -40109,17 +40249,19 @@
       "2022-09-18",
       "2022-10-20",
       "2024-02-07",
-      "2025-07-27"
+      "2025-07-27",
+      "2025-09-17"
     ]
   },
   "AWAKE": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "Fully caffeinated, say",
       "No longer sleeping",
       "Not sleeping",
       "Out of dreamland",
+      "Unable to sleep",
       "Up",
       "Up and about",
       "Up and fully caffeinated, say",
@@ -40139,7 +40281,8 @@
       "2022-11-11",
       "2024-04-25",
       "2024-07-26",
-      "2025-07-27"
+      "2025-07-27",
+      "2025-08-25"
     ]
   },
   "LIKES": {
@@ -40173,11 +40316,12 @@
   },
   "SNEAK": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Basketball shoe, informally",
       "Move furtively",
       "Move stealthily",
+      "Quarterback running play",
       "Tiptoe around",
       "___ preview"
     ],
@@ -40187,7 +40331,8 @@
       "2019-02-27",
       "2023-02-10",
       "2023-07-02",
-      "2025-07-27"
+      "2025-07-27",
+      "2025-09-17"
     ]
   },
   "DAS": {
@@ -40328,17 +40473,19 @@
   },
   "ATEIN": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Didn't go out for dinner",
       "Enjoyed a home-cooked meal",
+      "Enjoyed dinner at home, say",
       "Had dinner at home"
     ],
     "dates": [
       "2015-12-17",
       "2016-11-22",
       "2022-01-05",
-      "2025-07-29"
+      "2025-07-29",
+      "2025-09-12"
     ]
   },
   "PERT": {
@@ -41095,9 +41242,10 @@
   },
   "HEN": {
     "length": 3,
-    "frequency": 17,
+    "frequency": 18,
     "clues": [
       "Egg layer",
+      "Egg-laying mother",
       "Farm clucker",
       "Feathery farm female",
       "Female bird",
@@ -41126,7 +41274,8 @@
       "2022-12-31",
       "2024-01-03",
       "2024-05-19",
-      "2024-10-21"
+      "2024-10-21",
+      "2025-08-30"
     ]
   },
   "MAJOR": {
@@ -41694,7 +41843,7 @@
   },
   "TEA": {
     "length": 3,
-    "frequency": 16,
+    "frequency": 17,
     "clues": [
       "4:00 English drink",
       "Brewed beverage",
@@ -41704,6 +41853,7 @@
       "Drink that's steeped",
       "Drink with a string in it, perhaps",
       "Drink with green and black varieties",
+      "Gossip that's \"spilled\"",
       "It's in the bag",
       "Lipton product",
       "Snapple product",
@@ -41729,7 +41879,8 @@
       "2022-03-24",
       "2022-10-28",
       "2024-01-09",
-      "2024-02-20"
+      "2024-02-20",
+      "2025-09-15"
     ]
   },
   "LIPS": {
@@ -41859,7 +42010,7 @@
   },
   "PJS": {
     "length": 3,
-    "frequency": 15,
+    "frequency": 16,
     "clues": [
       "Attire you might wear while working from home, for short",
       "Bedtime clothes, briefly",
@@ -41874,6 +42025,7 @@
       "Sleepover attire, for short",
       "Sleepover attire, informally",
       "Sleepover wear",
+      "Slumber party attire, casually",
       "Undercover outfit, briefly?"
     ],
     "dates": [
@@ -41891,7 +42043,8 @@
       "2023-02-10",
       "2023-04-03",
       "2024-01-11",
-      "2024-06-11"
+      "2024-06-11",
+      "2025-09-05"
     ]
   },
   "TRUTH": {
@@ -42426,21 +42579,24 @@
   },
   "FAQS": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Common queries, for short",
+      "Common queries, informally",
       "Recommended reading for website newbies"
     ],
     "dates": [
       "2018-08-16",
       "2023-07-28",
-      "2024-01-14"
+      "2024-01-14",
+      "2025-08-21"
     ]
   },
   "OLDIE": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
+      "\"It's an ___ but a goodie!\"",
       "1960s song, now",
       "An ___ but a goodie",
       "Hit song from the past",
@@ -42456,7 +42612,8 @@
       "2018-11-28",
       "2023-05-11",
       "2024-01-15",
-      "2024-09-05"
+      "2024-09-05",
+      "2025-09-15"
     ]
   },
   "HOOK": {
@@ -43594,7 +43751,7 @@
   },
   "KEEL": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Backbone of a ship",
       "Boat's bottom",
@@ -43603,7 +43760,8 @@
     "dates": [
       "2019-07-26",
       "2022-08-13",
-      "2024-01-23"
+      "2024-01-23",
+      "2025-09-07"
     ]
   },
   "FENCE": {
@@ -45458,7 +45616,7 @@
   },
   "YEP": {
     "length": 3,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "\"Mm-hmm\"",
       "\"Sure thing\"",
@@ -45481,7 +45639,8 @@
       "2023-01-21",
       "2023-05-14",
       "2024-02-05",
-      "2024-04-12"
+      "2024-04-12",
+      "2025-08-30"
     ]
   },
   "BAR": {
@@ -45622,7 +45781,7 @@
   },
   "RELAX": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "\"Chill out!\"",
       "\"Chill!\"",
@@ -45631,6 +45790,7 @@
       "Calm down",
       "Chill out",
       "Kick back",
+      "Kick one's feet up",
       "Take a chill pill",
       "Take it easy"
     ],
@@ -45648,7 +45808,8 @@
       "2022-01-24",
       "2022-07-05",
       "2024-02-06",
-      "2024-06-02"
+      "2024-06-02",
+      "2025-08-26"
     ]
   },
   "MAXX": {
@@ -47621,16 +47782,18 @@
   },
   "SOAP": {
     "length": 4,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Bar in the shower",
-      "It has suds and is sold in bars"
+      "It has suds and is sold in bars",
+      "Product that Wrigley manufactured before entering the chewing gum industry"
     ],
     "dates": [
       "2015-09-19",
       "2018-12-15",
       "2021-12-03",
-      "2024-02-20"
+      "2024-02-20",
+      "2025-09-02"
     ]
   },
   "ATONE": {
@@ -47740,11 +47903,12 @@
   },
   "DIP": {
     "length": 3,
-    "frequency": 12,
+    "frequency": 13,
     "clues": [
       "\"___ Ahead\" (road sign)",
       "Baba ghanouj or buffalo sauce",
       "Bodyweight exercise that works the chest and triceps",
+      "Buy the ___ (investing strategy)",
       "Downturn",
       "Hummus, e.g.",
       "Ketchup, for a 4-Down",
@@ -47767,7 +47931,8 @@
       "2022-09-14",
       "2023-01-13",
       "2023-07-02",
-      "2024-02-21"
+      "2024-02-21",
+      "2025-09-17"
     ]
   },
   "LUCKY": {
@@ -48406,14 +48571,16 @@
   },
   "VPS": {
     "length": 3,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "#2's on presidential tickets: Abbr.",
+      "Elected officials who ride in Air Force Two: Abbr.",
       "They fly in Air Force Two, for short"
     ],
     "dates": [
       "2020-11-03",
-      "2024-02-25"
+      "2024-02-25",
+      "2025-09-14"
     ]
   },
   "DEN": {
@@ -48834,7 +49001,7 @@
   },
   "ONES": {
     "length": 4,
-    "frequency": 19,
+    "frequency": 20,
     "clues": [
       "11 things?",
       "Bills not found in A.T.M.s, typically",
@@ -48872,7 +49039,8 @@
       "2023-06-07",
       "2023-09-21",
       "2024-02-29",
-      "2024-05-31"
+      "2024-05-31",
+      "2025-08-31"
     ]
   },
   "MOOSE": {
@@ -49781,7 +49949,7 @@
   },
   "AGREE": {
     "length": 5,
-    "frequency": 21,
+    "frequency": 22,
     "clues": [
       "\"I couldn't ___ more!\"",
       "\"Right on\"",
@@ -49793,6 +49961,7 @@
       "Shake hands (on)",
       "Share the same opinion",
       "Share the same view",
+      "Side (with)",
       "Think alike",
       "What nouns and verbs must do"
     ],
@@ -49817,7 +49986,8 @@
       "2022-11-29",
       "2022-12-01",
       "2024-03-07",
-      "2024-03-18"
+      "2024-03-18",
+      "2025-09-14"
     ]
   },
   "RAINY": {
@@ -49880,18 +50050,20 @@
   },
   "STOW": {
     "length": 4,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Place in the overhead compartment",
       "Put away in the overhead bin",
       "Put in the overhead bin",
+      "Put safely away",
       "Store safely before flight"
     ],
     "dates": [
       "2017-06-30",
       "2019-10-08",
       "2020-12-01",
-      "2024-03-08"
+      "2024-03-08",
+      "2025-09-09"
     ]
   },
   "ADDLE": {
@@ -50726,13 +50898,14 @@
   },
   "NAIVE": {
     "length": 5,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Born yesterday, so to speak",
       "Easily conned",
       "Easily duped",
       "Easily duped, maybe",
       "Innocently clueless",
+      "Likely to buy an obvious lie",
       "Not schooled in the ways of the world",
       "Overly trusting, perhaps",
       "Unaware of how the world really works"
@@ -50745,7 +50918,8 @@
       "2022-12-11",
       "2024-03-14",
       "2024-10-03",
-      "2024-12-25"
+      "2024-12-25",
+      "2025-09-14"
     ]
   },
   "INBOX": {
@@ -50829,7 +51003,7 @@
   },
   "TEXAS": {
     "length": 5,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "\"Don't Mess With ___\" (ad slogan)",
       "Austin is its capital",
@@ -50840,6 +51014,7 @@
       "State university that has a trademark on burnt orange",
       "The Lone Star State",
       "U.S. home of the cities Paris, Athens and Dublin",
+      "Where Paris (pop. 24,476) can be found in the U.S.",
       "Word before Ranger or toast"
     ],
     "dates": [
@@ -50852,7 +51027,8 @@
       "2021-07-19",
       "2021-08-25",
       "2022-06-20",
-      "2024-03-14"
+      "2024-03-14",
+      "2025-09-16"
     ]
   },
   "BUG": {
@@ -52007,11 +52183,12 @@
   },
   "SPICE": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Alarm bell's indication, on a menu",
       "Cinnamon or cloves",
       "Cinnamon or nutmeg",
+      "Valuable substance in the \"Dune\" universe",
       "Valuable substance in the world of \"Dune\"",
       "What alarm bells on a menu indicate",
       "What chili and ginger add to a dish",
@@ -52024,7 +52201,8 @@
       "2018-06-11",
       "2018-12-27",
       "2019-02-05",
-      "2024-03-24"
+      "2024-03-24",
+      "2025-09-13"
     ]
   },
   "ECKO": {
@@ -53247,11 +53425,12 @@
   },
   "ASHES": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "After his death, Tupac Shakur's were supposedly mixed with marijuana and smoked",
       "Barbecue remnants",
       "Campfire remains",
+      "Campfire remnants",
       "Campfire residue",
       "Fireplace remains",
       "Fireplace residue",
@@ -53276,7 +53455,8 @@
       "2019-09-30",
       "2022-05-02",
       "2022-09-06",
-      "2024-04-03"
+      "2024-04-03",
+      "2025-08-22"
     ]
   },
   "FIGHT": {
@@ -54130,12 +54310,14 @@
   },
   "BOING": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Sound of a spring",
       "Sound of spring?"
     ],
     "dates": [
-      "2024-04-09"
+      "2024-04-09",
+      "2025-09-01"
     ]
   },
   "ERNIE": {
@@ -54933,11 +55115,12 @@
   },
   "SOD": {
     "length": 3,
-    "frequency": 15,
+    "frequency": 16,
     "clues": [
       "Grass bought in rolls",
       "Grass in a landscaper's roll",
       "Grass roll",
+      "Greenskeeper's roll of grass",
       "Landscaper's purchase",
       "Landscaper's roll of grass",
       "Piece of a lawn",
@@ -54960,7 +55143,8 @@
       "2023-01-10",
       "2023-02-17",
       "2024-04-14",
-      "2024-06-08"
+      "2024-06-08",
+      "2025-08-22"
     ]
   },
   "SHRUG": {
@@ -55026,13 +55210,14 @@
   },
   "RHYME": {
     "length": 5,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "\"Door hinge,\" for \"orange\" ... sort of",
       "Need, for speed",
       "No hidin' for Joe Biden, e.g.",
       "See 3-Down",
       "Tissue or \"Miss you,\" for this clue?",
+      "What \"yellow\" and \"mellow\" do",
       "What Across clue-and-answer pairings in this puzzle do, every time",
       "What dogs, frogs and hogs all do?",
       "What teachers and preachers do"
@@ -55045,7 +55230,8 @@
       "2022-09-13",
       "2023-05-03",
       "2023-07-11",
-      "2024-04-15"
+      "2024-04-15",
+      "2025-09-08"
     ]
   },
   "SUING": {
@@ -55678,14 +55864,16 @@
   },
   "PLUSONE": {
     "length": 7,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Party guest's guest",
-      "Significant other brought to a wedding, e.g."
+      "Significant other brought to a wedding, e.g.",
+      "Wedding companion"
     ],
     "dates": [
       "2019-04-20",
-      "2024-04-20"
+      "2024-04-20",
+      "2025-08-30"
     ]
   },
   "SENATOR": {
@@ -56151,10 +56339,11 @@
   },
   "RUMOR": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Bit of gossip",
       "Something heard on the grapevine",
+      "Something heard through the grapevine",
       "Something passed along through whispers",
       "Spot of tea?",
       "Unconfirmed story"
@@ -56164,7 +56353,8 @@
       "2018-08-13",
       "2018-10-18",
       "2019-03-07",
-      "2024-04-24"
+      "2024-04-24",
+      "2025-08-28"
     ]
   },
   "SPELT": {
@@ -56479,10 +56669,11 @@
   },
   "CHE": {
     "length": 3,
-    "frequency": 12,
+    "frequency": 13,
     "clues": [
       "Cohort of Fidel Castro",
       "Friend of Fidel",
+      "Icon of the Cuban Revolution",
       "Jost's co-anchor on \"Saturday Night Live\"",
       "Michael of \"S.N.L.\"",
       "Michael of \"Saturday Night Live\"",
@@ -56503,7 +56694,8 @@
       "2022-04-23",
       "2022-08-20",
       "2023-04-21",
-      "2024-04-27"
+      "2024-04-27",
+      "2025-09-01"
     ]
   },
   "DRINK": {
@@ -57780,11 +57972,12 @@
   },
   "USA": {
     "length": 3,
-    "frequency": 17,
+    "frequency": 18,
     "clues": [
       "Country with the most Olympic medals: Abbr.",
       "First nation to put a man on the moon",
       "Frequent gold medal-winning team in Olympic basketball",
+      "Host of the 2028 Olympics, for short",
       "Largest country without an official language",
       "NAFTA signer",
       "Neighbor of Canada, for short",
@@ -57816,7 +58009,8 @@
       "2024-06-09",
       "2024-06-24",
       "2024-07-27",
-      "2024-10-05"
+      "2024-10-05",
+      "2025-08-26"
     ]
   },
   "DRUGS": {
@@ -58053,12 +58247,13 @@
   },
   "FILET": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
       "___ mignon"
     ],
     "dates": [
-      "2024-05-11"
+      "2024-05-11",
+      "2025-08-21"
     ]
   },
   "SONOS": {
@@ -58367,7 +58562,7 @@
   },
   "EAGER": {
     "length": 5,
-    "frequency": 16,
+    "frequency": 17,
     "clues": [
       "All fired up",
       "Bright-eyed and bushy-tailed",
@@ -58378,6 +58573,7 @@
       "Itching to get started",
       "Itching to go",
       "Keen",
+      "Like the proverbial beaver",
       "Looking forward to it",
       "Rarin' to go",
       "Raring to go",
@@ -58399,7 +58595,8 @@
       "2023-06-28",
       "2024-05-15",
       "2024-06-10",
-      "2024-11-13"
+      "2024-11-13",
+      "2025-09-03"
     ]
   },
   "STEAM": {
@@ -58428,10 +58625,11 @@
   },
   "OHARE": {
     "length": 5,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "Chicago air hub",
       "Chicago airport",
+      "Largest airport in the Midwest",
       "Major airport in Chicago",
       "ORD, on an airline ticket",
       "United hub",
@@ -58450,7 +58648,8 @@
       "2022-11-01",
       "2023-04-26",
       "2024-05-15",
-      "2024-07-14"
+      "2024-07-14",
+      "2025-09-10"
     ]
   },
   "OMENS": {
@@ -58845,7 +59044,7 @@
   },
   "TIC": {
     "length": 3,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Behavioral quirk",
       "Idiosyncratic behavior",
@@ -58857,7 +59056,8 @@
       "2019-08-24",
       "2020-09-09",
       "2020-11-06",
-      "2024-05-19"
+      "2024-05-19",
+      "2025-08-23"
     ]
   },
   "TORAH": {
@@ -58923,12 +59123,13 @@
   },
   "CAROL": {
     "length": 5,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "\"A Christmas ___\" (classic holiday book)",
       "\"A Christmas ___\" (tale of Scrooge)",
       "\"Deck the Halls,\" e.g.",
       "\"Hark! The Herald Angels Sing,\" for one",
+      "Burnett with a variety show from 1967 to 1978",
       "Christmas song",
       "Sing door-to-door",
       "Song of joy",
@@ -58945,7 +59146,8 @@
       "2023-02-07",
       "2023-04-02",
       "2024-05-19",
-      "2024-12-20"
+      "2024-12-20",
+      "2025-08-24"
     ]
   },
   "TAC": {
@@ -59733,13 +59935,14 @@
   },
   "TENS": {
     "length": 4,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "Big bills for a vending machine",
       "Bills featuring a portrait of Alexander Hamilton",
       "Bills that carry the portrait of Alexander Hamilton",
       "Bills with Hamilton's face",
       "Change for a twenty",
+      "Hamilton bills",
       "Place for the \"2\" in 123.45",
       "Playing cards with the most pips",
       "The \"place\" for \"1\" in 2019",
@@ -59755,7 +59958,8 @@
       "2022-05-25",
       "2023-08-18",
       "2024-05-26",
-      "2024-10-04"
+      "2024-10-04",
+      "2025-08-23"
     ]
   },
   "BRAG": {
@@ -59789,21 +59993,23 @@
   },
   "LITE": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
       "Miller ___ (beer)"
     ],
     "dates": [
-      "2024-05-27"
+      "2024-05-27",
+      "2025-09-03"
     ]
   },
   "BFF": {
     "length": 3,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Close buddy, slangily",
       "Closest buddy, in textspeak",
       "Closest pal, briefly",
+      "Closest pal, informally",
       "Favorite texting partner, for short",
       "Inseparable pal, for short",
       "Inseparable pal, slangily",
@@ -59816,7 +60022,8 @@
       "2017-04-22",
       "2020-11-14",
       "2021-02-07",
-      "2024-05-27"
+      "2024-05-27",
+      "2025-09-04"
     ]
   },
   "ROLLS": {
@@ -60061,11 +60268,12 @@
   },
   "SMOKE": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Cause of poor air quality across many U.S. cities this summer",
       "Defeat soundly, in slang",
       "Have a cigarette",
+      "Something you haven't been able to do on U.S. flights since 2000",
       "What you might smell like after sitting around a campfire",
       "Where there's ...."
     ],
@@ -60075,7 +60283,8 @@
       "2021-10-03",
       "2023-07-20",
       "2023-12-10",
-      "2024-05-29"
+      "2024-05-29",
+      "2025-08-28"
     ]
   },
   "GLOMS": {
@@ -60526,7 +60735,7 @@
   },
   "EXEC": {
     "length": 4,
-    "frequency": 9,
+    "frequency": 10,
     "clues": [
       "Company higher-up",
       "Corner office figure, slangily",
@@ -60534,6 +60743,7 @@
       "Corporate boss, for short",
       "Donald Trump or Carly Fiorina, notably",
       "High-ranking official, informally",
+      "Member of the C-suite",
       "The \"E\" of C.E.O., for short"
     ],
     "dates": [
@@ -60545,7 +60755,8 @@
       "2020-06-27",
       "2020-10-20",
       "2022-08-18",
-      "2024-06-02"
+      "2024-06-02",
+      "2025-09-07"
     ]
   },
   "MANIC": {
@@ -61379,7 +61590,7 @@
   },
   "IDAHO": {
     "length": 5,
-    "frequency": 22,
+    "frequency": 23,
     "clues": [
       "\"The Gem State\"",
       "It separates Oregon from Wyoming",
@@ -61399,7 +61610,8 @@
       "State where much of the Snake River flows",
       "State whose panhandle borders Canada",
       "State whose panhandle touches Canada",
-      "State with a panhandle"
+      "State with a panhandle",
+      "Where Moscow (pop. 25,435) can be found in the U.S."
     ],
     "dates": [
       "2014-09-15",
@@ -61423,7 +61635,8 @@
       "2022-02-08",
       "2023-02-24",
       "2024-06-12",
-      "2024-11-15"
+      "2024-11-15",
+      "2025-09-16"
     ]
   },
   "GLUED": {
@@ -61701,12 +61914,14 @@
   },
   "OLDSOUL": {
     "length": 7,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "One who's wise beyond their years"
+      "One who's wise beyond their years",
+      "Teen who exclusively listens to music from the ’70s, say"
     ],
     "dates": [
-      "2024-06-15"
+      "2024-06-15",
+      "2025-08-23"
     ]
   },
   "UFC": {
@@ -62922,19 +63137,21 @@
   },
   "ORG": {
     "length": 3,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Association: Abbr.",
       "The \"O\" of NATO: Abbr.",
       "The \"O\" of W.H.O.: Abbr.",
-      "URL ending for a nonprofit"
+      "URL ending for a nonprofit",
+      "Wikipedia's URL ender"
     ],
     "dates": [
       "2018-03-31",
       "2019-11-09",
       "2022-06-25",
       "2024-06-27",
-      "2024-08-18"
+      "2024-08-18",
+      "2025-08-30"
     ]
   },
   "FORT": {
@@ -63674,23 +63891,25 @@
   },
   "BIKES": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Does the second leg of a triathlon",
       "They can't stand up by themselves because they're \"two-tired,\" in an old groaner",
       "Two-wheelers",
+      "Vehicles in a peloton",
       "What the Wright Brothers originally made for a living"
     ],
     "dates": [
       "2015-06-07",
       "2023-04-23",
       "2024-07-02",
-      "2024-11-09"
+      "2024-11-09",
+      "2025-08-28"
     ]
   },
   "REST": {
     "length": 4,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "\"Don't play\" symbol",
       "Black rectangle on sheet music",
@@ -63698,6 +63917,7 @@
       "Kick back and relax",
       "Mark indicating silence, on a music staff",
       "Musical silence",
+      "One \"R\" in R&R",
       "Squiggle on a music score",
       "Take a breather",
       "Take it easy",
@@ -63716,7 +63936,8 @@
       "2022-07-05",
       "2023-03-16",
       "2023-10-24",
-      "2024-07-02"
+      "2024-07-02",
+      "2025-08-28"
     ]
   },
   "THAWS": {
@@ -64340,9 +64561,10 @@
   },
   "PIERS": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Attractions at Fisherman's Wharf in San Francisco",
+      "Docking spots",
       "Places to dock boats",
       "Sections of San Francisco's Fisherman's Wharf",
       "Walks on water?"
@@ -64351,7 +64573,8 @@
       "2020-06-26",
       "2022-06-03",
       "2023-01-12",
-      "2024-07-07"
+      "2024-07-07",
+      "2025-08-22"
     ]
   },
   "BOISE": {
@@ -67320,20 +67543,22 @@
   },
   "ROLEX": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "High-end watchmaker",
       "Luxury watch brand with a crown logo",
       "Oft-counterfeited watch",
       "Pricey watch",
-      "Pricey watchmaker with a crown logo"
+      "Pricey watchmaker with a crown logo",
+      "Watch brand with the slogan \"A Crown for Every Achievement\""
     ],
     "dates": [
       "2014-11-10",
       "2015-08-22",
       "2015-09-27",
       "2021-04-15",
-      "2024-08-08"
+      "2024-08-08",
+      "2025-09-07"
     ]
   },
   "BESO": {
@@ -67669,7 +67894,7 @@
   },
   "KOREA": {
     "length": 5,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "\"North\" or \"South\" land",
       "Divided Asian land",
@@ -67679,6 +67904,7 @@
       "Land on the Sea of Japan",
       "North ___ (nation in the news)",
       "Peninsula divided at the 38th parallel",
+      "Peninsula east of the Yellow Sea",
       "Peninsula where Kim is the most common surname",
       "See 7-Across",
       "Seoul's home",
@@ -67697,7 +67923,8 @@
       "2019-11-24",
       "2021-10-05",
       "2022-01-07",
-      "2024-08-11"
+      "2024-08-11",
+      "2025-08-28"
     ]
   },
   "ADDS": {
@@ -67859,7 +68086,7 @@
   },
   "SSE": {
     "length": 3,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "180° from NNW",
       "Chicago-to-Miami dir.",
@@ -67881,7 +68108,8 @@
       "2022-09-21",
       "2023-04-08",
       "2023-07-04",
-      "2024-08-13"
+      "2024-08-13",
+      "2025-09-14"
     ]
   },
   "HATH": {
@@ -68569,7 +68797,7 @@
   },
   "METRO": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "D.C. subway system",
       "D.C. transit system",
@@ -68580,7 +68808,8 @@
       "Paris's subway system",
       "Prefix with sexual or -polis",
       "Section of The New York Times that covers New York City",
-      "See 5-Across"
+      "See 5-Across",
+      "Subway system"
     ],
     "dates": [
       "2014-11-13",
@@ -68596,7 +68825,8 @@
       "2022-04-06",
       "2022-07-28",
       "2023-09-16",
-      "2024-08-20"
+      "2024-08-20",
+      "2025-09-11"
     ]
   },
   "SAN": {
@@ -68851,13 +69081,14 @@
   },
   "HERE": {
     "length": 4,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "\"Take this\"",
       "\"You are ___\" (map words)",
       "\"___ goes nothing!\"",
       "\"___ we go again!\"",
       "Homophone of 4-Across",
+      "On this spot",
       "One-word text upon arriving",
       "Response during a roll call",
       "Roll call response",
@@ -68874,7 +69105,8 @@
       "2020-11-23",
       "2022-12-01",
       "2024-08-23",
-      "2024-10-30"
+      "2024-10-30",
+      "2025-09-03"
     ]
   },
   "OCTO": {
@@ -70204,7 +70436,7 @@
   },
   "RAT": {
     "length": 3,
-    "frequency": 16,
+    "frequency": 17,
     "clues": [
       "Animal in a maze",
       "Animal that's a symbol for snitching",
@@ -70218,6 +70450,7 @@
       "Snitch",
       "Subway scamperer",
       "Subway scurrier",
+      "Unlikely chef in a 2007 Pixar film",
       "___ terrier (dog breed)"
     ],
     "dates": [
@@ -70236,7 +70469,8 @@
       "2020-05-16",
       "2020-10-25",
       "2024-09-08",
-      "2024-12-31"
+      "2024-12-31",
+      "2025-09-04"
     ]
   },
   "ROTOR": {
@@ -70430,9 +70664,10 @@
   },
   "LINK": {
     "length": 4,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Clickable part of a webpage",
+      "Need for accessing an online meeting",
       "Part of a sausage chain",
       "Something clickable in an email",
       "What a phisher might try to get you to click"
@@ -70441,7 +70676,8 @@
       "2017-05-02",
       "2019-02-01",
       "2020-10-21",
-      "2024-09-10"
+      "2024-09-10",
+      "2025-08-27"
     ]
   },
   "DEMON": {
@@ -70966,7 +71202,7 @@
   },
   "FDR": {
     "length": 3,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "1930s-'40s prez",
       "He defeated Herbert Hoover in '32",
@@ -70975,7 +71211,8 @@
       "President during most of W.W. II",
       "President on the dime, for short",
       "Prez for whom an N.Y.C. drive is named",
-      "Prez who passed the Social Security Act"
+      "Prez who passed the Social Security Act",
+      "U.S. prez who served four terms"
     ],
     "dates": [
       "2016-09-18",
@@ -70985,7 +71222,8 @@
       "2019-08-09",
       "2019-08-24",
       "2023-05-27",
-      "2024-09-15"
+      "2024-09-15",
+      "2025-09-06"
     ]
   },
   "BANG": {
@@ -72468,7 +72706,7 @@
   },
   "YETI": {
     "length": 4,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Abominable Snowman",
       "Abominable snowman",
@@ -72481,7 +72719,8 @@
       "2018-03-26",
       "2019-10-29",
       "2021-10-10",
-      "2024-10-02"
+      "2024-10-02",
+      "2025-09-02"
     ]
   },
   "INAPP": {
@@ -72675,12 +72914,13 @@
   },
   "TOAD": {
     "length": 4,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "A polliwog is a baby one",
       "Animal said to cause warts",
       "Bumpy amphibian",
       "Cousin of a frog",
+      "Mushroom-headed character of the Mario games",
       "Warty amphibian",
       "Warty hopper"
     ],
@@ -72690,7 +72930,8 @@
       "2017-05-09",
       "2017-08-06",
       "2020-04-18",
-      "2024-10-05"
+      "2024-10-05",
+      "2025-09-01"
     ]
   },
   "BOBATEA": {
@@ -72765,13 +73006,14 @@
   },
   "TAXES": {
     "length": 5,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Common campaign issue",
       "Major April to-do",
       "One of Franklin's certainties in life",
       "One of life's certainties, per Benjamin Franklin",
       "Subject of a major bill before the U.S. Senate",
+      "They're often withheld from one's paycheck",
       "What 4-Across is being pressured to release",
       "What the I.R.S. collects"
     ],
@@ -72783,7 +73025,8 @@
       "2021-04-13",
       "2022-03-10",
       "2023-04-28",
-      "2024-10-06"
+      "2024-10-06",
+      "2025-09-09"
     ]
   },
   "SEXY": {
@@ -72849,8 +73092,9 @@
   },
   "BLAB": {
     "length": 4,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
+      "Give away a secret",
       "Spill secrets",
       "Spill the beans",
       "Spill the secret",
@@ -72861,7 +73105,8 @@
       "2017-11-01",
       "2019-10-30",
       "2020-03-08",
-      "2024-10-07"
+      "2024-10-07",
+      "2025-09-13"
     ]
   },
   "ETAIL": {
@@ -72901,7 +73146,7 @@
   },
   "ADAMS": {
     "length": 5,
-    "frequency": 17,
+    "frequency": 18,
     "clues": [
       "\"The Hitchhiker's Guide to the Galaxy\" author",
       "#2 in a history sequence",
@@ -72914,6 +73159,7 @@
       "John Quincy ___",
       "Last name of two presidents",
       "N.Y.C. mayor after de Blasio",
+      "Opponent of Cuomo and Mamdani in the N.Y.C. mayoral race",
       "President from 1797-1801",
       "Samuel ___ (beer)",
       "Second or sixth U.S. president",
@@ -72938,7 +73184,8 @@
       "2021-05-07",
       "2022-12-07",
       "2023-01-04",
-      "2024-10-08"
+      "2024-10-08",
+      "2025-09-11"
     ]
   },
   "INDIE": {
@@ -74060,9 +74307,10 @@
   },
   "BEAN": {
     "length": 4,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Bit of coffee",
+      "Edamame or chickpea",
       "L.L. ___",
       "Magical item for Jack in a fairy tale",
       "Peg with a baseball",
@@ -74079,7 +74327,8 @@
       "2022-04-03",
       "2022-11-20",
       "2023-05-20",
-      "2024-10-21"
+      "2024-10-21",
+      "2025-09-13"
     ]
   },
   "ALAS": {
@@ -76292,10 +76541,11 @@
   },
   "STEVE": {
     "length": 5,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "\"Family Feud\" host Harvey",
       "Carell of \"The Office\"",
+      "Fashion designer Madden",
       "Jobs in Silicon Valley",
       "Jobs in the tech industry",
       "Jobs who co-founded Apple",
@@ -76311,7 +76561,8 @@
       "2019-06-16",
       "2022-09-10",
       "2023-05-15",
-      "2024-11-18"
+      "2024-11-18",
+      "2025-09-14"
     ]
   },
   "HOSES": {
@@ -76578,8 +76829,9 @@
   },
   "EAR": {
     "length": 3,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
+      "\"Can I bend your ___ for a second?\"",
       "Body part that can act as a pencil holder",
       "Body part that, after an \"H\" is added, becomes what you can do with it",
       "Cochlea's place",
@@ -76601,7 +76853,8 @@
       "2022-09-13",
       "2023-03-25",
       "2023-11-25",
-      "2024-11-21"
+      "2024-11-21",
+      "2025-08-22"
     ]
   },
   "BJORK": {
@@ -76980,7 +77233,7 @@
   },
   "SLAM": {
     "length": 4,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "Close in anger, as a door",
       "Close with force",
@@ -76989,7 +77242,8 @@
       "Poetry contest",
       "Poetry event",
       "Shut angrily",
-      "Sound of a door closing loudly"
+      "Sound of a door closing loudly",
+      "Word after grand, body or poetry"
     ],
     "dates": [
       "2014-12-26",
@@ -76999,7 +77253,8 @@
       "2018-09-10",
       "2021-06-29",
       "2023-01-04",
-      "2024-11-26"
+      "2024-11-26",
+      "2025-09-13"
     ]
   },
   "TOTEM": {
@@ -77023,12 +77278,13 @@
   },
   "SHAKE": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Dog trick with a paw",
       "Drink that might be hard to sip through a straw",
       "Harlem ___ (2013 meme)",
       "Harlem ___ (dance craze of 2013)",
+      "Ice cream drink",
       "Put your hands together?",
       "Tremble"
     ],
@@ -77039,7 +77295,8 @@
       "2021-05-18",
       "2021-11-21",
       "2023-03-20",
-      "2024-11-27"
+      "2024-11-27",
+      "2025-09-17"
     ]
   },
   "TENET": {
@@ -77422,14 +77679,16 @@
   },
   "STRUM": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Play the guitar",
+      "Play, as a guitar",
       "Play, as a mandolin"
     ],
     "dates": [
       "2020-05-05",
-      "2024-12-03"
+      "2024-12-03",
+      "2025-09-08"
     ]
   },
   "FANG": {
@@ -77484,7 +77743,7 @@
   },
   "ROCK": {
     "length": 4,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Archetype of solidity",
       "Closed fist, in a game",
@@ -77492,7 +77751,8 @@
       "Genre for AC/DC or R.E.M.",
       "Genre for Kansas and Alabama Shakes",
       "It beats scissors, but not 5-Across",
-      "WWE wrestler-turned-Hollywood superstar, with \"The\""
+      "WWE wrestler-turned-Hollywood superstar, with \"The\"",
+      "Winner over scissors, loser to paper"
     ],
     "dates": [
       "2016-08-24",
@@ -77501,7 +77761,8 @@
       "2021-02-02",
       "2022-05-30",
       "2022-10-14",
-      "2024-12-04"
+      "2024-12-04",
+      "2025-09-07"
     ]
   },
   "REAPS": {
@@ -78197,10 +78458,11 @@
   },
   "ZEN": {
     "length": 3,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "\"___ and the Art of Motorcycle Maintenance\" (1974 best-selling book)",
       "Branch of Buddhism",
+      "In a chill state of mind",
       "Kind of garden with a bonsai tree",
       "Peaceful and relaxed",
       "School of Buddhism",
@@ -78213,7 +78475,8 @@
       "2017-03-15",
       "2020-07-22",
       "2021-01-07",
-      "2024-12-13"
+      "2024-12-13",
+      "2025-09-10"
     ]
   },
   "PLAZA": {
@@ -78798,16 +79061,18 @@
   },
   "TATA": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "\"Bye!,\" to a Brit",
       "\"Toodles!\"",
-      "British \"Bye, bye!\""
+      "British \"Bye, bye!\"",
+      "British \"bye-bye\""
     ],
     "dates": [
       "2019-06-26",
       "2020-11-09",
-      "2024-12-20"
+      "2024-12-20",
+      "2025-08-25"
     ]
   },
   "CAM": {
@@ -78998,26 +79263,32 @@
   },
   "SMURF": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Character who's blue in the face?"
+      "Character who's blue in the face?",
+      "Fictional creature voiced by Rihanna, James Corden or Nick Offerman, in a 2025 animated movie"
     ],
     "dates": [
-      "2024-12-23"
+      "2024-12-23",
+      "2025-08-29"
     ]
   },
   "QATAR": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 5,
     "clues": [
       "2022 World Cup host, barring a corruption scandal",
       "Mideast country that juts out from Saudi Arabia",
-      "Only country whose name starts with \"Q\""
+      "Only country whose name starts with \"Q\"",
+      "Only five-letter country with a \"Q\" in its name",
+      "Tiny neighbor of Saudi Arabia"
     ],
     "dates": [
       "2015-11-18",
       "2022-05-27",
-      "2024-12-23"
+      "2024-12-23",
+      "2025-08-21",
+      "2025-09-10"
     ]
   },
   "TORY": {
@@ -79845,7 +80116,7 @@
   },
   "TIRED": {
     "length": 5,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "\"Give me your ___ ...\" (start of the Statue of Liberty engraving)",
       "Exhausted",
@@ -79856,6 +80127,7 @@
       "Ready for a nap",
       "Ready to hit the sack",
       "See 1-Across",
+      "Sleepy",
       "Tuckered out",
       "Weary"
     ],
@@ -79870,7 +80142,8 @@
       "2022-03-24",
       "2022-10-10",
       "2023-04-19",
-      "2023-06-27"
+      "2023-06-27",
+      "2025-08-25"
     ]
   },
   "LAZIO": {
@@ -79935,7 +80208,7 @@
   },
   "PURSE": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Clutch, e.g.",
       "Handbag",
@@ -79950,18 +80223,20 @@
       "2022-01-05",
       "2022-12-19",
       "2022-12-28",
-      "2023-05-25"
+      "2023-05-25",
+      "2025-09-12"
     ]
   },
   "LOGAN": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "2017 box office hit about Wolverine",
       "Boston airport",
       "Boston's airport",
       "International airport in Boston",
       "Patriarch of the Roy family on \"Succession\"",
+      "Wolverine's alias in \"X-Men\"",
       "___ Act, law that Michael Flynn is accused of breaking"
     ],
     "dates": [
@@ -79971,13 +80246,15 @@
       "2018-10-07",
       "2020-01-06",
       "2021-12-14",
-      "2022-01-05"
+      "2022-01-05",
+      "2025-09-12"
     ]
   },
   "TEDDY": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
+      "Stuffed animal named after the 26th president of the United States",
       "Stuffed bear",
       "Toy bear named for a U.S. president",
       "Toy bear named for a president",
@@ -79988,13 +80265,15 @@
       "2016-09-28",
       "2020-03-31",
       "2021-10-08",
-      "2022-01-05"
+      "2022-01-05",
+      "2025-09-12"
     ]
   },
   "SPLAT": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
+      "Sound of a cupcake hitting the floor, frosting-first",
       "Sound of a paintball on impact",
       "Sound of a water balloon",
       "Water balloon sound"
@@ -80002,13 +80281,15 @@
     "dates": [
       "2016-04-08",
       "2022-01-05",
-      "2022-09-01"
+      "2022-09-01",
+      "2025-09-12"
     ]
   },
   "QUOTE": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
+      "Common feature of a news article",
       "Estimated cost from a contractor",
       "Repeat verbatim",
       "This mark: \""
@@ -80016,46 +80297,53 @@
     "dates": [
       "2017-02-23",
       "2017-12-06",
-      "2022-01-05"
+      "2022-01-05",
+      "2025-09-12"
     ]
   },
   "URGED": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Strongly advised",
       "Strongly suggested",
-      "Told to \"Do it! Do it!\""
+      "Told to \"Do it! Do it!\"",
+      "Tried to convince"
     ],
     "dates": [
       "2018-07-26",
       "2020-06-26",
-      "2022-01-05"
+      "2022-01-05",
+      "2025-09-12"
     ]
   },
   "ISAID": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "\"Let me repeat ...\"",
       "\"Let me repeat myself ...\"",
-      "\"Let me repeat myself …\""
+      "\"Let me repeat myself …\"",
+      "\"Since you didn't hear me the first time ...\""
     ],
     "dates": [
       "2016-06-29",
       "2021-07-12",
       "2022-01-05",
-      "2022-05-28"
+      "2022-05-28",
+      "2025-09-12"
     ]
   },
   "DENNY": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Name in a breakfast restaurant chain",
       "Name in a diner restaurant chain"
     ],
     "dates": [
-      "2022-01-05"
+      "2022-01-05",
+      "2025-09-12"
     ]
   },
   "JOUST": {
@@ -81155,7 +81443,7 @@
   },
   "EDGE": {
     "length": 4,
-    "frequency": 17,
+    "frequency": 18,
     "clues": [
       "\"Losing My ___\" (debut single for LCD Soundsystem)",
       "Border",
@@ -81184,7 +81472,8 @@
       "2022-11-17",
       "2023-06-13",
       "2023-10-24",
-      "2023-11-23"
+      "2023-11-23",
+      "2025-09-01"
     ]
   },
   "CANID": {
@@ -82470,7 +82759,7 @@
   },
   "OUTTA": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "\"Get ___ my way!\"",
       "\"I'm ___ here!\"",
@@ -82482,7 +82771,8 @@
       "2016-08-24",
       "2018-09-09",
       "2022-02-03",
-      "2023-05-21"
+      "2023-05-21",
+      "2025-09-11"
     ]
   },
   "TROY": {
@@ -82895,7 +83185,7 @@
   },
   "SOSO": {
     "length": 4,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "Just kinda \"meh\"",
       "Mediocre",
@@ -82915,7 +83205,8 @@
       "2021-08-22",
       "2022-02-08",
       "2022-08-06",
-      "2023-07-02"
+      "2023-07-02",
+      "2025-09-17"
     ]
   },
   "NONOS": {
@@ -83113,8 +83404,9 @@
   },
   "KAY": {
     "length": 3,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
+      "\"Every Kiss Begins With ___\" (longtime jewelry slogan)",
       "\"Every kiss begins with ...\" jeweler",
       "Kick starter?",
       "Letter between \"jay\" and \"ell\""
@@ -83122,7 +83414,8 @@
     "dates": [
       "2017-02-14",
       "2022-02-10",
-      "2023-05-17"
+      "2023-05-17",
+      "2025-09-10"
     ]
   },
   "GUAC": {
@@ -83155,8 +83448,9 @@
   },
   "AUDIT": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
+      "I.R.S. agent's investigation",
       "I.R.S. examination",
       "I.R.S. inspection",
       "I.R.S. investigation"
@@ -83165,7 +83459,8 @@
       "2015-08-03",
       "2016-03-11",
       "2022-02-11",
-      "2022-04-26"
+      "2022-04-26",
+      "2025-08-28"
     ]
   },
   "NAILS": {
@@ -83827,7 +84122,7 @@
   },
   "TIBET": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Dalai Lama's homeland",
       "It borders Nepal and Bhutan",
@@ -83835,7 +84130,8 @@
       "Land on one side of Mount Everest",
       "Land on one side of Mt. Everest",
       "Land on the north side of Mount Everest",
-      "One side of Mt. Everest"
+      "One side of Mt. Everest",
+      "Where the North Base Camp for Mount Everest can be found"
     ],
     "dates": [
       "2016-08-23",
@@ -83844,7 +84140,8 @@
       "2019-12-27",
       "2022-02-20",
       "2023-02-05",
-      "2023-11-25"
+      "2023-11-25",
+      "2025-09-03"
     ]
   },
   "BRYCE": {
@@ -84127,7 +84424,7 @@
   },
   "HOSE": {
     "length": 4,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Equipment for a gardener or firefighter",
       "Fire truck attachment",
@@ -84138,7 +84435,8 @@
       "2019-12-02",
       "2022-02-23",
       "2022-07-21",
-      "2022-09-12"
+      "2022-09-12",
+      "2025-09-16"
     ]
   },
   "FUEGO": {
@@ -84896,7 +85194,7 @@
   },
   "OKS": {
     "length": 3,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "Approves",
       "Authorizes",
@@ -84918,7 +85216,8 @@
       "2021-08-25",
       "2022-03-04",
       "2023-07-02",
-      "2023-12-09"
+      "2023-12-09",
+      "2025-09-17"
     ]
   },
   "COMEDY": {
@@ -85173,7 +85472,7 @@
   },
   "HARRY": {
     "length": 5,
-    "frequency": 9,
+    "frequency": 10,
     "clues": [
       "Brother of Prince William",
       "Film character who \"met\" 8-Across in a classic 1989 rom-com",
@@ -85183,7 +85482,8 @@
       "Prince married to Meghan Markle",
       "Recently engaged English prince",
       "Styles of music",
-      "Styles of pop music"
+      "Styles of pop music",
+      "Styles of singing?"
     ],
     "dates": [
       "2016-04-26",
@@ -85194,7 +85494,8 @@
       "2019-11-22",
       "2020-07-10",
       "2021-03-05",
-      "2022-03-09"
+      "2022-03-09",
+      "2025-09-08"
     ]
   },
   "MEOW": {
@@ -85255,12 +85556,13 @@
   },
   "PALEO": {
     "length": 5,
-    "frequency": 10,
+    "frequency": 11,
     "clues": [
       "Caveman-style diet",
       "Diet that excludes all processed foods",
       "Diet that excludes processed food",
       "Diet that excludes processed foods, informally",
+      "Diet that harkens back to prehistoric times",
       "Diet that replicates that of early humans",
       "Diet with a lot of berries, meat and nuts",
       "Kind of diet that mimics cavemen",
@@ -85278,7 +85580,8 @@
       "2019-11-16",
       "2021-04-30",
       "2021-10-07",
-      "2022-03-09"
+      "2022-03-09",
+      "2025-08-29"
     ]
   },
   "CRAW": {
@@ -85643,7 +85946,7 @@
   },
   "EBB": {
     "length": 3,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Flow back",
       "Recede, as the tide",
@@ -85656,7 +85959,8 @@
       "2019-03-17",
       "2022-03-15",
       "2022-07-03",
-      "2023-09-04"
+      "2023-09-04",
+      "2025-08-29"
     ]
   },
   "GUEST": {
@@ -85705,12 +86009,14 @@
   },
   "THUS": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "\"And so, as a result ...\"",
       "Therefore"
     ],
     "dates": [
-      "2022-03-16"
+      "2022-03-16",
+      "2025-08-27"
     ]
   },
   "ZAPS": {
@@ -88716,8 +89022,9 @@
   },
   "TSP": {
     "length": 3,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
+      "Baking measure: Abbr.",
       "Baking measurement: Abbr.",
       "Cough medicine amt.",
       "Kitchen measure: Abbr.",
@@ -88732,7 +89039,8 @@
       "2017-07-04",
       "2019-06-01",
       "2022-04-26",
-      "2022-10-30"
+      "2022-10-30",
+      "2025-08-25"
     ]
   },
   "GRIND": {
@@ -88820,7 +89128,7 @@
   },
   "AGING": {
     "length": 5,
-    "frequency": 14,
+    "frequency": 15,
     "clues": [
       "\"An extraordinary process whereby you become the person you always should have been,\" per David Bowie",
       "Everyone's doing it",
@@ -88849,7 +89157,8 @@
       "2020-03-15",
       "2021-12-26",
       "2022-04-29",
-      "2022-08-16"
+      "2022-08-16",
+      "2025-08-25"
     ]
   },
   "IDLY": {
@@ -90180,16 +90489,18 @@
   },
   "GRADE": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "5-Across is a great one",
+      "A, B, C or D, but not E",
       "A, B, C, D or F, but not E",
       "C, D or F, but not E"
     ],
     "dates": [
       "2015-08-12",
       "2016-06-27",
-      "2022-05-19"
+      "2022-05-19",
+      "2025-09-13"
     ]
   },
   "KUDOS": {
@@ -90640,20 +90951,22 @@
   },
   "VEGAS": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "\"What happens here, stays here\" sloganeer",
       "Gambler's mecca",
       "Gambling mecca, familiarly",
       "Home of Bellagio and the Venetian",
-      "Most popular wedding city in the U.S., familiarly"
+      "Most popular wedding city in the U.S., familiarly",
+      "Sin City"
     ],
     "dates": [
       "2015-12-26",
       "2016-07-20",
       "2016-07-31",
       "2022-05-26",
-      "2023-01-03"
+      "2023-01-03",
+      "2025-09-14"
     ]
   },
   "CNBC": {
@@ -91128,7 +91441,7 @@
   },
   "PECS": {
     "length": 4,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Bench press muscles",
       "Chest muscles, for short",
@@ -91138,7 +91451,8 @@
       "2018-05-28",
       "2020-08-25",
       "2022-06-02",
-      "2022-09-14"
+      "2022-09-14",
+      "2025-09-09"
     ]
   },
   "CIROC": {
@@ -91472,8 +91786,9 @@
   },
   "ASKEW": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
+      "Slightly off, as a picture frame",
       "Slightly off, as glasses",
       "Slightly off-center",
       "Slightly off-kilter"
@@ -91482,7 +91797,8 @@
       "2019-11-19",
       "2020-12-01",
       "2021-02-19",
-      "2022-06-06"
+      "2022-06-06",
+      "2025-08-31"
     ]
   },
   "JUG": {
@@ -92160,12 +92476,13 @@
   },
   "FAN": {
     "length": 3,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Ballpark figure",
       "Ceiling spinner",
       "Cooler on a hot summer day",
       "Cooler used in the summer",
+      "Tailgate attendee",
       "Team supporter"
     ],
     "dates": [
@@ -92174,7 +92491,8 @@
       "2020-10-03",
       "2022-06-17",
       "2023-03-05",
-      "2023-08-21"
+      "2023-08-21",
+      "2025-09-14"
     ]
   },
   "CHUG": {
@@ -92385,13 +92703,14 @@
   },
   "DEVIL": {
     "length": 5,
-    "frequency": 9,
+    "frequency": 10,
     "clues": [
       "\"Speak of the ___!\"",
       "Bad advisor on one's shoulder",
       "Beelzebub",
       "Being in hell",
       "Figure often drawn with a pitchfork",
+      "Halloween costume with red horns",
       "He's a hell of a guy",
       "Hell of a guy?",
       "One side of a Faustian bargain",
@@ -92406,7 +92725,8 @@
       "2018-11-18",
       "2022-06-20",
       "2022-09-27",
-      "2023-05-12"
+      "2023-05-12",
+      "2025-09-07"
     ]
   },
   "WALES": {
@@ -92908,7 +93228,7 @@
   },
   "JADE": {
     "length": 4,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Gemstone that starts with an 8-point Scrabble letter",
       "Green gemstone",
@@ -92918,7 +93238,8 @@
       "2019-12-11",
       "2020-02-12",
       "2020-07-26",
-      "2022-06-28"
+      "2022-06-28",
+      "2025-09-07"
     ]
   },
   "GAPE": {
@@ -93010,7 +93331,7 @@
   },
   "DELVE": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Dig (into)",
       "Do a deep dive (into)",
@@ -93019,7 +93340,8 @@
     "dates": [
       "2016-09-22",
       "2018-07-13",
-      "2022-06-29"
+      "2022-06-29",
+      "2025-09-15"
     ]
   },
   "SCUZZ": {
@@ -93392,7 +93714,7 @@
   },
   "UPTOP": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "\"Give me a high five!\"",
       "\"Give me a high-five!\"",
@@ -93403,7 +93725,8 @@
       "2016-03-21",
       "2019-08-05",
       "2022-07-04",
-      "2023-03-20"
+      "2023-03-20",
+      "2025-09-11"
     ]
   },
   "BALMY": {
@@ -93496,7 +93819,7 @@
   },
   "YAM": {
     "length": 3,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Sweet potato lookalike",
       "Thanksgiving side dish vegetable",
@@ -93510,7 +93833,8 @@
       "2019-11-06",
       "2021-09-18",
       "2022-07-07",
-      "2022-11-24"
+      "2022-11-24",
+      "2025-08-22"
     ]
   },
   "YOURS": {
@@ -93590,14 +93914,16 @@
   },
   "HAL": {
     "length": 3,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
+      "\"2001: A Space Odyssey\" villain",
       "\"Shallow\" guy in a 2001 rom-com",
       "Computer villain in \"2001: A Space Odyssey\""
     ],
     "dates": [
       "2014-11-23",
-      "2022-07-08"
+      "2022-07-08",
+      "2025-08-22"
     ]
   },
   "OHYEAH": {
@@ -94748,16 +95074,18 @@
   },
   "TAXIS": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Alternatives to Ubers",
+      "Some rides from the airport",
       "They have meters and motors",
       "Vehicles in an airport queue"
     ],
     "dates": [
       "2015-11-02",
       "2021-10-14",
-      "2022-07-27"
+      "2022-07-27",
+      "2025-09-16"
     ]
   },
   "SKEE": {
@@ -94772,10 +95100,11 @@
   },
   "ALIVE": {
     "length": 5,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "\"Look ___ out there!\" (baseball cry)",
       "\"Stayin' ___\" (disco classic)",
+      "\"What a time to be ___!\"",
       "Dead or ___",
       "Having a pulse",
       "Like a fox or ox, but not rocks or clocks",
@@ -94798,7 +95127,8 @@
       "2020-09-08",
       "2021-08-01",
       "2022-07-27",
-      "2023-03-20"
+      "2023-03-20",
+      "2025-09-07"
     ]
   },
   "SOFT": {
@@ -94873,9 +95203,10 @@
   },
   "AROMA": {
     "length": 5,
-    "frequency": 16,
+    "frequency": 17,
     "clues": [
       "Baking cookies creates a good one",
+      "Burnt toast has a strong one",
       "Cinnabon lure",
       "Coffee has a strong one",
       "Enticing smell",
@@ -94903,7 +95234,8 @@
       "2022-07-29",
       "2022-11-14",
       "2023-04-12",
-      "2023-06-23"
+      "2023-06-23",
+      "2025-08-21"
     ]
   },
   "AVOIR": {
@@ -94952,14 +95284,16 @@
   },
   "CASK": {
     "length": 4,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "\"The ___ of Amontillado\" (Edgar Allan Poe short story)",
+      "Barrel-shaped wine container",
       "Wine barrel"
     ],
     "dates": [
       "2014-12-06",
-      "2022-07-30"
+      "2022-07-30",
+      "2025-08-28"
     ]
   },
   "SIXTIES": {
@@ -96263,7 +96597,7 @@
   },
   "WAR": {
     "length": 3,
-    "frequency": 12,
+    "frequency": 13,
     "clues": [
       "\"Avengers: Infinity ___\"",
       "\"Low Rider\" band",
@@ -96276,6 +96610,7 @@
       "PO(W)",
       "Polemology: the study of ___",
       "Simple card game",
+      "Simple-to-play card game for two",
       "What is it good for? Absolutely nothing!"
     ],
     "dates": [
@@ -96290,7 +96625,8 @@
       "2021-03-21",
       "2021-09-18",
       "2022-08-19",
-      "2022-11-05"
+      "2022-11-05",
+      "2025-08-22"
     ]
   },
   "STS": {
@@ -96695,16 +97031,18 @@
   },
   "POUTY": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "In a sulky mood",
       "In a sullen mood",
-      "Like a sullen child"
+      "Like a sullen child",
+      "Sulky-looking"
     ],
     "dates": [
       "2015-05-24",
       "2021-05-09",
-      "2022-08-24"
+      "2022-08-24",
+      "2025-09-11"
     ]
   },
   "PEEL": {
@@ -97593,20 +97931,22 @@
   },
   "CPR": {
     "length": 3,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "E.M.T.'s training",
       "Lifeguard's skill, for short",
       "Lifesaving procedure from an E.M.T.",
       "Lifesaving technique, for short",
-      "Revival technique"
+      "Revival technique",
+      "Skill practiced on dummies, for short"
     ],
     "dates": [
       "2017-07-10",
       "2018-05-12",
       "2022-09-05",
       "2023-03-25",
-      "2023-04-11"
+      "2023-04-11",
+      "2025-08-26"
     ]
   },
   "CALM": {
@@ -98899,7 +99239,7 @@
   },
   "XES": {
     "length": 3,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Crosses (out)"
     ],
@@ -98908,7 +99248,8 @@
       "2018-05-20",
       "2020-02-14",
       "2020-11-07",
-      "2022-09-25"
+      "2022-09-25",
+      "2025-08-30"
     ]
   },
   "CROIX": {
@@ -100281,14 +100622,16 @@
   },
   "GOODS": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Partner of services",
+      "Shop owner's stock",
       "Shopkeeper's wares"
     ],
     "dates": [
       "2021-12-10",
-      "2022-10-17"
+      "2022-10-17",
+      "2025-08-22"
     ]
   },
   "ORALS": {
@@ -101080,11 +101423,12 @@
   },
   "SATAN": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Beelzebub, by another name",
       "Evil anagram of SANTA",
       "Evil lover",
+      "The Devil",
       "The devil"
     ],
     "dates": [
@@ -101093,7 +101437,8 @@
       "2018-11-02",
       "2020-12-22",
       "2021-07-07",
-      "2022-11-01"
+      "2022-11-01",
+      "2025-09-10"
     ]
   },
   "BENZ": {
@@ -102652,10 +102997,11 @@
   },
   "RANGE": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "Good quality for an actor or singer",
       "Grazing area",
+      "How far an electric vehicle can go before recharging",
       "Mountain chain",
       "Place to practice golf",
       "Place to practice your golf swing"
@@ -102665,7 +103011,8 @@
       "2018-12-04",
       "2020-02-28",
       "2021-03-29",
-      "2022-11-29"
+      "2022-11-29",
+      "2025-09-01"
     ]
   },
   "PSAT": {
@@ -102830,12 +103177,14 @@
   },
   "RECANTS": {
     "length": 7,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Disavows, as a statement"
+      "Disavows, as a statement",
+      "Takes back, as testimony"
     ],
     "dates": [
-      "2022-12-03"
+      "2022-12-03",
+      "2025-09-06"
     ]
   },
   "BOUNCER": {
@@ -103401,12 +103750,14 @@
   },
   "LOVES": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Holds dear",
       "Simply adores"
     ],
     "dates": [
-      "2022-12-11"
+      "2022-12-11",
+      "2025-08-24"
     ]
   },
   "OWENS": {
@@ -103451,12 +103802,14 @@
   },
   "MGS": {
     "length": 3,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Booker T. and the ___",
       "Tiny metric units: Abbr."
     ],
     "dates": [
-      "2022-12-12"
+      "2022-12-12",
+      "2025-08-30"
     ]
   },
   "GLEAM": {
@@ -103965,12 +104318,14 @@
   },
   "SNOWY": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Adjective that can precede \"owl\" or \"egret\"",
       "Like a winter wonderland"
     ],
     "dates": [
-      "2022-12-23"
+      "2022-12-23",
+      "2025-08-31"
     ]
   },
   "POLAR": {
@@ -104491,15 +104846,17 @@
   },
   "PUMA": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Competitor of Nike and Reebok",
-      "Mountain lion"
+      "Mountain lion",
+      "Sneaker named for a big cat"
     ],
     "dates": [
       "2019-12-24",
       "2021-12-02",
-      "2023-01-02"
+      "2023-01-02",
+      "2025-09-11"
     ]
   },
   "LIL": {
@@ -104868,14 +105225,16 @@
   },
   "NAT": {
     "length": 3,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
+      "D.C. baseball player",
       "Singer ___ King Cole",
       "___ Geo (cable channel)"
     ],
     "dates": [
       "2021-03-06",
-      "2023-01-07"
+      "2023-01-07",
+      "2025-09-05"
     ]
   },
   "DAH": {
@@ -105911,7 +106270,7 @@
   },
   "THY": {
     "length": 3,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "\"Hallowed be ___ name\"",
       "\"Honor ___ father ...\"",
@@ -105928,7 +106287,8 @@
       "2019-10-20",
       "2021-10-01",
       "2023-01-24",
-      "2023-04-03"
+      "2023-04-03",
+      "2025-09-04"
     ]
   },
   "RUIN": {
@@ -105947,13 +106307,14 @@
   },
   "FOR": {
     "length": 3,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "In favor of",
       "In support of",
       "Opposite of against",
       "Part of FYI",
       "Part of FYI or FWIW",
+      "Supportive of",
       "___ rent, sign outside a house"
     ],
     "dates": [
@@ -105963,7 +106324,8 @@
       "2018-08-14",
       "2018-10-23",
       "2019-02-03",
-      "2023-01-25"
+      "2023-01-25",
+      "2025-08-29"
     ]
   },
   "GREEK": {
@@ -106850,18 +107212,20 @@
   },
   "SIN": {
     "length": 3,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "\"Everything that used to be a ___ is now a disease\": Bill Maher",
       "Greed, envy or pride",
       "Greed, pride or envy",
-      "Pride, greed or envy"
+      "Pride, greed or envy",
+      "Serious wrongdoing"
     ],
     "dates": [
       "2014-10-24",
       "2017-04-17",
       "2020-05-06",
-      "2023-02-12"
+      "2023-02-12",
+      "2025-08-23"
     ]
   },
   "CAFE": {
@@ -106992,16 +107356,18 @@
   },
   "XRAYS": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Features of dental exams",
       "Hospital pictures",
-      "Pictures at a hospital"
+      "Pictures at a hospital",
+      "Pictures of fractures, perhaps"
     ],
     "dates": [
       "2015-01-01",
       "2019-05-23",
-      "2023-02-14"
+      "2023-02-14",
+      "2025-09-10"
     ]
   },
   "CPA": {
@@ -107622,12 +107988,13 @@
   },
   "TOXIC": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Like apple seeds and rhubarb leaves, in large quantities",
       "Like chocolate to dogs",
       "Like chocolate, to dogs",
       "Like rhubarb leaves and pufferfish, for human consumption",
+      "Not healthy, as a relationship",
       "Poisonous",
       "Unhealthy, as a relationship"
     ],
@@ -107638,7 +108005,8 @@
       "2018-02-09",
       "2019-09-03",
       "2021-08-25",
-      "2023-02-26"
+      "2023-02-26",
+      "2025-09-09"
     ]
   },
   "NOTIT": {
@@ -108801,7 +109169,7 @@
   },
   "WAS": {
     "length": 3,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
       "\"Same as It Ever ___\" (Talking Heads album)",
       "\"What ___ I thinking?\"",
@@ -108816,7 +109184,8 @@
       "2020-10-10",
       "2021-11-10",
       "2023-03-19",
-      "2023-04-11"
+      "2023-04-11",
+      "2025-09-06"
     ]
   },
   "PITAS": {
@@ -110262,14 +110631,15 @@
   },
   "CHAR": {
     "length": 4,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Burn a bit",
       "Burn slightly"
     ],
     "dates": [
       "2016-01-05",
-      "2023-04-12"
+      "2023-04-12",
+      "2025-09-08"
     ]
   },
   "SWAN": {
@@ -110295,14 +110665,16 @@
   },
   "PIVOT": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
+      "Bit of basketball footwork",
       "Move quickly to another topic",
       "Rotating point"
     ],
     "dates": [
       "2015-11-14",
-      "2023-04-13"
+      "2023-04-13",
+      "2025-09-02"
     ]
   },
   "FINE": {
@@ -110927,11 +111299,12 @@
   },
   "SIR": {
     "length": 3,
-    "frequency": 9,
+    "frequency": 10,
     "clues": [
       "\"Aaron Burr, ___\" (\"Hamilton\" song with a rhyming title)",
       "\"Aaron Burr, ___\" (\"Hamilton\" song)",
       "\"___ Duke,\" #1 hit for Stevie Wonder",
+      "\"___, yes, ___!\"",
       "Knight's title",
       "Polite title",
       "Respectful title",
@@ -110948,7 +111321,8 @@
       "2020-08-01",
       "2021-01-27",
       "2021-04-09",
-      "2023-04-22"
+      "2023-04-22",
+      "2025-09-05"
     ]
   },
   "BOTANY": {
@@ -111272,17 +111646,19 @@
   },
   "PINING": {
     "length": 6,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Longing (for)",
       "Yearning (for)"
     ],
     "dates": [
-      "2023-04-29"
+      "2023-04-29",
+      "2025-08-23"
     ]
   },
   "NNE": {
     "length": 3,
-    "frequency": 11,
+    "frequency": 12,
     "clues": [
       "Opposite of SSW",
       "Philly-to-N.Y.C. direction: Abbr.",
@@ -111299,7 +111675,8 @@
       "2021-10-31",
       "2023-04-29",
       "2023-09-30",
-      "2023-11-17"
+      "2023-11-17",
+      "2025-09-06"
     ]
   },
   "ONMUTE": {
@@ -112326,12 +112703,14 @@
   },
   "SCAB": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "\"Souvenir\" from a scrape",
       "Sign of a wound's healing"
     ],
     "dates": [
-      "2023-05-20"
+      "2023-05-20",
+      "2025-09-02"
     ]
   },
   "TATUM": {
@@ -113032,16 +113411,18 @@
   },
   "SONGS": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "\"As It Was\" and \"Anti-Hero\"",
+      "\"Uptown Funk\" and \"Downtown,\" for two",
       "\"Yesterday\" and \"Tomorrow,\" for two",
       "Spotify selections"
     ],
     "dates": [
       "2020-08-17",
       "2023-06-04",
-      "2023-09-29"
+      "2023-09-29",
+      "2025-08-22"
     ]
   },
   "SWORE": {
@@ -114340,28 +114721,32 @@
   },
   "HUNK": {
     "length": 4,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Attractive, muscly man",
+      "Attractive, muscular guy",
       "Total hottie"
     ],
     "dates": [
       "2021-09-20",
-      "2023-07-02"
+      "2023-07-02",
+      "2025-09-17"
     ]
   },
   "PERK": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Added bonus",
       "Central ___ (\"Friends\" coffee shop)",
-      "Employee's benefit"
+      "Employee's benefit",
+      "Job benefit"
     ],
     "dates": [
       "2015-08-22",
       "2020-09-24",
-      "2023-07-02"
+      "2023-07-02",
+      "2025-09-17"
     ]
   },
   "MURAL": {
@@ -114848,14 +115233,16 @@
   },
   "SOURS": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Acidic beers",
-      "Citrusy whiskey drinks"
+      "Citrusy whiskey drinks",
+      "Tart-tasting beers"
     ],
     "dates": [
       "2017-10-19",
-      "2023-07-11"
+      "2023-07-11",
+      "2025-08-30"
     ]
   },
   "DOYOU": {
@@ -117011,10 +117398,11 @@
   },
   "TYPEA": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Competitive by nature",
       "High-ambition personality",
+      "Like an ambitious, competitive personality",
       "Like someone with a high-achieving personality",
       "Perfectionist, personality-wise"
     ],
@@ -117022,7 +117410,8 @@
       "2016-12-04",
       "2018-03-05",
       "2018-05-16",
-      "2023-08-24"
+      "2023-08-24",
+      "2025-08-22"
     ]
   },
   "FACES": {
@@ -118301,18 +118690,20 @@
   },
   "AMISH": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Group living in Lancaster County, Pa.",
       "Horse-and-buggy riders in the Pennsylvania countryside",
       "Modern-day horse-and-buggy travelers",
+      "Simple-living sect",
       "___ Country, area of south-central Pennsylvania"
     ],
     "dates": [
       "2017-08-11",
       "2018-12-07",
       "2019-11-06",
-      "2023-09-25"
+      "2023-09-25",
+      "2025-08-22"
     ]
   },
   "PROMO": {
@@ -118685,15 +119076,17 @@
   },
   "LAG": {
     "length": 3,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Fall behind",
-      "Streaming delay"
+      "Streaming delay",
+      "Streaming glitch"
     ],
     "dates": [
       "2014-09-07",
       "2021-09-12",
-      "2023-10-03"
+      "2023-10-03",
+      "2025-08-22"
     ]
   },
   "WIFI": {
@@ -119069,7 +119462,7 @@
   },
   "CLUBS": {
     "length": 5,
-    "frequency": 7,
+    "frequency": 8,
     "clues": [
       "Black card suit",
       "Black suit",
@@ -119085,7 +119478,8 @@
       "2019-03-18",
       "2020-07-24",
       "2021-08-14",
-      "2023-10-09"
+      "2023-10-09",
+      "2025-08-26"
     ]
   },
   "REPAY": {
@@ -120224,12 +120618,14 @@
   },
   "GHOSTS": {
     "length": 6,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Abruptly stops texting",
       "Pac-Man's pursuers"
     ],
     "dates": [
-      "2023-11-04"
+      "2023-11-04",
+      "2025-09-13"
     ]
   },
   "COACHES": {
@@ -120423,7 +120819,7 @@
   },
   "TWANG": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Country singer's sound",
       "Feature of a Southern accent",
@@ -120432,7 +120828,8 @@
     "dates": [
       "2014-12-17",
       "2019-08-28",
-      "2023-11-08"
+      "2023-11-08",
+      "2025-08-22"
     ]
   },
   "FELLS": {
@@ -120654,14 +121051,16 @@
   },
   "FIBER": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Beans and bran are rich in it",
+      "It's tough to digest",
       "Substance in a bran muffin"
     ],
     "dates": [
       "2016-11-30",
-      "2023-11-13"
+      "2023-11-13",
+      "2025-08-29"
     ]
   },
   "SUSAN": {
@@ -121705,16 +122104,18 @@
   },
   "TOGA": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Bedsheet's use at a frat party",
+      "Wrap on filming \"300\"?",
       "Wrap worn by ancient Romans",
       "___ party"
     ],
     "dates": [
       "2015-03-22",
       "2016-03-07",
-      "2023-12-09"
+      "2023-12-09",
+      "2025-08-31"
     ]
   },
   "SCORES": {
@@ -122263,16 +122664,18 @@
   },
   "SHELF": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Elf on the ___ (Christmas tradition depicted by this puzzle)",
+      "Perch for a family photo",
       "Place for books",
       "See 1-Across"
     ],
     "dates": [
       "2017-07-27",
       "2020-11-23",
-      "2023-12-24"
+      "2023-12-24",
+      "2025-08-24"
     ]
   },
   "DEFOE": {
@@ -123426,8 +123829,9 @@
   },
   "OHBOY": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
+      "\"Here we go again ...\"",
       "\"How exciting!\"",
       "\"This is exciting!\"",
       "\"This is gonna be good!\"",
@@ -123439,7 +123843,8 @@
       "2017-04-09",
       "2019-03-08",
       "2019-08-04",
-      "2020-01-21"
+      "2020-01-21",
+      "2025-09-02"
     ]
   },
   "DOVES": {
@@ -123917,14 +124322,16 @@
   },
   "FLESH": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "\"It's just a ___ wound!\" (Monty Python line)",
-      "Crayola color that was changed to \"Peach\""
+      "Crayola color that was changed to \"Peach\"",
+      "___ and blood (kin)"
     ],
     "dates": [
       "2016-08-30",
-      "2020-02-03"
+      "2020-02-03",
+      "2025-08-24"
     ]
   },
   "HALLS": {
@@ -124431,16 +124838,18 @@
   },
   "INDIANA": {
     "length": 7,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Home state of Pete Buttigieg",
+      "Home to the W.N.B.A.'s Fever",
       "State that borders Lake Michigan",
       "The Hoosier State"
     ],
     "dates": [
       "2017-08-26",
       "2017-11-04",
-      "2020-02-15"
+      "2020-02-15",
+      "2025-09-06"
     ]
   },
   "STILTED": {
@@ -124708,7 +125117,7 @@
   },
   "CIVIC": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Honda model with a palindromic name",
       "Honda model you might see in reverse?",
@@ -124717,7 +125126,8 @@
     "dates": [
       "2020-02-21",
       "2020-08-10",
-      "2021-08-01"
+      "2021-08-01",
+      "2025-09-07"
     ]
   },
   "TAXFORM": {
@@ -124782,17 +125192,19 @@
   },
   "TIS": {
     "length": 3,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "\"___ better to have loved and lost ...\"",
-      "\"___ the season ...\""
+      "\"___ the season ...\"",
+      "\"___ the season!\""
     ],
     "dates": [
       "2016-11-04",
       "2018-07-14",
       "2020-02-22",
       "2020-04-12",
-      "2021-01-10"
+      "2021-01-10",
+      "2025-08-23"
     ]
   },
   "XSANDOS": {
@@ -125361,16 +125773,18 @@
   },
   "FORTY": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Negative temperature at which Fahrenheit and Celsius intersect, the only such point",
       "Number of days and nights of rainfall during the Bible's great flood",
-      "Number of spaces on a standard Monopoly board"
+      "Number of spaces on a standard Monopoly board",
+      "Number of thieves faced by Ali Baba"
     ],
     "dates": [
       "2019-06-16",
       "2020-03-11",
-      "2020-05-05"
+      "2020-05-05",
+      "2025-09-04"
     ]
   },
   "GUFF": {
@@ -127355,24 +127769,28 @@
   },
   "WAX": {
     "length": 3,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
+      "Coating for Babybel cheese",
       "Crayon material",
       "Madame Tussauds medium"
     ],
     "dates": [
       "2017-08-20",
-      "2020-05-04"
+      "2020-05-04",
+      "2025-08-22"
     ]
   },
   "ADDON": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Extended warranty or paint protection, at the car dealership"
+      "Extended warranty or paint protection, at the car dealership",
+      "Extra feature"
     ],
     "dates": [
-      "2020-05-04"
+      "2020-05-04",
+      "2025-09-13"
     ]
   },
   "SLAG": {
@@ -127816,8 +128234,9 @@
   },
   "TONYS": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
+      "\"Hamilton\" was nominated for 16 of them in '16",
       "\"Hamilton\" won 11 of them",
       "Awards for Broadway plays",
       "Awards show hosted four times by Neil Patrick Harris",
@@ -127829,7 +128248,8 @@
       "2016-02-15",
       "2017-04-21",
       "2019-08-06",
-      "2020-05-19"
+      "2020-05-19",
+      "2025-08-31"
     ]
   },
   "PESO": {
@@ -131290,8 +131710,9 @@
   },
   "OWE": {
     "length": 3,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
+      "\"Thanks, I ___ you one!\"",
       "Have bills to pay",
       "Have to pay",
       "Need to pay"
@@ -131299,7 +131720,8 @@
     "dates": [
       "2014-11-12",
       "2016-10-02",
-      "2020-08-21"
+      "2020-08-21",
+      "2025-08-30"
     ]
   },
   "NOTMUCH": {
@@ -132205,16 +132627,18 @@
   },
   "TYPOS": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Autocorrect fixes them",
       "Shotr and shrot, for short",
-      "Tihs cule has a few of tehm"
+      "Tihs cule has a few of tehm",
+      "What autocorrect corrects"
     ],
     "dates": [
       "2019-04-05",
       "2020-09-15",
-      "2021-11-23"
+      "2021-11-23",
+      "2025-09-11"
     ]
   },
   "COPE": {
@@ -132311,16 +132735,18 @@
   },
   "FERRY": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Boat to Staten Island",
+      "Means of transport in Seattle, San Francisco and New York",
       "One way to get to Staten Island",
       "Staten Island-to-Manhattan transport"
     ],
     "dates": [
       "2015-08-12",
       "2019-11-24",
-      "2020-09-19"
+      "2020-09-19",
+      "2025-09-04"
     ]
   },
   "GEARUP": {
@@ -132776,12 +133202,14 @@
   },
   "SEALE": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Bobby ___, co-founder of the Black Panthers",
       "Bobby who co-founded the Black Panther Party"
     ],
     "dates": [
-      "2020-10-03"
+      "2020-10-03",
+      "2025-09-05"
     ]
   },
   "HECKYES": {
@@ -133567,16 +133995,18 @@
   },
   "FIB": {
     "length": 3,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Little lie",
       "Little white lie",
+      "Small lie",
       "White lie"
     ],
     "dates": [
       "2014-09-28",
       "2017-10-04",
-      "2020-10-31"
+      "2020-10-31",
+      "2025-09-06"
     ]
   },
   "GOOUT": {
@@ -134441,15 +134871,17 @@
   },
   "SWIG": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Big gulp",
-      "Drink in large gulps"
+      "Drink in large gulps",
+      "Hearty gulp"
     ],
     "dates": [
       "2019-05-21",
       "2019-11-14",
-      "2020-11-29"
+      "2020-11-29",
+      "2025-08-25"
     ]
   },
   "ALLA": {
@@ -135321,14 +135753,16 @@
   },
   "MOPTOP": {
     "length": 6,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Hairstyle for the Beatles",
+      "Hairstyle made popular by the Beatles",
       "Shaggy hairstyle popularized by the Beatles"
     ],
     "dates": [
       "2018-01-27",
-      "2020-12-26"
+      "2020-12-26",
+      "2025-08-23"
     ]
   },
   "MACYS": {
@@ -135605,18 +136039,20 @@
   },
   "SHEDS": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Leaves hair everywhere",
       "Loses hair, as a dog",
       "Places to store lawn mowers and rakes",
+      "Places to store shovels and leaf blowers",
       "What a hairy dog does in the spring"
     ],
     "dates": [
       "2017-12-11",
       "2018-05-09",
       "2018-07-09",
-      "2021-01-05"
+      "2021-01-05",
+      "2025-08-22"
     ]
   },
   "MUSED": {
@@ -136007,8 +136443,9 @@
   },
   "SIX": {
     "length": 3,
-    "frequency": 8,
+    "frequency": 9,
     "clues": [
+      "Age at which Tiger Woods made his first hole-in-one",
       "Highest roll of a die",
       "Number of U.S. presidents named James",
       "Number of friends on \"Friends\"",
@@ -136026,7 +136463,8 @@
       "2019-07-31",
       "2021-01-21",
       "2021-02-04",
-      "2021-06-15"
+      "2021-06-15",
+      "2025-08-26"
     ]
   },
   "GAMED": {
@@ -137098,12 +137536,14 @@
   },
   "PSAKI": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Political commentator Jen",
       "White House press secretary Jen"
     ],
     "dates": [
-      "2021-03-01"
+      "2021-03-01",
+      "2025-08-26"
     ]
   },
   "BIKE": {
@@ -143886,12 +144326,13 @@
   },
   "GECKO": {
     "length": 5,
-    "frequency": 6,
+    "frequency": 7,
     "clues": [
       "Animal with sticky foot pads",
       "Creature with sticky toe pads",
       "Lizard known to lick its own eyeballs",
       "Lizard that can climb walls",
+      "Lizard that can detach its own tail",
       "Lizard that can lick its own eyeballs",
       "Sticky-toed lizard"
     ],
@@ -143901,7 +144342,8 @@
       "2016-11-23",
       "2019-09-16",
       "2019-11-29",
-      "2021-10-15"
+      "2021-10-15",
+      "2025-08-31"
     ]
   },
   "GLOM": {
@@ -145700,16 +146142,18 @@
   },
   "IRELAND": {
     "length": 7,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Dublin is its capital",
       "Home of James Joyce and Oscar Wilde",
-      "It's separated from Iceland by a sea (and a \"c\"!)"
+      "It's separated from Iceland by a sea (and a \"c\"!)",
+      "Only country to have a musical instrument (the harp) as its national emblem"
     ],
     "dates": [
       "2017-08-05",
       "2018-11-10",
-      "2021-12-11"
+      "2021-12-11",
+      "2025-09-06"
     ]
   },
   "SPLINTS": {
@@ -148056,14 +148500,16 @@
   },
   "LAND": {
     "length": 4,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
+      "Come down to earth",
       "Hit the tarmac",
       "See 1-Across"
     ],
     "dates": [
       "2016-11-06",
-      "2017-03-03"
+      "2017-03-03",
+      "2025-08-23"
     ]
   },
   "ASEC": {
@@ -148154,12 +148600,14 @@
   },
   "NORAH": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Grammy-winning singer Jones"
+      "Grammy-winning singer Jones",
+      "Jones who sang \"Come Away With Me\""
     ],
     "dates": [
-      "2017-03-05"
+      "2017-03-05",
+      "2025-09-04"
     ]
   },
   "ANKH": {
@@ -148736,15 +149184,17 @@
   },
   "HAGUE": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
+      "Dutch seat of government, with \"The\"",
       "International Court of Justice site, with \"the\"",
       "International court site, with \"The\""
     ],
     "dates": [
       "2017-03-26",
       "2017-07-24",
-      "2018-02-19"
+      "2018-02-19",
+      "2025-08-24"
     ]
   },
   "AIGHT": {
@@ -148769,13 +149219,15 @@
   },
   "LARD": {
     "length": 4,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
-      "Animal fat"
+      "Animal fat",
+      "Cooking grease"
     ],
     "dates": [
       "2016-03-29",
-      "2017-03-28"
+      "2017-03-28",
+      "2025-09-06"
     ]
   },
   "DIX": {
@@ -149736,12 +150188,14 @@
   },
   "SUNDIAL": {
     "length": 7,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Ancient time-tracking device",
       "Time-teller in ancient times"
     ],
     "dates": [
-      "2017-04-29"
+      "2017-04-29",
+      "2025-09-06"
     ]
   },
   "TIEINTO": {
@@ -150723,12 +151177,14 @@
   },
   "HUNG": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Like a deadlocked jury",
       "Like some juries and paintings"
     ],
     "dates": [
-      "2017-06-06"
+      "2017-06-06",
+      "2025-09-01"
     ]
   },
   "BULB": {
@@ -153183,14 +153639,16 @@
   },
   "EDIBLES": {
     "length": 7,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Pot brownies and such",
-      "Pot shop purchases"
+      "Pot shop purchases",
+      "Weed gummies"
     ],
     "dates": [
       "2017-09-02",
-      "2019-03-02"
+      "2019-03-02",
+      "2025-09-06"
     ]
   },
   "HOC": {
@@ -154943,12 +155401,14 @@
   },
   "PUB": {
     "length": 3,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Place to pour a pint",
       "Where many a trivia night is held"
     ],
     "dates": [
-      "2017-11-09"
+      "2017-11-09",
+      "2025-08-26"
     ]
   },
   "PUNTS": {
@@ -155702,7 +156162,7 @@
   },
   "RDS": {
     "length": 3,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "Avenues and streets: Abbr.",
       "GPS lines: Abbr.",
@@ -155713,7 +156173,8 @@
       "2016-09-23",
       "2017-12-07",
       "2017-12-20",
-      "2019-09-26"
+      "2019-09-26",
+      "2025-09-01"
     ]
   },
   "VENICE": {
@@ -156246,14 +156707,16 @@
   },
   "EQUIP": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
+      "Furnish with supplies",
       "Give gear to",
       "Supply with gear"
     ],
     "dates": [
       "2015-10-07",
-      "2017-12-30"
+      "2017-12-30",
+      "2025-09-03"
     ]
   },
   "SAYST": {
@@ -157397,12 +157860,14 @@
   },
   "GETON": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "\"Hop aboard!\"",
       "___ in years (age)"
     ],
     "dates": [
-      "2018-02-16"
+      "2018-02-16",
+      "2025-09-05"
     ]
   },
   "NYPD": {
@@ -160453,14 +160918,16 @@
   },
   "DORKY": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Like a dweeb",
+      "Like many an endearing goofball",
       "Uncool"
     ],
     "dates": [
       "2014-08-22",
-      "2018-06-24"
+      "2018-06-24",
+      "2025-09-08"
     ]
   },
   "SLOSH": {
@@ -161089,12 +161556,14 @@
   },
   "PRIMO": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Of the highest quality, informally"
+      "Of the highest quality, informally",
+      "Top-notch, informally"
     ],
     "dates": [
-      "2018-07-20"
+      "2018-07-20",
+      "2025-08-22"
     ]
   },
   "TIMEY": {
@@ -166221,12 +166690,14 @@
   },
   "NICKS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Small shaving cuts"
+      "Small shaving cuts",
+      "Tiny shaving cuts"
     ],
     "dates": [
-      "2019-02-27"
+      "2019-02-27",
+      "2025-08-31"
     ]
   },
   "GUARD": {
@@ -166647,12 +167118,14 @@
   },
   "ASKUP": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Invite to one's loft, say",
       "Invite to one's penthouse suite, for instance"
     ],
     "dates": [
-      "2019-03-14"
+      "2019-03-14",
+      "2025-09-08"
     ]
   },
   "RAWR": {
@@ -168458,12 +168931,13 @@
   },
   "TARDY": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
       "Late"
     ],
     "dates": [
-      "2019-06-21"
+      "2019-06-21",
+      "2025-08-21"
     ]
   },
   "BIGTECH": {
@@ -168949,12 +169423,14 @@
   },
   "CLOTH": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Bathroom hand towel, e.g."
+      "Bathroom hand towel, e.g.",
+      "Eco-conscious diaper option"
     ],
     "dates": [
-      "2019-07-14"
+      "2019-07-14",
+      "2025-09-08"
     ]
   },
   "AERO": {
@@ -169826,12 +170302,14 @@
   },
   "MINION": {
     "length": 6,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Yellow creature in \"Despicable Me\"",
       "Yellow creature seen in a series of popular 2010s movies"
     ],
     "dates": [
-      "2019-08-31"
+      "2019-08-31",
+      "2025-08-23"
     ]
   },
   "IDUNNO": {
@@ -171528,12 +172006,14 @@
   },
   "KHAKI": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Yellow-brown fabric often used for pants"
+      "Yellow-brown fabric often used for pants",
+      "Yellowish-brown pants material"
     ],
     "dates": [
-      "2019-12-02"
+      "2019-12-02",
+      "2025-09-10"
     ]
   },
   "OKLA": {
@@ -172185,12 +172665,14 @@
   },
   "BULBS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Future tulips",
       "They're sold at hardware stores and garden shops"
     ],
     "dates": [
-      "2014-09-03"
+      "2014-09-03",
+      "2025-08-29"
     ]
   },
   "BULLY": {
@@ -173478,9 +173960,10 @@
   },
   "JOLIE": {
     "length": 5,
-    "frequency": 4,
+    "frequency": 5,
     "clues": [
       "\"Maleficent\" star",
+      "Angelina of \"Mr. & Mrs. Smith\"",
       "Angelina who starred in \"Maleficent\"",
       "Fan of Pitt?",
       "Half of Brangelina"
@@ -173489,7 +173972,8 @@
       "2014-12-07",
       "2015-08-29",
       "2015-12-28",
-      "2016-04-28"
+      "2016-04-28",
+      "2025-09-07"
     ]
   },
   "WPM": {
@@ -173843,14 +174327,16 @@
   },
   "RIOT": {
     "length": 4,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "One who's hilariously funny",
-      "Pussy ___ (Russian girl group)"
+      "Pussy ___ (Russian girl group)",
+      "Total laughfest"
     ],
     "dates": [
       "2015-01-03",
-      "2015-09-05"
+      "2015-09-05",
+      "2025-08-27"
     ]
   },
   "SNUG": {
@@ -174005,12 +174491,14 @@
   },
   "TEAT": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Animal milk source"
+      "Animal milk source",
+      "What a calf drinks from"
     ],
     "dates": [
-      "2015-01-18"
+      "2015-01-18",
+      "2025-08-28"
     ]
   },
   "AHEAP": {
@@ -177803,12 +178291,14 @@
   },
   "HEFT": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Serious weight",
       "Weight"
     ],
     "dates": [
-      "2015-09-20"
+      "2015-09-20",
+      "2025-09-03"
     ]
   },
   "ASKME": {
@@ -179845,12 +180335,13 @@
   },
   "CHINS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
       "Goatees grow on them"
     ],
     "dates": [
-      "2016-03-24"
+      "2016-03-24",
+      "2025-09-01"
     ]
   },
   "POSSE": {
@@ -180005,12 +180496,13 @@
   },
   "RUSES": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
       "Deceptive ploys"
     ],
     "dates": [
-      "2016-04-08"
+      "2016-04-08",
+      "2025-08-24"
     ]
   },
   "DRIPS": {
@@ -180843,12 +181335,14 @@
   },
   "LOONS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Birds found on Canadian coins"
+      "Birds found on Canadian coins",
+      "Birds that swim underwater to catch fish"
     ],
     "dates": [
-      "2016-07-12"
+      "2016-07-12",
+      "2025-08-27"
     ]
   },
   "SICS": {
@@ -182001,12 +182495,14 @@
   },
   "SSA": {
     "length": 3,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Ass-backwards?",
       "Monthly income source for retirees: Abbr."
     ],
     "dates": [
-      "2016-09-17"
+      "2016-09-17",
+      "2025-08-27"
     ]
   },
   "FOXNEWS": {
@@ -184103,12 +184599,14 @@
   },
   "BLURS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Becomes hazy, as a picture"
+      "Becomes hazy, as a picture",
+      "Fuzzy photo features"
     ],
     "dates": [
-      "2025-08-16"
+      "2025-08-16",
+      "2025-08-30"
     ]
   },
   "PIERRE": {
@@ -184139,6 +184637,476 @@
     ],
     "dates": [
       "2025-08-17"
+    ]
+  },
+  "ENOHP": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Flip phone?"
+    ],
+    "dates": [
+      "2025-08-27"
+    ]
+  },
+  "KNUD": {
+    "length": 4,
+    "frequency": 1,
+    "clues": [
+      "Reverse dunk?"
+    ],
+    "dates": [
+      "2025-08-27"
+    ]
+  },
+  "PDA": {
+    "length": 3,
+    "frequency": 1,
+    "clues": [
+      "Park bench kissing and such, for short"
+    ],
+    "dates": [
+      "2025-08-27"
+    ]
+  },
+  "BREED": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Munchkin or Maine Coon"
+    ],
+    "dates": [
+      "2025-08-29"
+    ]
+  },
+  "RHUBARB": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Plant with tart red stalks used in pie filling"
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "GIRLDAD": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Proud father of daughters, in lingo"
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "STCROIX": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Largest of the U.S. Virgin Islands"
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "WHISTLE": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "It might be blown in the fourth quarter"
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "EUROCUP": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Continent-wide soccer tournament, informally"
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "HADROOM": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Wasn't too full for dessert"
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "ERASING": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Wiping, as a hard drive"
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "NBD": {
+    "length": 3,
+    "frequency": 1,
+    "clues": [
+      "Texter's \"Don't worry about it\""
+    ],
+    "dates": [
+      "2025-08-30"
+    ]
+  },
+  "YOKEL": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Country bumpkin"
+    ],
+    "dates": [
+      "2025-08-31"
+    ]
+  },
+  "THUD": {
+    "length": 4,
+    "frequency": 1,
+    "clues": [
+      "Sound of a fall"
+    ],
+    "dates": [
+      "2025-09-01"
+    ]
+  },
+  "BOSOM": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "___ buddies (close pals)"
+    ],
+    "dates": [
+      "2025-09-02"
+    ]
+  },
+  "PYRE": {
+    "length": 4,
+    "frequency": 1,
+    "clues": [
+      "Combustible funeral structure"
+    ],
+    "dates": [
+      "2025-09-03"
+    ]
+  },
+  "RUNBY": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Bring up to in order to get a quick opinion"
+    ],
+    "dates": [
+      "2025-09-03"
+    ]
+  },
+  "BANFF": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "National park in the Canadian Rockies"
+    ],
+    "dates": [
+      "2025-09-04"
+    ]
+  },
+  "GLUT": {
+    "length": 4,
+    "frequency": 1,
+    "clues": [
+      "Surplus"
+    ],
+    "dates": [
+      "2025-09-05"
+    ]
+  },
+  "ITSIN": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Soccer announcer's cry after a goal"
+    ],
+    "dates": [
+      "2025-09-05"
+    ]
+  },
+  "PLASMA": {
+    "length": 6,
+    "frequency": 1,
+    "clues": [
+      "Substance inside early flat-screen TVs"
+    ],
+    "dates": [
+      "2025-09-05"
+    ]
+  },
+  "JULIET": {
+    "length": 6,
+    "frequency": 1,
+    "clues": [
+      "Famous star-crossed lover"
+    ],
+    "dates": [
+      "2025-09-05"
+    ]
+  },
+  "STENO": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Recorder in a courtroom"
+    ],
+    "dates": [
+      "2025-09-05"
+    ]
+  },
+  "HIE": {
+    "length": 3,
+    "frequency": 1,
+    "clues": [
+      "Hurry, in Shakespearean English"
+    ],
+    "dates": [
+      "2025-09-06"
+    ]
+  },
+  "BACARDI": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Big name in rum"
+    ],
+    "dates": [
+      "2025-09-06"
+    ]
+  },
+  "CARDIB": {
+    "length": 6,
+    "frequency": 1,
+    "clues": [
+      "She holds the record for most #1 Billboard hits by a female rapper (5)"
+    ],
+    "dates": [
+      "2025-09-06"
+    ]
+  },
+  "DRACULA": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Whom Count von Count of \"Sesame Street\" is a parody of"
+    ],
+    "dates": [
+      "2025-09-06"
+    ]
+  },
+  "HARDING": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "1920s U.S. president"
+    ],
+    "dates": [
+      "2025-09-06"
+    ]
+  },
+  "JKQXZ": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "In alphabetical order, the five letters each worth at least five points in Scrabble"
+    ],
+    "dates": [
+      "2025-09-10"
+    ]
+  },
+  "JOS": {
+    "length": 3,
+    "frequency": 1,
+    "clues": [
+      "___ A. Bank (menswear retailer)"
+    ],
+    "dates": [
+      "2025-09-10"
+    ]
+  },
+  "HOPED": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Crossed one's fingers"
+    ],
+    "dates": [
+      "2025-09-11"
+    ]
+  },
+  "SHONDA": {
+    "length": 6,
+    "frequency": 1,
+    "clues": [
+      "Rhimes who created \"Grey's Anatomy\" and \"Scandal\""
+    ],
+    "dates": [
+      "2025-09-13"
+    ]
+  },
+  "SPONCON": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Many posts by Instagram influencers, informally"
+    ],
+    "dates": [
+      "2025-09-13"
+    ]
+  },
+  "BRONTES": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Literary sisters behind \"Jane Eyre\" and \"Wuthering Heights\""
+    ],
+    "dates": [
+      "2025-09-13"
+    ]
+  },
+  "LANCED": {
+    "length": 6,
+    "frequency": 1,
+    "clues": [
+      "Poked with a knight's weapon"
+    ],
+    "dates": [
+      "2025-09-13"
+    ]
+  },
+  "GENAI": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "It might be prompted to make funny images online, for short"
+    ],
+    "dates": [
+      "2025-09-15"
+    ]
+  },
+  "RAID": {
+    "length": 4,
+    "frequency": 1,
+    "clues": [
+      "Brand in the pest control aisle"
+    ],
+    "dates": [
+      "2025-09-15"
+    ]
+  },
+  "HITCH": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Catch, as a ride"
+    ],
+    "dates": [
+      "2025-09-16"
+    ]
+  },
+  "CHAN": {
+    "length": 4,
+    "frequency": 1,
+    "clues": [
+      "Jackie of martial arts films"
+    ],
+    "dates": [
+      "2025-09-16"
+    ]
+  },
+  "KILLINIT": {
+    "length": 8,
+    "frequency": 1,
+    "clues": [
+      "Doin' amazingly, in slang"
+    ],
+    "dates": [
+      "2025-08-23"
+    ]
+  },
+  "ANDSCENE": {
+    "length": 8,
+    "frequency": 1,
+    "clues": [
+      "Director's words at the end of a take"
+    ],
+    "dates": [
+      "2025-08-23"
+    ]
+  },
+  "ZOOMLENS": {
+    "length": 8,
+    "frequency": 1,
+    "clues": [
+      "Camera attachment"
+    ],
+    "dates": [
+      "2025-08-23"
+    ]
+  },
+  "NUTMEG": {
+    "length": 6,
+    "frequency": 1,
+    "clues": [
+      "Spice in a Pumpkin Spice Latte"
+    ],
+    "dates": [
+      "2025-08-23"
+    ]
+  },
+  "ONESEED": {
+    "length": 7,
+    "frequency": 1,
+    "clues": [
+      "Tournament favorite"
+    ],
+    "dates": [
+      "2025-08-23"
+    ]
+  },
+  "KATZ": {
+    "length": 4,
+    "frequency": 1,
+    "clues": [
+      "Eponym of the New York City deli featured in \"When Harry Met Sally ...\""
+    ],
+    "dates": [
+      "2025-08-23"
+    ]
+  },
+  "MTA": {
+    "length": 3,
+    "frequency": 1,
+    "clues": [
+      "N.Y.C. commuting org."
+    ],
+    "dates": [
+      "2025-08-23"
+    ]
+  },
+  "LMN": {
+    "length": 3,
+    "frequency": 1,
+    "clues": [
+      "Letters after \"JK\""
+    ],
+    "dates": [
+      "2025-08-23"
     ]
   }
 }
