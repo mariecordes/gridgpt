@@ -87,9 +87,16 @@ export default function CrosswordGenerator() {
   };
 
   const generateCrossword = async () => {
-    setIsLoading(true);
-    setError(null);
-    setLoadingMessage(loadingMessages[0]);
+  setIsLoading(true);
+  setError(null);
+  setLoadingMessage(loadingMessages[0]);
+  // Clear any existing crossword immediately so the old one doesn't remain visible while generating a new one
+  setCrosswordData(null);
+  setUserSolution({});
+  setCellCorrectness({});
+  setCheckResult(null);
+  setCurrentSlot(null);
+  setCurrentDirection('across');
     
     // Rotate through loading messages
     const messageInterval = setInterval(() => {
