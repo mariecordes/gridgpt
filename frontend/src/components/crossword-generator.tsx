@@ -935,15 +935,6 @@ export default function CrosswordGenerator() {
                 <Button onClick={() => checkSolution()} variant="outline">
                   Check Solution
                 </Button>
-                <Button 
-                  onClick={() => {
-                    setCellCorrectness({});
-                    setCheckResult(null);
-                  }}
-                  variant="outline"
-                >
-                  Clear Check
-                </Button>
                 <Select 
                   value="" 
                   onValueChange={(value) => {
@@ -964,18 +955,32 @@ export default function CrosswordGenerator() {
                     <SelectItem value="grid">Reveal Grid</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button 
-                  onClick={() => {
-                    setUserSolution({});
-                    setCellCorrectness({});
-                    setCheckResult(null);
-                    setRevealedCells({});
-                    setFocusedCellKey(null);
+                <Select 
+                  value="" 
+                  onValueChange={(value) => {
+                    if (value === 'check') {
+                      setCellCorrectness({});
+                      setCheckResult(null);
+                    } else if (value === 'solution') {
+                      setUserSolution({});
+                      setCellCorrectness({});
+                      setCheckResult(null);
+                      setRevealedCells({});
+                      setFocusedCellKey(null);
+                    }
                   }}
-                  variant="outline"
                 >
-                  Clear Grid
-                </Button>
+                  <SelectTrigger 
+                    className="w-auto font-medium" 
+                    style={{ color: 'black' }}
+                  >
+                    <SelectValue placeholder="Clear" style={{ color: 'black', fontWeight: 500 }} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="check">Clear Check</SelectItem>
+                    <SelectItem value="solution">Clear Grid</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
               {checkResult && (
