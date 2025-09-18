@@ -562,12 +562,10 @@ export default function CrosswordGenerator() {
       
       slot.cells.forEach(([row, col], index) => {
         const cellKey = `${row}-${col}`;
-        const wasEmpty = !userSolution[cellKey] || userSolution[cellKey].trim() === '';
         
         newSolution[cellKey] = correctAnswer[index];
-        if (wasEmpty) {
-          newRevealed[cellKey] = true;
-        }
+        // Mark all cells as revealed for consistent styling
+        newRevealed[cellKey] = true;
       });
     });
     
