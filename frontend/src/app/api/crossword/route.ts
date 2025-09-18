@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!response.ok) {
-      let detail: any = undefined;
+      let detail: { detail?: string } | undefined = undefined;
       try { detail = await response.json(); } catch {}
       console.error('[Crossword API] Backend error', response.status, detail);
       throw new Error(detail?.detail || `Backend returned ${response.status}`);
