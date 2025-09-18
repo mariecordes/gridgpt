@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import GridPreview from '@/components/ui/grid-preview';
 import CollapsibleAbout from '@/components/ui/collapsible-about';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
@@ -60,6 +61,7 @@ export default function CrosswordGenerator() {
   const [crosswordData, setCrosswordData] = useState<CrosswordData | null>(null);
   const [userSolution, setUserSolution] = useState<{ [key: string]: string }>({});
   const [cellCorrectness, setCellCorrectness] = useState<{ [key: string]: 'correct' | 'incorrect' | 'unchecked' }>({});
+  const [revealedCells, setRevealedCells] = useState<{ [key: string]: boolean }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -67,6 +69,8 @@ export default function CrosswordGenerator() {
   const [currentSlot, setCurrentSlot] = useState<string | null>(null);
   const [currentDirection, setCurrentDirection] = useState<'across' | 'down'>('across');
   const [lastNavigationDirection, setLastNavigationDirection] = useState<string | null>(null);
+  const [showRevealGridDialog, setShowRevealGridDialog] = useState(false);
+  const [focusedCellKey, setFocusedCellKey] = useState<string | null>(null);
 
   const loadingMessages = [
     "📚 Finding theme-related words...",
@@ -125,9 +129,11 @@ export default function CrosswordGenerator() {
       setCrosswordData(data);
       setUserSolution({});
       setCellCorrectness({});
+      setRevealedCells({});
       setCheckResult(null);
       setCurrentSlot(null);
       setCurrentDirection('across');
+      setFocusedCellKey(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -162,6 +168,9 @@ export default function CrosswordGenerator() {
   };
 
   const handleCellChange = (gridKey: string, value: string) => {
+    // Prevent changes to revealed cells
+    if (revealedCells[gridKey]) return;
+    
     const updatedSolution = {
       ...userSolution,
       [gridKey]: value.toUpperCase()
@@ -437,6 +446,138 @@ export default function CrosswordGenerator() {
     }
   };
 
+  // Reveal functions
+  const revealLetter = () => {
+    if (!crosswordData) return;
+    
+    let cellKey: string;
+    let cellIndex: number;
+    let slot: any;
+    let correctAnswer: string;
+    
+    // Strategy 1: Use tracked focused cell if available and in current slot
+    if (focusedCellKey && currentSlot) {
+      cellKey = focusedCellKey;
+      const [row, col] = cellKey.split('-').map(Number);
+      
+      slot = crosswordData.slots?.find(s => s.id === currentSlot);
+      if (slot) {
+        cellIndex = slot.cells.findIndex(([r, c]: [number, number]) => r === row && c === col);
+        if (cellIndex !== -1) {
+          correctAnswer = crosswordData.filled_slots[currentSlot];
+          if (correctAnswer && cellIndex < correctAnswer.length) {
+            // Reveal the focused cell regardless of current content
+            const wasEmpty = !userSolution[cellKey] || userSolution[cellKey].trim() === '';
+            const correctLetter = correctAnswer[cellIndex];
+            
+            setUserSolution(prev => ({ ...prev, [cellKey]: correctLetter }));
+            // Only mark as revealed if it was previously empty
+            if (wasEmpty) {
+              setRevealedCells(prev => ({ ...prev, [cellKey]: true }));
+            }
+            return;
+          }
+        }
+      }
+    }
+    
+    // Strategy 2: If we have a current slot but no reliable focused cell, 
+    // find the first empty cell in the current slot
+    if (currentSlot) {
+      slot = crosswordData.slots?.find(s => s.id === currentSlot);
+      correctAnswer = crosswordData.filled_slots[currentSlot];
+      
+      if (slot && correctAnswer) {
+        for (let i = 0; i < slot.cells.length; i++) {
+          const [row, col] = slot.cells[i];
+          const key = `${row}-${col}`;
+          
+          if (!userSolution[key] || userSolution[key].trim() === '') {
+            const correctLetter = correctAnswer[i];
+            setUserSolution(prev => ({ ...prev, [key]: correctLetter }));
+            setRevealedCells(prev => ({ ...prev, [key]: true }));
+            return;
+          }
+        }
+      }
+    }
+    
+    // Strategy 3: No current slot - find first empty cell anywhere
+    for (const [slotId, answer] of Object.entries(crosswordData.filled_slots)) {
+      const slotData = crosswordData.slots?.find(s => s.id === slotId);
+      if (!slotData) continue;
+      
+      for (let i = 0; i < slotData.cells.length; i++) {
+        const [row, col] = slotData.cells[i];
+        const key = `${row}-${col}`;
+        
+        if (!userSolution[key] || userSolution[key].trim() === '') {
+          const correctLetter = answer[i];
+          setUserSolution(prev => ({ ...prev, [key]: correctLetter }));
+          setRevealedCells(prev => ({ ...prev, [key]: true }));
+          
+          // Also select this slot
+          setCurrentSlot(slotId);
+          setCurrentDirection(slotData.direction);
+          return;
+        }
+      }
+    }
+  };
+
+  const revealWord = () => {
+    if (!crosswordData || !currentSlot) return;
+    
+    const slot = crosswordData.slots?.find(s => s.id === currentSlot);
+    if (!slot) return;
+    
+    const correctAnswer = crosswordData.filled_slots[currentSlot];
+    if (!correctAnswer) return;
+    
+    const newSolution = { ...userSolution };
+    const newRevealed = { ...revealedCells };
+    
+    slot.cells.forEach(([row, col], index) => {
+      const cellKey = `${row}-${col}`;
+      const wasEmpty = !userSolution[cellKey] || userSolution[cellKey].trim() === '';
+      
+      newSolution[cellKey] = correctAnswer[index];
+      if (wasEmpty) {
+        newRevealed[cellKey] = true;
+      }
+    });
+    
+    setUserSolution(newSolution);
+    setRevealedCells(newRevealed);
+  };
+
+  const revealGrid = () => {
+    if (!crosswordData) return;
+    
+    const newSolution = { ...userSolution };
+    const newRevealed = { ...revealedCells };
+    
+    // Reveal all cells in all slots
+    Object.entries(crosswordData.filled_slots).forEach(([slotId, correctAnswer]) => {
+      const slot = crosswordData.slots?.find(s => s.id === slotId);
+      if (!slot) return;
+      
+      slot.cells.forEach(([row, col], index) => {
+        const cellKey = `${row}-${col}`;
+        const wasEmpty = !userSolution[cellKey] || userSolution[cellKey].trim() === '';
+        
+        newSolution[cellKey] = correctAnswer[index];
+        if (wasEmpty) {
+          newRevealed[cellKey] = true;
+        }
+      });
+    });
+    
+    setUserSolution(newSolution);
+    setRevealedCells(newRevealed);
+    setShowRevealGridDialog(false);
+  };
+
   // Helper function to get clue numbers for a cell
   const getClueNumbers = (rowIndex: number, colIndex: number) => {
     if (!crosswordData?.slots) return [];
@@ -471,17 +612,24 @@ export default function CrosswordGenerator() {
             const clueNumbers = getClueNumbers(rowIndex, colIndex);
             const cellKey = `${rowIndex}-${colIndex}`;
             const correctness = cellCorrectness[cellKey];
+            const isRevealed = revealedCells[cellKey];
             
             // Check if this cell is part of the currently selected slot
             const isInCurrentSlot = currentSlot && crosswordData.slots?.find(s => 
               s.id === currentSlot && s.cells.some(([r, c]) => r === rowIndex && c === colIndex)
             );
             
-            // Determine cell background color based on correctness and selection
+            // Determine cell background color based on correctness, selection, and reveal status
             let cellBgColor = colors.emptyCell;
             let cellHoverColor = colors.cellHover;
+            let textColor = 'inherit';
             
-            if (correctness === 'correct') {
+            if (isRevealed) {
+              // Revealed cells have special styling
+              cellBgColor = '#D9DFFC';
+              cellHoverColor = '#D9DFFC'; // Keep same color on hover
+              textColor = '#6B85E5';
+            } else if (correctness === 'correct') {
               cellBgColor = colors.correctAnswer;
               cellHoverColor = colors.correctHover;
             } else if (correctness === 'incorrect') {
@@ -527,17 +675,23 @@ export default function CrosswordGenerator() {
                       maxLength={1}
                       data-cell={cellKey}
                       className="w-full h-full text-center border-none outline-none text-lg font-bold pt-2 bg-transparent transition-colors"
-                      style={{ textTransform: 'uppercase' }}
+                      style={{ 
+                        textTransform: 'uppercase',
+                        color: textColor
+                      }}
                       value={userSolution[cellKey] || ''}
                       onChange={(e) => handleCellChange(cellKey, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, cellKey)}
                       onFocus={(e) => {
                         e.target.style.backgroundColor = colors.activeCell;
+                        setFocusedCellKey(cellKey);
                       }}
                       onBlur={(e) => {
                         e.target.style.backgroundColor = 'transparent';
+                        // Don't clear focusedCellKey on blur - keep it to remember last focused cell
                       }}
                       placeholder=""
+                      readOnly={isRevealed}
                     />
                   </>
                 )}
@@ -794,11 +948,33 @@ export default function CrosswordGenerator() {
                 >
                   Clear Check
                 </Button>
+                <Select 
+                  value="" 
+                  onValueChange={(value) => {
+                    if (value === 'letter') revealLetter();
+                    else if (value === 'word') revealWord();
+                    else if (value === 'grid') setShowRevealGridDialog(true);
+                  }}
+                >
+                  <SelectTrigger 
+                    className="w-auto font-medium" 
+                    style={{ color: 'black' }}
+                  >
+                    <SelectValue placeholder="Reveal" style={{ color: 'black', fontWeight: 500 }} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="letter">Reveal Letter</SelectItem>
+                    <SelectItem value="word">Reveal Word</SelectItem>
+                    <SelectItem value="grid">Reveal Grid</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Button 
                   onClick={() => {
                     setUserSolution({});
                     setCellCorrectness({});
                     setCheckResult(null);
+                    setRevealedCells({});
+                    setFocusedCellKey(null);
                   }}
                   variant="outline"
                 >
@@ -833,6 +1009,27 @@ export default function CrosswordGenerator() {
           </CardContent>
         </Card>
       )}
+
+      {/* Reveal Grid Confirmation Dialog */}
+      <Dialog open={showRevealGridDialog} onOpenChange={setShowRevealGridDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reveal entire grid?</DialogTitle>
+            <DialogDescription>
+              This will fill in all remaining empty cells with the correct answers. 
+              Are you sure you want to continue?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowRevealGridDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={revealGrid}>
+              Reveal Grid
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
         {/* Clues */}
         {crosswordData && (
