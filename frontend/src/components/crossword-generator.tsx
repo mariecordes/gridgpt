@@ -820,19 +820,26 @@ export default function CrosswordGenerator() {
   // Render the current clue highlight box
   const renderCurrentClueHighlight = () => {
     const clueInfo = getCurrentClueInfo();
-    if (!clueInfo) return null;
 
     return (
       <div className="mb-4 flex justify-center">
         <div 
           className="max-w-md w-fit p-2 rounded-lg border-2"
           style={{
-            backgroundColor: colors.slotHighlight,
-            borderColor: colors.selectedClueBorder
+            backgroundColor: clueInfo ? colors.slotHighlight : '#f5f5f5',
+            borderColor: clueInfo ? colors.selectedClueBorder : '#d0d0d0'
           }}
         >
-          <div className="text-sm">
-            <span className="font-semibold">{clueInfo.id}:</span> {clueInfo.text}
+          <div className="text-sm" style={{ 
+            color: clueInfo ? 'inherit' : '#999' 
+          }}>
+            {clueInfo ? (
+              <>
+                <span className="font-semibold">{clueInfo.id}:</span> {clueInfo.text}
+              </>
+            ) : (
+              <span className="italic">Click on a cell to see the clue</span>
+            )}
           </div>
         </div>
       </div>
