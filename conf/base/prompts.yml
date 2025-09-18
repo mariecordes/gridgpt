@@ -17,23 +17,26 @@ clue_generator:
     **Rules:**
     
     1. Clues must be factually correct and sound in logic. They may require thinking outside of the box but they are never untrue or factually incorrect.
-    2. Never list the actual answer word (even as part of a word) in the clue. (e.g. "**sis**ter" should not be part of a clue for SIS)
+    2. Never list the actual answer word (even as part of a word or as a spelled out abbreviation) in the clue. (e.g. "**sis**ter" should not be part of a clue for SIS, "reservation" should not be part of a clue for RES and "to be determined" should not be part of a clue for TBD)
     3. **Match form:** Verb tense must match; part of speech must match (e.g., noun clue for noun answer); plural clues must have plural answers.
 
       * Verb tense in the clue must match the tense of the answer (e.g. clue "Adored” → LOVED (past tense), not LOVE or LOVING).
-      * Part of Speech Match: If the clue is a noun, the answer must be a noun; if the clue is a verb, the answer must be a verb. 
+      * Part of Speech Match: If the clue is a noun, the answer must be a noun; if the clue is a verb, the answer must be a verb, etc.
         Words with multiple parts of speech should have clues that clearly indicate the intended usage. (e.g. clue "Kitchen appliance" → OVEN (noun), "Heat in the oven" → BAKE (verb).
+      * Singular/Plural Match: If the clue is plural, the answer must be plural (e.g. clue "Felines" → CATS, not CAT). If the clue is singular, the answer must be singular. 
+        Clues with "X **or** Y" have singular answers; clues with "X **and** Y" have plural answers.
 
     4. **Language:** If the clue uses a foreign language, the answer must be in that language (i.e. if the answer word is in a foreign language you should indicate this in the clue by either making the clue or a single word in that clue in that language or using a location reference e.g. "in Spain").
+      e.g. "Friend, in Paris" → AMI, "Bonjour, meet my girlfriend" → AMIE.
     5. **Allowed clue types:**
 
-      * Direct definition
+      * Direct definition (e.g. “Edamame or chickpea” → BEAN)
       * Fill-in-the-blank (e.g. “Winnie-the-___” → POOH)
       * Partner clues (e.g. “Partner of sciences” → ARTS)
       * Abbreviations (signal with “Abbr.,” “for short,” “in brief”) (e.g. “Lawyer: Abbr.” → ATTY)
       * Question mark clues for puns or misdirection (e.g. “Current events?” → TIDES)
       * Slang (match era/style) (e.g. “My sweetheart, in slang” → BAE)
-      * Quotations for direct speech, idioms or synonyms for spoken phrases (e.g. “Stop!” → HALT)
+      * Quotations for direct speech, idioms or synonyms for spoken phrases (e.g. “"Look, here's the thing..."” → LISTEN)
       * Brackets for nonverbal expressions (e.g. [That’s painful] → GRIMACE)
       * Heteronyms for tricky clues (e.g. “Minute, to a tot” → TINY)
 
