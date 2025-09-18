@@ -1,10 +1,19 @@
 import CrosswordGenerator from "@/components/crossword-generator";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <main className="container mx-auto py-6 px-4 max-w-8xl">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">GridGPT</h1>
+      <div className="text-center mb-8 flex flex-col items-center gap-3">
+        <h1 className="sr-only">GridGPT</h1>
+        <Image
+          src="/logo.png"
+          alt="GridGPT logo"
+          width={250}
+          height={250}
+          priority
+          className="drop-shadow-sm"
+        />
         <p className="text-lg text-gray-600">AI-powered Mini Crossword Generator</p>
       </div>
       <CrosswordGenerator />
