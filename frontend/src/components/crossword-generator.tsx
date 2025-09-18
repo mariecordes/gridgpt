@@ -804,6 +804,41 @@ export default function CrosswordGenerator() {
     );
   };
 
+  // Helper function to get current clue information
+  const getCurrentClueInfo = () => {
+    if (!crosswordData || !currentSlot) return null;
+    
+    const clue = crosswordData.clues[currentSlot];
+    if (!clue) return null;
+    
+    return {
+      id: currentSlot,
+      text: clue
+    };
+  };
+
+  // Render the current clue highlight box
+  const renderCurrentClueHighlight = () => {
+    const clueInfo = getCurrentClueInfo();
+    if (!clueInfo) return null;
+
+    return (
+      <div className="mb-4 flex justify-center">
+        <div 
+          className="max-w-md w-fit p-2 rounded-lg border-2"
+          style={{
+            backgroundColor: colors.slotHighlight,
+            borderColor: colors.selectedClueBorder
+          }}
+        >
+          <div className="text-sm">
+            <span className="font-semibold">{clueInfo.id}:</span> {clueInfo.text}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
       {/* Main Content - Left Side */}
@@ -929,6 +964,7 @@ export default function CrosswordGenerator() {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
+              {renderCurrentClueHighlight()}
               {renderGrid()}
               
               <div className="flex justify-center space-x-4">
