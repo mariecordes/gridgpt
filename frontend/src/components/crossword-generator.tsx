@@ -621,7 +621,8 @@ export default function CrosswordGenerator() {
   return (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
       {/* Main Content - Left Side */}
-      <div className="flex-1 lg:flex-[2] space-y-6">
+      {/* Use w-full so width matches About card if e.g., on mobile; only expand proportionally on large screens */}
+      <div className="w-full lg:flex-[2] space-y-6">
         {/* Input Form */}
         <Card>
           <CardHeader>
@@ -810,8 +811,8 @@ export default function CrosswordGenerator() {
         )}
       </div>
 
-      {/* About Section - Right Side */}
-      <div className="w-full lg:w-80 xl:w-[360px] flex">
+  {/* About Section - Right Side (fixed width only on large screens) */}
+  <div className="w-full lg:w-80 xl:w-[360px] flex">
         <CollapsibleAbout />
       </div>
     </div>
