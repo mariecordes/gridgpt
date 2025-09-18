@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import GridPreview from '@/components/ui/grid-preview';
 import CollapsibleAbout from '@/components/ui/collapsible-about';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
@@ -81,9 +81,9 @@ export default function CrosswordGenerator() {
   ];
 
   const templates = [
-    { id: '5x5_blocked_corners', name: '5x5 Blocked Corners', difficulty: 'easy' },
-    { id: '5x5_bottom_pillars', name: '5x5 Bottom Pillars', difficulty: 'medium' },
-    { id: '5x5_diagonal_cut', name: '5x5 Diagonal Cut', difficulty: 'hard' }
+    { id: '5x5_blocked_corners', name: '5x5 Blocked Corners' },
+    { id: '5x5_bottom_pillars', name: '5x5 Bottom Pillars' },
+    { id: '5x5_diagonal_cut', name: '5x5 Diagonal Cut' }
   ];
 
   const handleInputChange = (field: keyof GenerateRequest, value: string) => {
@@ -452,7 +452,7 @@ export default function CrosswordGenerator() {
     
     let cellKey: string;
     let cellIndex: number;
-    let slot: any;
+    let slot: { id: string; cells: [number, number][] } | undefined;
     let correctAnswer: string;
     
     // Strategy 1: Use tracked focused cell if available and in current slot
