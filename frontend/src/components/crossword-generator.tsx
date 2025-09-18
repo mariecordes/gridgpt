@@ -626,9 +626,9 @@ export default function CrosswordGenerator() {
             
             if (isRevealed) {
               // Revealed cells have special styling
-              cellBgColor = '#D9DFFC';
-              cellHoverColor = '#D9DFFC'; // Keep same color on hover
-              textColor = '#6B85E5';
+              cellBgColor = colors.revealedCell;
+              cellHoverColor = colors.revealedCell; // Keep same color on hover
+              textColor = colors.textRevealed;
             } else if (correctness === 'correct') {
               cellBgColor = colors.correctAnswer;
               cellHoverColor = colors.correctHover;

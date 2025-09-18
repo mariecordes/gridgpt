@@ -17,6 +17,7 @@ const colors = {
   correctHover: '#BBF7D0',
   incorrectAnswer: '#FEE2E2',
   incorrectHover: '#FECACA',
+  revealedCell: '#D9DFFC',
   clueHover: '#F9FAFB',
   cellHover: '#F9FAFB',
 
@@ -26,6 +27,7 @@ const colors = {
   // Text colors
   textSuccess: '#166534',
   textError: '#991B1B',
+  textRevealed: '#6B85E5',
 };
 
 export default colors;
