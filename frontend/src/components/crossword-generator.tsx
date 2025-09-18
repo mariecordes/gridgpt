@@ -137,11 +137,45 @@ export default function CrosswordGenerator() {
     }
   };
 
+  // Helper function to check if the entire grid is filled
+  const isGridCompletelyFilled = (updatedSolution: { [key: string]: string }) => {
+    if (!crosswordData?.grid) return false;
+    
+    // Check all non-blocked cells in the grid
+    for (let row = 0; row < crosswordData.grid.length; row++) {
+      for (let col = 0; col < crosswordData.grid[row].length; col++) {
+        const cell = crosswordData.grid[row][col];
+        // Skip blocked cells (marked with '#')
+        if (cell === '#') continue;
+        
+        const cellKey = `${row}-${col}`;
+        const userValue = updatedSolution[cellKey];
+        
+        // If any non-blocked cell is empty or missing, grid is not complete
+        if (!userValue || userValue.trim() === '') {
+          return false;
+        }
+      }
+    }
+    
+    return true;
+  };
+
   const handleCellChange = (gridKey: string, value: string) => {
-    setUserSolution(prev => ({
-      ...prev,
+    const updatedSolution = {
+      ...userSolution,
       [gridKey]: value.toUpperCase()
-    }));
+    };
+    
+    setUserSolution(updatedSolution);
+
+    // Check if the entire grid is now filled and auto-trigger solution check
+    if (value && isGridCompletelyFilled(updatedSolution)) {
+      // Use setTimeout to ensure the state update has been processed
+      setTimeout(() => {
+        checkSolution(updatedSolution);
+      }, 100);
+    }
 
     // Auto-advance to next empty cell in current slot
     if (value && currentSlot && crosswordData?.slots) {
@@ -150,7 +184,6 @@ export default function CrosswordGenerator() {
         const currentCellIndex = slot.cells.findIndex(([row, col]) => `${row}-${col}` === gridKey);
         if (currentCellIndex !== -1) {
           // Update userSolution first for correct empty cell detection
-          const updatedSolution = { ...userSolution, [gridKey]: value.toUpperCase() };
           const nextEmptyIndex = findNextEmptyInSlot(slot, currentCellIndex, 1, updatedSolution);
           
           if (nextEmptyIndex >= 0) {
@@ -353,8 +386,11 @@ export default function CrosswordGenerator() {
     }
   };
 
-  const checkSolution = () => {
+  const checkSolution = (currentUserSolution?: { [key: string]: string }) => {
     if (!crosswordData || !crosswordData.slots) return;
+    
+    // Use provided solution or current state
+    const solutionToCheck = currentUserSolution || userSolution;
     
     const newCellCorrectness: { [key: string]: 'correct' | 'incorrect' | 'unchecked' } = {};
     let incorrectCount = 0;
@@ -373,7 +409,7 @@ export default function CrosswordGenerator() {
       // Build the user's answer from grid cells and check each cell
       slot.cells.forEach(([row, col], index) => {
         const cellKey = `${row}-${col}`;
-        const userValue = userSolution[cellKey] || '';
+        const userValue = solutionToCheck[cellKey] || '';
         const correctValue = correctAnswer[index] || '';
         
         // Count all cells in the crossword, not just filled ones
@@ -746,7 +782,7 @@ export default function CrosswordGenerator() {
               {renderGrid()}
               
               <div className="flex justify-center space-x-4">
-                <Button onClick={checkSolution} variant="outline">
+                <Button onClick={() => checkSolution()} variant="outline">
                   Check Solution
                 </Button>
                 <Button 
