@@ -26,17 +26,10 @@ import time
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-try:
-    from dotenv import load_dotenv  # type: ignore
-except ImportError:  # pragma: no cover
-    load_dotenv = None
+from dotenv import load_dotenv  # type: ignore
 
-try:
-    from src.gridgpt.embedding_provider import OpenAIEmbeddingProvider  # type: ignore
-except ImportError as imp_err:  # pragma: no cover
-    print("[precompute] Import error:", imp_err, file=sys.stderr)
-    print("[precompute] Did you run 'pip install -e .' or 'make develop'?", file=sys.stderr)
-    raise
+from src.gridgpt.embedding_provider import OpenAIEmbeddingProvider  # type: ignore
+from src.gridgpt.word_database_manager import WordDatabaseManager  # type: ignore
 
 
 def parse_args() -> argparse.Namespace:
@@ -97,6 +90,25 @@ def main() -> int:
 
     embeddings_path = os.path.join(args.data_dir, args.embeddings_file)
     index_path = os.path.join(args.data_dir, args.index_file)
+    word_list_path = os.path.join(args.data_dir, args.word_list)
+
+    # Ensure the word list (frequency map) exists; if missing, build via WordDatabaseManager
+    if not os.path.exists(word_list_path):
+        try:
+            if args.verbose:
+                print(f"[precompute] Word list missing at {word_list_path}; generating via WordDatabaseManager...")
+            # Instantiate to trigger loading + filtering + frequency list creation (uses catalog paths)
+            WordDatabaseManager()
+            if not os.path.exists(word_list_path):
+                # In case catalog path differs from expected -- attempt to copy/symlink if present elsewhere
+                # The manager writes to catalog frequency path; ensure that's the same as requested path
+                if args.verbose:
+                    print("[precompute] WordDatabaseManager finished but expected word list still absent. Verify catalog path matches --word-list argument.")
+                print(f"[precompute] FAILED: Word list still not found at {word_list_path}", file=sys.stderr)
+                return 1
+        except Exception as e:  # noqa: BLE001
+            print(f"[precompute] FAILED generating word list: {e}", file=sys.stderr)
+            return 1
 
     if not args.force and os.path.exists(embeddings_path) and os.path.exists(index_path):
         if args.verbose:
