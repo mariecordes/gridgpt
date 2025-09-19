@@ -144,7 +144,7 @@ export default function CrosswordGenerator() {
     if (firstEmptyCell) {
       const firstInput = document.querySelector(`input[data-cell="${firstEmptyCell[0]}-${firstEmptyCell[1]}"]`) as HTMLInputElement;
       if (firstInput) {
-          firstInput.focus();
+          firstInput.focus({ preventScroll: true });
       }
     }
   };  const handleInputChange = (field: keyof GenerateRequest, value: string) => {
@@ -260,7 +260,7 @@ export default function CrosswordGenerator() {
             const nextCell = slot.cells[nextEmptyIndex];
             const nextInput = document.querySelector(`input[data-cell="${nextCell[0]}-${nextCell[1]}"]`) as HTMLInputElement;
             if (nextInput) {
-              nextInput.focus();
+              nextInput.focus({ preventScroll: true });
             }
           }
         }
@@ -325,7 +325,7 @@ export default function CrosswordGenerator() {
       if (firstEmptyCell) {
         const firstInput = document.querySelector(`input[data-cell="${firstEmptyCell[0]}-${firstEmptyCell[1]}"]`) as HTMLInputElement;
         if (firstInput) {
-          firstInput.focus();
+          firstInput.focus({ preventScroll: true });
         }
       }
       
@@ -386,7 +386,7 @@ export default function CrosswordGenerator() {
             const targetCell = slot.cells[targetCellIndex];
             const targetInput = document.querySelector(`input[data-cell="${targetCell[0]}-${targetCell[1]}"]`) as HTMLInputElement;
             if (targetInput) {
-              targetInput.focus();
+              targetInput.focus({ preventScroll: true });
               setLastNavigationDirection(e.key);
               return;
             }
@@ -415,7 +415,7 @@ export default function CrosswordGenerator() {
       
       const newInput = document.querySelector(`input[data-cell="${newRow}-${newCol}"]`) as HTMLInputElement;
       if (newInput) {
-        newInput.focus();
+        newInput.focus({ preventScroll: true });
         
         // Try to maintain current direction at new cell
         const slotsAtNewCell = crosswordData.slots.filter(slot => 
@@ -445,7 +445,7 @@ export default function CrosswordGenerator() {
             const prevCell = slot.cells[currentCellIndex - 1];
             const prevInput = document.querySelector(`input[data-cell="${prevCell[0]}-${prevCell[1]}"]`) as HTMLInputElement;
             if (prevInput) {
-              prevInput.focus();
+              prevInput.focus({ preventScroll: true });
             }
           }
         }
@@ -803,7 +803,7 @@ export default function CrosswordGenerator() {
                       const firstCell = slot.cells[0];
                       const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
                       if (firstInput) {
-                        firstInput.focus();
+                        firstInput.focus({ preventScroll: true });
                       }
                     }
                   }
@@ -850,7 +850,7 @@ export default function CrosswordGenerator() {
                       const firstCell = slot.cells[0];
                       const firstInput = document.querySelector(`input[data-cell="${firstCell[0]}-${firstCell[1]}"]`) as HTMLInputElement;
                       if (firstInput) {
-                        firstInput.focus();
+                        firstInput.focus({ preventScroll: true });
                       }
                     }
                   }
