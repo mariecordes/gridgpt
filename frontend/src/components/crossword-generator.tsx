@@ -127,16 +127,7 @@ export default function CrosswordGenerator() {
     if (firstEmptyCell) {
       const firstInput = document.querySelector(`input[data-cell="${firstEmptyCell[0]}-${firstEmptyCell[1]}"]`) as HTMLInputElement;
       if (firstInput) {
-        // On mobile, prevent viewport adjustment when focusing
-        if (isMobile) {
-          const currentScrollY = window.scrollY;
           firstInput.focus();
-          setTimeout(() => {
-            window.scrollTo({ top: currentScrollY, behavior: 'instant' });
-          }, 10);
-        } else {
-          firstInput.focus();
-        }
       }
     }
   };  const handleInputChange = (field: keyof GenerateRequest, value: string) => {
@@ -734,13 +725,6 @@ export default function CrosswordGenerator() {
                       onFocus={(e) => {
                         e.target.style.backgroundColor = colors.activeCell;
                         setFocusedCellKey(cellKey);
-                        // Prevent viewport jump on mobile
-                        if (isMobile) {
-                          const currentScrollY = window.scrollY;
-                          setTimeout(() => {
-                            window.scrollTo({ top: currentScrollY, behavior: 'instant' });
-                          }, 10);
-                        }
                       }}
                       onBlur={(e) => {
                         e.target.style.backgroundColor = 'transparent';
