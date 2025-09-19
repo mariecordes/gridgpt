@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -71,6 +71,7 @@ export default function CrosswordGenerator() {
   const [lastNavigationDirection, setLastNavigationDirection] = useState<string | null>(null);
   const [showRevealGridDialog, setShowRevealGridDialog] = useState(false);
   const [focusedCellKey, setFocusedCellKey] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const loadingMessages = [
     "📚 Finding theme-related words...",
@@ -86,7 +87,17 @@ export default function CrosswordGenerator() {
     { id: '5x5_diagonal_cut', name: '5x5 Diagonal Cut' }
   ];
 
-  const handleInputChange = (field: keyof GenerateRequest, value: string) => {
+  // Detect mobile device
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
