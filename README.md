@@ -2,28 +2,26 @@
 
 🚀 **Live App:** https://gridgpt.vercel.app/ 
 
-> 📌 **Note:** Best experienced on a desktop or laptop browser. Mobile layout optimizations are not yet implemented.
-
 A smart mini crossword generator powered by GPT that creates themed crossword puzzles with AI-generated clues. GridGPT combines intelligent word placement algorithms with natural language processing to generate engaging crossword puzzles.
 
-## Table of Contents
+## Table of contents
 
 - [Features](#features)
 - [Architecture](#architecture)
-- [Quick Start](#quick-start)
-- [Word Database Setup](#word-database-setup)
-- [Backend Architecture](#backend-architecture)
-- [Frontend Architecture](#frontend-architecture)
+- [Quick start](#quick-start)
+- [Word database setup](#word-database-setup)
+- [Backend architecture](#backend-architecture)
+- [Frontend architecture](#frontend-architecture)
 - [Development](#development)
 - [About](#about)
 
 ## Features
 
-- 🧩 **Smart Grid Generation**: Creates crossword grids using various templates and patterns
-- 🎯 **Theme-Based Puzzles**: Generates crosswords around specific themes or topics
-- 🤖 **AI-Powered Clues**: Uses GPT to create creative and contextual clues
-- 🎨 **Visual Interface**: Modern React frontend with interactive grid previews
-- 📊 **Word Database**: Comprehensive database with frequency analysis and filtering
+- 🧩 **Smart grid generation**: Creates crossword grids using various templates and patterns
+- 🎯 **Theme-based puzzles**: Generates crosswords around specific themes or topics
+- 🤖 **AI-powered clues**: Uses GPT to create creative and contextual clues
+- 🎨 **Visual interface**: Modern React frontend with interactive grid previews
+- 📊 **Word database**: Comprehensive database with frequency analysis and filtering
 
 ## Architecture
 
@@ -41,11 +39,11 @@ The project consists of three main components:
 - **Real-time generation**: Live crossword creation with theme selection
 
 ### Data Pipeline
-- **Web Scraping**: Automated collection of crossword data
-- **Data Processing**: Word frequency analysis and clue filtering
-- **Template Management**: Grid pattern definitions and configurations
+- **Web scraping**: Automated collection of crossword data
+- **Data processing**: Word frequency analysis and clue filtering
+- **Template management**: Grid pattern definitions and configurations
 
-## Quick Start
+## Quick start
 
 ### Prerequisites
 - Python 3.10+
@@ -102,20 +100,20 @@ The project consists of three main components:
    - API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
 
-## Word Database Setup
+## Word database setup
 
 GridGPT uses a word database built from online crossword sources. Follow these steps to create and maintain the database:
 
-### 1. Scrape Source Data
+### 1. Scrape source data
 
-**Scrape NYT's Mini Crosswords from worddb.com**
+**Scrape NYT's Mini Crosswords from [`worddb.com`](https://worddb.com)**
 ```bash
 python scripts/scrape_worddb.py --start-date 2023-01-01 --end-date 2023-12-31
 ```
 This creates and updates: `data/01_raw/worddb_com/nyt_mini_clues.json`
 
 
-### 2. Process Raw Data
+### 2. Process raw data
 
 **Create the main word database**
 ```bash
@@ -124,9 +122,9 @@ python scripts/create_worddb_database.py
 This processes the scraped data and creates: `data/02_intermediary/word_database/word_database_full.json`
 
 
-### 3. Automatic Filtering
+### 3. Automatic filtering
 
-Then whenever `WordDatabaseManager()` is initialized in the backend, it automatically creates an up to date filtered databases relevant for the crossword to be generated:
+Then whenever `WordDatabaseManager()` is initialized in the backend, it automatically creates up to date filtered databases relevant for the crossword to be generated:
 - `data/02_intermediary/word_database/word_database_filtered.json` - Filtered word-clue pairs
 - `data/02_intermediary/word_database/word_list_with_frequencies.json` - Word frequency analysis
 
@@ -140,7 +138,7 @@ The filtering process can flexibly:
 
 *⚠️ The output of the data pipeline below is currently not in use. In the future, it is planned to integrate this data as well as extend the word database with additional sources.*
 
-**Scrape crossword data from crosswordtracker.com**
+**Scrape crossword data from [`crosswordtracker.com`](http://crosswordtracker.com/)**
 ```bash
 python scripts/scrape_crosswords_2.py letters A B C # list which letter to scrape individually
 ```
@@ -152,14 +150,9 @@ python scripts/create_crosswordtracker_word_db.py
 ```
 
 
-## Backend Architecture
+## Backend architecture
 
-### Core Components
-
--- # TODO: rename CrosswordGenerator to Grid generator & then create a single Crossword generator that takes all inputs from the front end and then outputs the final crossword
-
-generator = CrosswordGenerator() # main orchestrator
-result = generator.generate_crossword(theme, template_id, cluetype)
+### Core components
 
 **`CrosswordGenerator`**: Grid generator that fills a crossword template grid with a theme entry under the given constraints.
 ```python
@@ -215,7 +208,7 @@ from src.gridgpt.template_manager import select_template
 template = select_template(template_id="5x5_diagonal_cut")
 ```
 
-### API Endpoints
+### API endpoints
 
 - `GET /api/templates` - List available grid templates
 - `POST /api/generate-crossword` - Generate a complete crossword puzzle
@@ -223,11 +216,11 @@ template = select_template(template_id="5x5_diagonal_cut")
 - `GET /api/test` - Verify endpoint is working
 - `GET /health` - API health check
 
-## Frontend Architecture
+## Frontend architecture
 
-### Key Components
+### Key components
 
-**`CrosswordGenerator`**: Main interface component with:
+Main interface component **`CrosswordGenerator`**:
 - Template selection with visual preview icons
 - Clue type selection (generated vs. retrieved, mandatory)
 - Theme input (optional)
@@ -237,7 +230,7 @@ template = select_template(template_id="5x5_diagonal_cut")
 
 ## Development
 
-### Environment Variables
+### Environment variables
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
@@ -249,9 +242,7 @@ template = select_template(template_id="5x5_diagonal_cut")
 | `ALLOW_ALL_CORS` | No | Set to `true` ONLY for quick local testing (overrides allowlist) |
 | `EXTRA_CORS_ORIGINS` | No | Comma-separated extra allowed origins |
 
-Removed: `NEXT_PUBLIC_API_URL` (frontend now proxies internally, no direct browser exposure of backend).
-
-### Embeddings & Caching
+### Embeddings & caching
 
 Embeddings (OpenAI `text-embedding-3-small`) are cached on first build:
 
@@ -269,7 +260,7 @@ make precompute
 ```
 Idempotent; add `--force` to rebuild.
 
-### Makefile Shortcuts
+### Makefile shortcuts
 ```bash
 make develop         # install deps + editable package
 make precompute      # build embeddings cache
@@ -287,7 +278,7 @@ make clean-and-build-backend  # clean then rebuild
 - **CORS:** Restricted allowlist (localhost + production domain). Expand via `EXTRA_CORS_ORIGINS` or temporarily with `ALLOW_ALL_CORS=true`.
 - **Embeddings:** Precompute step eliminates first-request latency.
 
-### Project Structure
+### Project structure
 ```
 gridgpt/
 ├── src/                   # Core Python modules
@@ -300,7 +291,7 @@ gridgpt/
 └── tests/                 # Test suites
 ```
 
-### Adding New Templates
+### Adding new templates
 
 1. **Define the template** in `data/03_templates/grid_templates.json`
 2. **Add SVG pattern** to `GridPreview` component
@@ -315,13 +306,12 @@ Key configuration files:
 - `parameters.yml`: Generation parameters
 - `prompts.yml`: AI prompt templates
 - `catalog.yml`: List of used data files
-- `credentials.yml`: API keys and secrets # TODO: move keys here from .env
 
 ## Next steps:
 
 Some of my ideas for future updates and enhancements are:
 
-- Include a difficulty parameter that influences clue generation
+- Include a difficulty parameter that influences word selection and clue generation
 - Expand word database sources to include a greater number of words
 - Allow inclusion of words that are not listed in the word database (i.e., new entries; potentially with LLM verification)
 - Expand templates to different sizes than the plain 5x5 Mini set-up, or even allow flexible user creation of a grid template
@@ -337,7 +327,7 @@ So naturally, I thought: why not combine my love for puzzles with my passion for
 
 That's how GridGPT was born!
 
-### How It Works
+### How it works
 
 GridGPT builds crosswords through a pipeline that blends real data, embeddings, optimization, and LLMs:
 
@@ -364,7 +354,7 @@ GridGPT is more like a fun experiment in computational creativity – for those 
 
 Whether you’re new to crosswords or a seasoned solver, enjoy exploring!
 
-### Tech Stack
+### Tech stack
 
 - **Frontend:** Next.js, React, TypeScript, Tailwind CSS
 - **Backend:** Python FastAPI with OpenAI API integration (Railway hosted)
