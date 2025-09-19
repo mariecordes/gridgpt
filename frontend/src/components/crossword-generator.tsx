@@ -682,10 +682,18 @@ export default function CrosswordGenerator() {
             let textColor = 'inherit';
             
             if (isRevealed) {
-              // Revealed cells have special styling
-              cellBgColor = colors.revealedCell;
-              cellHoverColor = colors.revealedCell; // Keep same color on hover
+              // Revealed cells always keep revealed text color
               textColor = colors.textRevealed;
+              
+              if (isInCurrentSlot) {
+                // If revealed cell is in current slot, use slot highlight background
+                cellBgColor = colors.slotHighlight;
+                cellHoverColor = colors.slotHover;
+              } else {
+                // Otherwise use standard revealed cell background
+                cellBgColor = colors.revealedCell;
+                cellHoverColor = colors.revealedCell; // Keep same color on hover
+              }
             } else if (correctness === 'correct') {
               cellBgColor = colors.correctAnswer;
               cellHoverColor = colors.correctHover;
