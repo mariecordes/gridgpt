@@ -11,6 +11,7 @@ import GridPreview from '@/components/ui/grid-preview';
 import CollapsibleAbout from '@/components/ui/collapsible-about';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
 import colors from '@/lib/colors';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Helper function to find the next empty cell in a slot
 const findNextEmptyInSlot = (slot: { cells: [number, number][] }, currentIndex: number, direction: number, userSolution: { [key: string]: string } = {}) => {
@@ -98,6 +99,38 @@ export default function CrosswordGenerator() {
     
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
+
+  // Navigation functions for mobile
+  const navigateToSlot = (direction: 'next' | 'prev') => {
+    if (!crosswordData?.slots) return;
+    
+    // Create ordered list: all across clues first, then all down clues
+    const acrossSlots = crosswordData.slots.filter(s => s.direction === 'across');
+    const downSlots = crosswordData.slots.filter(s => s.direction === 'down');
+    const allSlotsInOrder = [...acrossSlots, ...downSlots];
+    
+    const currentIndex = allSlotsInOrder.findIndex(s => s.id === currentSlot);
+    
+    let nextIndex;
+    if (direction === 'prev') {
+      nextIndex = currentIndex > 0 ? currentIndex - 1 : allSlotsInOrder.length - 1;
+    } else {
+      nextIndex = currentIndex < allSlotsInOrder.length - 1 ? currentIndex + 1 : 0;
+    }
+    
+    const nextSlot = allSlotsInOrder[nextIndex];
+    setCurrentSlot(nextSlot.id);
+    setCurrentDirection(nextSlot.direction);
+    
+    // Focus on first empty cell of next slot
+    const firstEmptyCell = findNextEmptyCell(nextSlot, -1, userSolution);
+    if (firstEmptyCell) {
+      const firstInput = document.querySelector(`input[data-cell="${firstEmptyCell[0]}-${firstEmptyCell[1]}"]`) as HTMLInputElement;
+      if (firstInput) {
+        firstInput.focus();
+      }
+    }
+  };  const handleInputChange = (field: keyof GenerateRequest, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -857,6 +890,36 @@ export default function CrosswordGenerator() {
     );
   };
 
+  const renderNavigationBar = () => {
+    if (!crosswordData || !isMobile) return null;
+
+    return (
+      <div className="bg-gray-50 rounded-lg p-3 border">
+        <div className="flex items-center justify-between">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigateToSlot('prev')}
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Previous
+          </Button>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigateToSlot('next')}
+            className="flex items-center gap-2"
+          >
+            Next
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
       {/* Main Content - Left Side */}
@@ -984,6 +1047,7 @@ export default function CrosswordGenerator() {
             <div className="space-y-6">
               {renderCurrentClueHighlight()}
               {renderGrid()}
+              {renderNavigationBar()}
               
               <div className="flex justify-center space-x-4">
                 <Button onClick={() => checkSolution()} variant="outline">
