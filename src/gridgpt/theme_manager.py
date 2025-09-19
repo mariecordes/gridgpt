@@ -43,7 +43,7 @@ class ThemeManager:
         max_chars: int = None,
         min_frequency: int = 0,
         similarity_mode: str = "semantic",
-    exclude_substring: bool = True,
+        exclude_substring: bool = True,
     ) -> List[Tuple[str, float]]:
         """
         Find all possible theme entries with scoring of theme similarity.
