@@ -74,6 +74,7 @@ export default function CrosswordGenerator() {
   const [focusedCellKey, setFocusedCellKey] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const clueHighlightRef = useRef<HTMLDivElement>(null);
+  const hasAutoScrolledRef = useRef(false);
 
   const loadingMessages = [
     "📚 Finding theme-related words...",
@@ -101,9 +102,9 @@ export default function CrosswordGenerator() {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  // Auto-scroll to optimal view on mobile when slot changes
+  // Auto-scroll to optimal view on mobile when slot changes (only once)
   useEffect(() => {
-    if (isMobile && currentSlot && clueHighlightRef.current) {
+    if (isMobile && currentSlot && clueHighlightRef.current && !hasAutoScrolledRef.current) {
       // Small delay to ensure DOM has updated
       setTimeout(() => {
         if (clueHighlightRef.current) {
@@ -112,6 +113,8 @@ export default function CrosswordGenerator() {
             block: 'start',
             inline: 'nearest'
           });
+          // Mark that we've auto-scrolled, so we don't do it again
+          hasAutoScrolledRef.current = true;
         }
       }, 100);
     }
@@ -195,6 +198,8 @@ export default function CrosswordGenerator() {
       setCurrentSlot(null);
       setCurrentDirection('across');
       setFocusedCellKey(null);
+      // Reset auto-scroll flag for new crossword
+      hasAutoScrolledRef.current = false;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
