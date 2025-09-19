@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,6 +73,7 @@ export default function CrosswordGenerator() {
   const [showRevealGridDialog, setShowRevealGridDialog] = useState(false);
   const [focusedCellKey, setFocusedCellKey] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const crosswordCardRef = useRef<HTMLDivElement>(null);
 
   const loadingMessages = [
     "📚 Finding theme-related words...",
@@ -99,6 +100,22 @@ export default function CrosswordGenerator() {
     
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
+
+  // Auto-scroll to optimal view on mobile when slot changes
+  useEffect(() => {
+    if (isMobile && currentSlot && crosswordCardRef.current) {
+      // Small delay to ensure DOM has updated
+      setTimeout(() => {
+        if (crosswordCardRef.current) {
+          crosswordCardRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      }, 100);
+    }
+  }, [currentSlot, isMobile]);
 
   // Navigation functions for mobile
   const navigateToSlot = (direction: 'next' | 'prev') => {
@@ -866,15 +883,15 @@ export default function CrosswordGenerator() {
     const clueInfo = getCurrentClueInfo();
 
     return (
-      <div className="mb-4 flex justify-center">
+      <div className={isMobile ? "mb-2 flex justify-center" : "mb-4 flex justify-center"}>
         <div 
-          className="max-w-md w-fit p-2 rounded-lg border-2"
+          className={`max-w-md w-fit rounded-lg border-2 ${isMobile ? "p-1.5" : "p-2"}`}
           style={{
             backgroundColor: clueInfo ? colors.slotHighlight : '#f5f5f5',
             borderColor: clueInfo ? colors.selectedClueBorder : '#d0d0d0'
           }}
         >
-          <div className="text-sm" style={{ 
+          <div className={`${isMobile ? "text-xs" : "text-sm"}`} style={{ 
             color: clueInfo ? 'inherit' : '#999' 
           }}>
             {clueInfo ? (
@@ -894,15 +911,15 @@ export default function CrosswordGenerator() {
     if (!crosswordData || !isMobile) return null;
 
     return (
-      <div className="bg-gray-50 rounded-lg p-3 border">
+      <div className="bg-gray-50 rounded-lg p-2 border">
         <div className="flex items-center justify-between">
           <Button
             variant="outline"
             size="sm"
             onClick={() => navigateToSlot('prev')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1 text-xs"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-3 w-3" />
             Previous
           </Button>
           
@@ -910,10 +927,10 @@ export default function CrosswordGenerator() {
             variant="outline"
             size="sm"
             onClick={() => navigateToSlot('next')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1 text-xs"
           >
             Next
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3 w-3" />
           </Button>
         </div>
       </div>
@@ -1039,18 +1056,23 @@ export default function CrosswordGenerator() {
 
       {/* Crossword Grid */}
       {crosswordData && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-bold">Crossword</CardTitle>
+        <Card ref={crosswordCardRef}>
+          <CardHeader className={isMobile ? "pb-0" : ""}>
+            <CardTitle className={`text-xl font-bold ${isMobile ? "text-lg" : ""}`}>Crossword</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
+          <CardContent className={isMobile ? "pt-0 px-6 pb-0" : ""}>
+            <div className={isMobile ? "space-y-4" : "space-y-6"}>
               {renderCurrentClueHighlight()}
               {renderGrid()}
               {renderNavigationBar()}
               
-              <div className="flex justify-center space-x-4">
-                <Button onClick={() => checkSolution()} variant="outline">
+              <div className={`flex justify-center ${isMobile ? "space-x-2" : "space-x-4"}`}>
+                <Button 
+                  onClick={() => checkSolution()} 
+                  variant="outline"
+                  size={isMobile ? "sm" : "default"}
+                  className={isMobile ? "text-xs h-9" : ""}
+                >
                   Check Solution
                 </Button>
                 <Select 
@@ -1062,7 +1084,7 @@ export default function CrosswordGenerator() {
                   }}
                 >
                   <SelectTrigger 
-                    className="w-auto font-medium" 
+                    className={`w-auto font-medium ${isMobile ? "h-9 text-xs" : ""}`}
                     style={{ color: 'black' }}
                   >
                     <SelectValue placeholder="Reveal" style={{ color: 'black', fontWeight: 500 }} />
@@ -1089,7 +1111,7 @@ export default function CrosswordGenerator() {
                   }}
                 >
                   <SelectTrigger 
-                    className="w-auto font-medium" 
+                    className={`w-auto font-medium ${isMobile ? "h-9 text-xs" : ""}`}
                     style={{ color: 'black' }}
                   >
                     <SelectValue placeholder="Clear" style={{ color: 'black', fontWeight: 500 }} />
