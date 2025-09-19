@@ -73,7 +73,7 @@ export default function CrosswordGenerator() {
   const [showRevealGridDialog, setShowRevealGridDialog] = useState(false);
   const [focusedCellKey, setFocusedCellKey] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const crosswordCardRef = useRef<HTMLDivElement>(null);
+  const clueHighlightRef = useRef<HTMLDivElement>(null);
 
   const loadingMessages = [
     "📚 Finding theme-related words...",
@@ -103,11 +103,11 @@ export default function CrosswordGenerator() {
 
   // Auto-scroll to optimal view on mobile when slot changes
   useEffect(() => {
-    if (isMobile && currentSlot && crosswordCardRef.current) {
+    if (isMobile && currentSlot && clueHighlightRef.current) {
       // Small delay to ensure DOM has updated
       setTimeout(() => {
-        if (crosswordCardRef.current) {
-          crosswordCardRef.current.scrollIntoView({
+        if (clueHighlightRef.current) {
+          clueHighlightRef.current.scrollIntoView({
             behavior: 'smooth',
             block: 'start',
             inline: 'nearest'
@@ -883,7 +883,7 @@ export default function CrosswordGenerator() {
     const clueInfo = getCurrentClueInfo();
 
     return (
-      <div className={isMobile ? "mb-2 flex justify-center" : "mb-4 flex justify-center"}>
+      <div ref={clueHighlightRef} className={isMobile ? "mb-2 flex justify-center" : "mb-4 flex justify-center"}>
         <div 
           className={`max-w-md w-fit rounded-lg border-2 ${isMobile ? "p-1.5" : "p-2"}`}
           style={{
@@ -1056,7 +1056,7 @@ export default function CrosswordGenerator() {
 
       {/* Crossword Grid */}
       {crosswordData && (
-        <Card ref={crosswordCardRef}>
+        <Card>
           <CardHeader className={isMobile ? "pb-0" : ""}>
             <CardTitle className={`text-xl font-bold ${isMobile ? "text-lg" : ""}`}>Crossword</CardTitle>
           </CardHeader>
