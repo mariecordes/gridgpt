@@ -4,6 +4,13 @@
 
 A smart mini crossword generator powered by GPT that creates themed crossword puzzles with AI-generated clues. GridGPT combines intelligent word placement algorithms with natural language processing to generate engaging crossword puzzles.
 
+<p align="center">
+  <a href="https://gridgpt.vercel.app/ ">
+    <img src="media/demo.gif" alt="GridGPT demo" />
+  </a>
+</p>
+
+
 ## Table of contents
 
 - [Features](#features)
