@@ -123,6 +123,13 @@ async def generate_crossword(request: GenerateRequest):
             word_db_manager=word_db_manager
         )
 
+        # Return friendly error if generation fails
+        if crossword is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Could not build a puzzle for this theme. Please try again.",
+            )
+
         # Generate clues based on clue type
         if request.clueType == "generate":
             clues = generate_clues(crossword, theme, word_db_manager)

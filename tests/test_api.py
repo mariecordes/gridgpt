@@ -40,6 +40,18 @@ def test_generate_crossword_without_theme(client):
     assert data["template_info"]["id"] == "5x5_blocked_corners"
 
 
+def test_generate_crossword_failure_returns_clean_error(client, monkeypatch):
+    """A failed fill (None crossword) must surface as a 503, not a 500 crash."""
+    monkeypatch.setattr("api.routes.generate_themed_crossword", lambda *a, **k: None)
+
+    response = client.post(
+        "/api/generate-crossword",
+        json={"template": "5x5_blocked_corners", "theme": "", "clueType": "existing"},
+    )
+    assert response.status_code == 503
+    assert "try again" in response.json()["detail"].lower()
+
+
 def test_check_solution(client):
     puzzle = {"filled_slots": {"1A": "CAT", "1D": "CAR"}}
 
