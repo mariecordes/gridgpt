@@ -4,7 +4,7 @@ import random
 import logging
 from typing import Dict, List
 
-from .word_database_manager import WordDatabaseManager
+from .word_database_manager import WordDatabaseManager, is_reference_clue
 from .llm_connection import LLMConnection
 from .utils import load_prompts
 
@@ -56,10 +56,10 @@ class ClueRetriever():
     
     
     def get_available_clues(self, word: str):
-        available_clues = self.word_db_manager.word_database_full.get(word, {}).get("clues", {})
-        
-        # Remove any clues relating to other entries (not suitable for new crossword)
-        available_clues = [clue for clue in available_clues if "Across" not in clue and "Down" not in clue]
+        available_clues = self.word_db_manager.word_database_full.get(word, {}).get("clues", [])
+
+        # Remove cross-reference clues (e.g. "See 5-Across")
+        available_clues = [clue for clue in available_clues if not is_reference_clue(clue)]
         return available_clues
     
     
