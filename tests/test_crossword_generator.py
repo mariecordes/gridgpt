@@ -73,6 +73,20 @@ def test_validate_multi_word_theme_entry(word_db):
     assert generator.validate_theme_entry(f"{word_a} ZZZQX")[0] is False  # unknown word
 
 
+def test_find_suitable_slots_no_candidates_does_not_crash(word_db):
+    """An empty candidate set must return [] instead of an IndexError."""
+    generator = CrosswordGenerator(word_db)
+    template = {
+        "slots": [
+            {"id": "1A", "length": 3, "direction": "across",
+             "start": [0, 0], "cells": [[0, 0], [0, 1], [0, 2]]}
+        ],
+        # theme_slots references a slot that doesn't exist -> no candidates
+        "theme_slots": ["9Z"],
+    }
+    assert generator.find_suitable_slots(template, "CAT") == []
+
+
 def test_get_possible_words_respects_constraints(word_db):
     generator = CrosswordGenerator(word_db)
     slot = {"length": 3}

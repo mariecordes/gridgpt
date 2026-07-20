@@ -90,11 +90,11 @@ class CrosswordGenerator:
         
         if not suitable_slots:
             logger.warning(f"No suitable slots found for theme entry '{theme_entry}' with length {entry_length}")
-            # Find closest matching slots
-            candidate_slots.sort(key=lambda s: abs(s["length"] - entry_length))
-            closest_length = candidate_slots[0]["length"]
-            logger.info(f"Closest available slot length is {closest_length}")
-        
+            # Log the closest available slot length for debugging, if any slots exist
+            if candidate_slots:
+                closest = sorted(candidate_slots, key=lambda s: abs(s["length"] - entry_length))
+                logger.info(f"Closest available slot length is {closest[0]['length']}")
+
         return suitable_slots
     
     def place_theme_entry(self, template: Dict, theme_entry: str) -> Dict:
