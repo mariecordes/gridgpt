@@ -416,14 +416,9 @@ def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attem
     # crossword = generator.generate_crossword(template, theme_entry)
     
     if crossword:
-        # Print the result
-        print("\nGenerated Crossword:")
-        print_grid(crossword["grid"])
-        
-        print("\nFilled Slots:")
-        for slot_id, word in sorted(crossword["filled_slots"].items()):
-            is_theme = slot_id in crossword.get("theme_entries", {})
-            theme_marker = "🌟 " if is_theme else ""
-            print(f"{theme_marker}{slot_id}: {word}")
-        
+        logger.debug(
+            "Generated crossword filled slots: %s",
+            {slot_id: word for slot_id, word in sorted(crossword["filled_slots"].items())},
+        )
+
     return crossword
