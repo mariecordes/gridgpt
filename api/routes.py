@@ -120,8 +120,8 @@ async def generate_crossword(request: GenerateRequest):
         crossword = generate_themed_crossword(
             template,
             request.themeEntry,
-            max_attempts=params["crossword_generator"]["max_attempts"]["new_crossword"],
-            backtracking_max_attempts=params["crossword_generator"]["max_attempts"]["backtracking"],
+            node_budget=params["crossword_generator"]["node_budget"],
+            restart_count=params["crossword_generator"]["restart_count"],
             word_db_manager=word_db_manager
         )
 

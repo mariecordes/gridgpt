@@ -1,12 +1,16 @@
-import json
 import random
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Callable
 import logging
 
 from .word_database_manager import WordDatabaseManager
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+# Defaults for the backtracking search (overridable via conf/base/parameters.yml).
+DEFAULT_NODE_BUDGET = 20000
+DEFAULT_RESTART_COUNT = 5
+
 
 class CrosswordGenerator:
     def __init__(self, word_db_manager: WordDatabaseManager = None):
@@ -128,8 +132,7 @@ class CrosswordGenerator:
         
         # Place the theme entry in the grid
         cells = chosen_slot["cells"]
-        direction = chosen_slot["direction"]
-        
+
         for i, cell in enumerate(cells):
             row, col = cell
             grid[row][col] = theme_entry[i]
@@ -151,43 +154,15 @@ class CrosswordGenerator:
         Returns:
             List of tuples (intersecting_slot_id, position_in_slot, position_in_intersecting_slot)
         """
-        intersections = []
-        
-        # Find the target slot
-        target_slot = None
-        for slot in template["slots"]:
-            if slot["id"] == slot_id:
-                target_slot = slot
-                break
-        
-        if not target_slot:
-            return []
-        
-        # Get cells of the target slot
-        target_cells = target_slot["cells"]
-        
-        # Check each other slot for intersections
-        for slot in template["slots"]:
-            if slot["id"] == slot_id:
-                continue  # Skip the slot itself
-            
-            # Check for cell intersections
-            for i, target_cell in enumerate(target_cells):
-                try:
-                    j = slot["cells"].index(target_cell)
-                    intersections.append((slot["id"], i, j))
-                except ValueError:
-                    continue  # Cell not in this slot
-        
-        return intersections
-    
+        return self._build_intersection_map(template).get(slot_id, [])
+
     def get_slot_by_id(self, template: Dict, slot_id: str) -> Optional[Dict]:
         """Get a slot by its ID."""
         for slot in template["slots"]:
             if slot["id"] == slot_id:
                 return slot
         return None
-    
+
     def get_letter_at_position(self, template: Dict, slot_id: str, position: int) -> str:
         """Get the letter at a specific position in a filled slot."""
         filled_slots = template.get("filled_slots", {})
@@ -196,229 +171,276 @@ class CrosswordGenerator:
             if 0 <= position < len(word):
                 return word[position]
         return None
-    
-    def get_possible_words(self, slot: Dict, fixed_letters: Dict[int, str], used_words: set = None) -> List[str]:
+
+    # ----------------------------- Candidate lookup ----------------------------- #
+
+    def get_possible_words(self, slot: Dict, fixed_letters: Dict[int, str], used_words: set = None) -> List[Tuple[str, int]]:
         """
-        Get all possible words for a slot given the fixed letters and excluding already used words.
-        
-        Args:
-            slot: The slot to fill
-            fixed_letters: Dictionary mapping positions to fixed letters
-            used_words: Set of words already used in the grid
-            
-        Returns:
-            List of possible words that match the constraints and are not already used
+        Get all possible (word, frequency) pairs for a slot given fixed letters,
+        excluding already used words. Backed by the word-database index.
         """
-        length = slot["length"]
-        
-        # Get all words of the right length
-        all_words = self.word_db_manager.words_by_length.get(length, [])
-        
-        # Initialize used_words set if not provided
-        if used_words is None:
-            used_words = set()
-        
-        # Filter for words that match the fixed letters and are not already used
-        valid_words = []
-        
-        for word, frequency in all_words:
-            # Skip if word is already used
-            if word in used_words:
-                continue
-                
-            matches = True
+        candidates = self._candidate_words(slot["length"], fixed_letters, used_words or set())
+        frequencies = self.word_db_manager.word_frequencies
+        return [(word, frequencies[word]) for word in candidates]
+
+    def _candidate_words(self, length: int, fixed_letters: Dict[int, str], used_words: set) -> set:
+        """Set of database words of the given length matching the fixed letters
+        and not already used. Uses the precomputed (length, pos, letter) index,
+        so this is a few set intersections rather than a scan of the word list."""
+        db = self.word_db_manager
+        if fixed_letters:
+            index = db.letter_index.get(length, {})
+            matching_sets = []
             for pos, letter in fixed_letters.items():
-                if 0 <= pos < len(word) and word[pos] != letter:
-                    matches = False
+                matches = index.get(pos, {}).get(letter)
+                if not matches:
+                    return set()  # no word has this letter at this position
+                matching_sets.append(matches)
+            # Smallest set first keeps the intersection cheap.
+            matching_sets.sort(key=len)
+            candidates = set(matching_sets[0]).intersection(*matching_sets[1:])
+        else:
+            candidates = set(db.all_words_by_length.get(length, ()))
+
+        if used_words:
+            candidates -= used_words
+        return candidates
+
+    # ------------------------------ Backtracking ------------------------------ #
+
+    def _build_intersection_map(self, template: Dict) -> Dict[str, List[Tuple[str, int, int]]]:
+        """Map each slot to the slots it crosses: {slot_id: [(other_id,
+        pos_in_slot, pos_in_other)]}. Computed once instead of rescanning."""
+        cell_members: Dict[Tuple[int, int], List[Tuple[str, int]]] = {}
+        for slot in template["slots"]:
+            for pos, cell in enumerate(slot["cells"]):
+                cell_members.setdefault(tuple(cell), []).append((slot["id"], pos))
+
+        intersections: Dict[str, List[Tuple[str, int, int]]] = {slot["id"]: [] for slot in template["slots"]}
+        for members in cell_members.values():
+            if len(members) < 2:
+                continue
+            for slot_a, pos_a in members:
+                for slot_b, pos_b in members:
+                    if slot_a != slot_b:
+                        intersections[slot_a].append((slot_b, pos_a, pos_b))
+        return intersections
+
+    @staticmethod
+    def _fixed_letters(slot_id: str, assignment: Dict[str, str], intersections: Dict) -> Dict[int, str]:
+        """Letters already forced on a slot by its filled crossing slots."""
+        fixed: Dict[int, str] = {}
+        for other_id, pos_in_slot, pos_in_other in intersections[slot_id]:
+            if other_id in assignment:
+                fixed[pos_in_slot] = assignment[other_id][pos_in_other]
+        return fixed
+
+    @staticmethod
+    def _weighted_order(candidates: set, weight_fn: Callable[[str], float]) -> List[str]:
+        """Weighted-random permutation (Efraimidis-Spirakis) of the candidates.
+
+        Each word gets key = random()**(1/weight); sorting by key descending
+        yields a random order biased toward higher weights. This keeps output
+        varied across generations while trying likely words first. WP2 will fold
+        a theme boost into `weight_fn`."""
+        keyed = []
+        for word in candidates:
+            weight = weight_fn(word)
+            if weight <= 0:
+                weight = 1e-9
+            keyed.append((random.random() ** (1.0 / weight), word))
+        keyed.sort(reverse=True)
+        return [word for _, word in keyed]
+
+    def _backtrack(
+        self,
+        assignment: Dict[str, str],
+        unfilled: set,
+        lengths: Dict[str, int],
+        intersections: Dict,
+        used_words: set,
+        weight_fn: Callable[[str], float],
+        node_budget: int,
+        node_count: List[int],
+    ) -> Optional[Dict[str, str]]:
+        """Recursive backtracking with MRV ordering and forward checking."""
+        if not unfilled:
+            return dict(assignment)
+
+        # MRV: expand the unfilled slot with the fewest current candidates.
+        best_slot = None
+        best_candidates = None
+        for slot_id in unfilled:
+            fixed = self._fixed_letters(slot_id, assignment, intersections)
+            candidates = self._candidate_words(lengths[slot_id], fixed, used_words)
+            if not candidates:
+                return None  # dead end: some slot has no options
+            if best_candidates is None or len(candidates) < len(best_candidates):
+                best_slot, best_candidates = slot_id, candidates
+                if len(candidates) == 1:
                     break
-            if matches:
-                valid_words.append((word, frequency))
-        
-        return valid_words
-    
-    def fill_grid_with_constraints(self, template_with_theme: Dict) -> Dict:
-        """
-        Fill the grid using constraint satisfaction.
-        
-        Args:
-            template_with_theme: Template with theme entry already placed
-            
-        Returns:
-            Completed crossword grid
-        """
-        # Start with a copy of the template
-        result = template_with_theme.copy()
-        result["grid"] = [row.copy() for row in template_with_theme["grid"]]
-        result["filled_slots"] = template_with_theme.get("filled_slots", {}).copy()
-        
-        # Track used words to prevent duplicates
-        used_words = set(result["filled_slots"].values())
-        
-        # Get all slots
-        all_slots = result["slots"]
-        
-        # Sort slots by number of intersections (most constrained first)
-        slot_intersections = {}
-        for slot in all_slots:
-            slot_id = slot["id"]
-            if slot_id in result["filled_slots"]:
-                continue  # Skip already filled slots
-            
-            intersections = self.get_intersecting_slots(result, slot_id)
-            slot_intersections[slot_id] = len(intersections)
-        
-        # Sort slots by number of intersections (most constrained first)
-        sorted_slots = sorted(
-            [s for s in all_slots if s["id"] not in result["filled_slots"]], 
-            key=lambda s: slot_intersections[s["id"]], 
-            reverse=True
-        )
-        
-        # Now fill slots one by one
-        for slot in sorted_slots:
-            slot_id = slot["id"]
-            
-            # Get constraints from intersecting slots
-            fixed_letters = {}
-            
-            for other_slot_id, pos_in_slot, pos_in_other in self.get_intersecting_slots(result, slot_id):
-                if other_slot_id in result["filled_slots"]:
-                    # Get letter from the already filled slot
-                    letter = self.get_letter_at_position(result, other_slot_id, pos_in_other)
-                    if letter:
-                        fixed_letters[pos_in_slot] = letter
-            
-            # Get possible words for this slot (excluding already used words)
-            possible_words = self.get_possible_words(slot, fixed_letters, used_words)
-            
-            if not possible_words:
-                logger.warning(f"No words available for slot {slot_id} with constraints {fixed_letters} and {len(used_words)} used words")
-                return None  # Backtracking needed
-            
-            # Use weighted random selection based on frequency
-            words = [word for word, _ in possible_words]
-            weights = [freq for _, freq in possible_words]
-            
-            # Choose a word with probability proportional to its frequency
-            chosen_word = random.choices(words, weights=weights, k=1)[0]
-            
-            # For debugging
-            chosen_freq = next(freq for word, freq in possible_words if word == chosen_word)
-            logger.debug(f"Selected word '{chosen_word}' with frequency {chosen_freq}.")
-            
-            # Place the word in the grid
-            cells = slot["cells"]
-            for i, cell in enumerate(cells):
-                row, col = cell
-                result["grid"][row][col] = chosen_word[i]
-            
-            # Add to filled slots and used words
-            result["filled_slots"][slot_id] = chosen_word
-            used_words.add(chosen_word)
-            
-            logger.debug(f"Filled slot {slot_id} with '{chosen_word}' (total used words: {len(used_words)})")
-        
-        logger.info(f"Grid filled successfully with {len(result['filled_slots'])} unique words")
-        return result
-    
-    def backtracking_fill(self, template_with_theme: Dict, max_attempts: int = 20) -> Dict:
-        """
-        Try to fill the grid with backtracking if simple constraint satisfaction fails.
-        
-        Args:
-            template_with_theme: Template with theme entry already placed
-            max_attempts: Maximum number of attempts before giving up
-            
-        Returns:
-            Completed crossword grid or None if failed
-        """
-        for attempt in range(max_attempts):
-            logger.info(f"Attempt {attempt+1}/{max_attempts} to fill the grid")
-            
-            filled_grid = self.fill_grid_with_constraints(template_with_theme)
-            if filled_grid:
-                return filled_grid
-        
-        logger.error("Failed to fill the grid after multiple attempts")
+
+        remaining = unfilled - {best_slot}
+        neighbors = [nid for nid, _, _ in intersections[best_slot] if nid in remaining]
+
+        for word in self._weighted_order(best_candidates, weight_fn):
+            node_count[0] += 1
+            if node_count[0] > node_budget:
+                return None
+
+            assignment[best_slot] = word
+            used_words.add(word)
+
+            # Forward checking: every affected neighbor must keep >= 1 candidate.
+            ok = True
+            for neighbor_id in neighbors:
+                fixed = self._fixed_letters(neighbor_id, assignment, intersections)
+                if not self._candidate_words(lengths[neighbor_id], fixed, used_words):
+                    ok = False
+                    break
+
+            if ok:
+                result = self._backtrack(
+                    assignment, remaining, lengths, intersections,
+                    used_words, weight_fn, node_budget, node_count,
+                )
+                if result is not None:
+                    return result
+
+            del assignment[best_slot]
+            used_words.discard(word)
+
         return None
-    
-    def generate_crossword(self, template: Dict, theme_entry: str = None, max_attempts: int = 100) -> Dict:
+
+    def fill(
+        self,
+        template: Dict,
+        seed_assignment: Dict[str, str] = None,
+        weight_fn: Callable[[str], float] = None,
+        node_budget: int = DEFAULT_NODE_BUDGET,
+    ) -> Optional[Dict[str, str]]:
+        """Fill every slot via backtracking. Returns {slot_id: word} or None."""
+        intersections = self._build_intersection_map(template)
+        lengths = {slot["id"]: slot["length"] for slot in template["slots"]}
+        assignment = dict(seed_assignment or {})
+        used_words = set(assignment.values())
+        unfilled = {slot["id"] for slot in template["slots"] if slot["id"] not in assignment}
+
+        if weight_fn is None:
+            frequencies = self.word_db_manager.word_frequencies
+            weight_fn = lambda word: frequencies.get(word, 1)
+
+        node_count = [0]
+        return self._backtrack(
+            assignment, unfilled, lengths, intersections,
+            used_words, weight_fn, node_budget, node_count,
+        )
+
+    def _assemble_result(self, template: Dict, filled_slots: Dict[str, str], theme_entries: Dict[str, str]) -> Dict:
+        """Build the crossword output dict (grid + slots) from a full assignment."""
+        result = template.copy()
+        grid = [row.copy() for row in template["grid"]]
+        slots_by_id = {slot["id"]: slot for slot in template["slots"]}
+        for slot_id, word in filled_slots.items():
+            for i, (row, col) in enumerate(slots_by_id[slot_id]["cells"]):
+                grid[row][col] = word[i]
+        result["grid"] = grid
+        result["filled_slots"] = filled_slots
+        result["theme_entries"] = theme_entries
+        return result
+
+    def generate_crossword(
+        self,
+        template: Dict,
+        theme_entry: str = None,
+        node_budget: int = DEFAULT_NODE_BUDGET,
+        restart_count: int = DEFAULT_RESTART_COUNT,
+    ) -> Optional[Dict]:
         """
         Generate a complete crossword puzzle.
         
         Args:
             template: The crossword template
-            theme_entry: Optional user-provided theme entry
-            
+            theme_entry: Optional pre-placed theme entry
+            node_budget: Max word placements per attempt
+            restart_count: Attempts with a different theme placement / random order
+
         Returns:
-            Completed crossword puzzle
+            Completed crossword dict, or None if no fill was found.
         """
-        # Validate theme entry if provided
         if theme_entry:
             is_valid, message = self.validate_theme_entry(theme_entry)
             if not is_valid:
                 raise ValueError(message)
-            
-            # Place theme entry
-            template_with_theme = self.place_theme_entry(template, theme_entry)
-        else:
-            # No theme entry provided
-            template_with_theme = template.copy()
-            template_with_theme["filled_slots"] = {}
-            template_with_theme["theme_entries"] = {}
-        
-        # Fill the grid
-        filled_crossword = self.backtracking_fill(template_with_theme, max_attempts=max_attempts)
-        
-        return filled_crossword
+
+        for _ in range(max(1, restart_count)):
+            if theme_entry:
+                try:
+                    working = self.place_theme_entry(template, theme_entry)
+                except ValueError:
+                    return None  # theme entry does not fit any slot in this template
+                seed = dict(working["filled_slots"])
+                theme_entries = dict(working["theme_entries"])
+            else:
+                seed = {}
+                theme_entries = {}
+
+            solution = self.fill(template, seed_assignment=seed, node_budget=node_budget)
+            if solution is not None:
+                logger.info(f"Grid filled successfully with {len(solution)} unique words")
+                return self._assemble_result(template, solution, theme_entries)
+
+        return None
+
 
 def print_grid(grid: List[List[str]]):
     """Print a grid in a readable format."""
     horizontal_line = "+---" * len(grid[0]) + "+"
-    
+
     print(horizontal_line)
     for row in grid:
         print("| " + " | ".join(cell if cell != "#" else " " for cell in row) + " |")
         print(horizontal_line)
 
-def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attempts: int = 100, backtracking_max_attempts: int = 100, word_db_manager: WordDatabaseManager = None) -> Dict:
+
+def generate_themed_crossword(
+    template: Dict,
+    theme_entry: str = None,
+    node_budget: int = DEFAULT_NODE_BUDGET,
+    restart_count: int = DEFAULT_RESTART_COUNT,
+    word_db_manager: WordDatabaseManager = None,
+) -> Optional[Dict]:
     """
     Generate a themed crossword puzzle.
-    
+
     Args:
         template: The crossword template to use
-        theme_entry: Optional user-provided theme entry
+        theme_entry: Optional pre-placed theme entry
+        node_budget: Max word placements per backtracking attempt
+        restart_count: Number of restart attempts
         word_db_manager: Optional WordDatabaseManager instance to reuse
-        
+
     Returns:
-        Generated crossword puzzle
+        Generated crossword puzzle, or None if generation failed.
     """
     generator = CrosswordGenerator(word_db_manager)
-    
+
     if theme_entry:
         logger.info(f"Generating crossword with theme entry: '{theme_entry}'")
     else:
         logger.info("Generating crossword without theme entry")
-    
-    # Generate the crossword
-    for attempt in range(max_attempts):
-        logger.info(f"Attempt {attempt + 1}/{max_attempts} to generate crossword")
-        
-        try:
-            crossword = generator.generate_crossword(template, theme_entry, max_attempts=backtracking_max_attempts)
-            if crossword:
-                logger.info("Crossword generated successfully")
-                break
-        except Exception as e:
-            logger.error(f"Error generating crossword: {e}")
-            if attempt == max_attempts - 1:
-                raise
-    # crossword = generator.generate_crossword(template, theme_entry)
-    
+
+    crossword = generator.generate_crossword(
+        template, theme_entry, node_budget=node_budget, restart_count=restart_count
+    )
+
     if crossword:
+        logger.info("Crossword generated successfully")
         logger.debug(
             "Generated crossword filled slots: %s",
             {slot_id: word for slot_id, word in sorted(crossword["filled_slots"].items())},
         )
+    else:
+        logger.warning("Failed to generate a crossword after all restarts")
 
     return crossword
