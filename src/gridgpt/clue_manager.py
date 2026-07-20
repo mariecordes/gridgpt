@@ -1,5 +1,6 @@
 import os
 import json
+import re
 import random
 import logging
 from typing import Dict, List
@@ -10,6 +11,17 @@ from .utils import load_prompts
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+def slot_sort_key(slot_id: str):
+    """Sort key for slot ids like '2A' or '10D' by (number, direction).
+
+    Plain string sorting orders '10A' before '2A'; this keeps numeric order.
+    """
+    match = re.match(r"(\d+)([A-Za-z]*)", slot_id)
+    if match:
+        return (int(match.group(1)), match.group(2))
+    return (0, slot_id)
 
 
 class ClueRetriever():
@@ -41,7 +53,7 @@ class ClueRetriever():
             clues[slot_id] = self.retrieve_clue(word)
         
         # Order keys by slot ID
-        clues = {k: clues[k] for k in sorted(clues.keys())}
+        clues = {k: clues[k] for k in sorted(clues.keys(), key=slot_sort_key)}
         
         # Add the clues to the crossword
         crossword["clues"] = clues
@@ -162,7 +174,7 @@ class ClueGenerator(LLMConnection, ClueRetriever):
             clues[slot_id] = self.generate_clue(word, theme)
         
         # Order keys by slot ID
-        clues = {k: clues[k] for k in sorted(clues.keys())}
+        clues = {k: clues[k] for k in sorted(clues.keys(), key=slot_sort_key)}
         
         # Add the clues to the crossword
         crossword["clues"] = clues

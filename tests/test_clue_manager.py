@@ -1,5 +1,16 @@
-from src.gridgpt.clue_manager import ClueRetriever
+from src.gridgpt.clue_manager import ClueRetriever, slot_sort_key
 from src.gridgpt.word_database_manager import is_reference_clue
+
+
+def test_slot_sort_key_orders_numerically():
+    """'10A' must sort after '2A' numerically, not lexicographically before it."""
+    slots = ["10A", "2A", "1A", "10D", "2D", "1D"]
+    ordered = sorted(slots, key=slot_sort_key)
+    # (number, letter) ordering: numeric first, so directions interleave.
+    assert ordered == ["1A", "1D", "2A", "2D", "10A", "10D"]
+    # The key property: within each direction the numbers are in order.
+    across = [s for s in ordered if s.endswith("A")]
+    assert across == ["1A", "2A", "10A"]
 
 
 def test_is_reference_clue():
