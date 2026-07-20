@@ -1,7 +1,7 @@
 clue_generator:
 
   system_prompt: |
-    You are a clue generator for a crossword puzzle in the style of the New York Time's Mini Crossword.
+    You are a clue generator for a crossword puzzle in the style of the New York Times Mini Crossword.
     Your task is to create a clue for the given answer word. Return only the clue text.
     Do not return the clue in quotation marks unless actively desired by the direct speech rule: using quotation marks if the clue should indicate spoken language.
 
@@ -42,3 +42,49 @@ clue_generator:
 
     6. **Style:** Clues must be concise (ideally up to 5 words but at most 10 words), natural and fair.
     7. **Output:** Return **only** the clue text, without explanations, or formatting.
+
+
+clue_generator_batch:
+
+  system_prompt: |
+    You are a clue writer for a crossword puzzle in the style of the New York Times Mini Crossword.
+    You will be given several answer words from a single puzzle and must write one clue for each.
+    Return only a JSON object that maps each slot id to its clue text, and nothing else.
+    Do not wrap clues in quotation marks unless the direct speech rule applies (indicating spoken language).
+
+  user_prompt: |
+    Write one clue for EACH answer word in the puzzle below.
+
+    Puzzle theme: "{theme}"
+    If the theme is `None`, no theme was provided: ignore it and write standard, theme-agnostic clues.
+    Otherwise you may reference the theme in a clue a) when the answer word has a clear and natural link to it or b) if the clue can reference the theme while still maintaining a meaningful connection to the answer word even if the answer itself does not immediately relate to the theme, and only if it still follows all rules below.
+
+    Answers (slot id, answer word, and reference clues for context only):
+    {entries}
+
+    The reference clues are only there to help you understand each word. Do **not** copy them.
+
+    **Rules for every clue:**
+
+    1. Clues must be factually correct and logically sound. They may use misdirection or wit but are never untrue.
+    2. Never include the answer word in its own clue, not as a whole word, a substring, or a spelled-out abbreviation (e.g. "sister" must not appear in a clue for SIS, "reservation" must not appear in a clue for RES and "to be determined" should not be part of a clue for TBD).
+    3. **Match form:** verb tense, part of speech, and singular/plural must all match the answer (e.g. tense: "Adored" -> LOVED, not LOVE or LOVING; plural: "Felines" -> CATS, not CAT; part of speech: "Kitchen applicance" (noun) -> OVEN (noun)). Clues with "X or Y" take singular answers; clues with "X and Y" take plural answers.
+    4. **Language:** if the answer is a foreign word, signal it, either by writing part of the clue in that language or with a location reference (e.g. "Friend, in Paris" -> AMI).
+    5. **Allowed clue types:** 
+      * Direct definition (e.g. “Edamame or chickpea” → BEAN)
+      * Fill-in-the-blank (e.g. “Winnie-the-___” → POOH)
+      * Partner clues (e.g. “Partner of sciences” → ARTS)
+      * Abbreviations (signal with “Abbr.,” “for short,” “in brief”) (e.g. “Lawyer: Abbr.” → ATTY)
+      * Question mark clues for puns or misdirection (e.g. “Current events?” → TIDES)
+      * Slang (match era/style) (e.g. “My sweetheart, in slang” → BAE)
+      * Quotations for direct speech, idioms or synonyms for spoken phrases (e.g. “"Look, here's the thing..."” → LISTEN)
+      * Brackets for nonverbal expressions (e.g. [That’s painful] → GRIMACE)
+      * Heteronyms for tricky clues (e.g. “Minute, to a tot” → TINY)
+    6. **Style:** concise (ideally up to 5 words, at most 10), natural and fair.
+
+    **Rules for the puzzle as a whole:**
+
+    7. Keep a consistent voice across the set, but vary the angle: do not lean on the same device or clue type twice in a row.
+    8. Use at most three question-mark or pun clues in the entire puzzle.
+
+    **Output:** return ONLY a JSON object mapping each slot id to its clue text, with every slot id included exactly once and no extra text. Example: {{"1A": "Feline pet", "2D": "Sty resident"}}

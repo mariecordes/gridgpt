@@ -90,6 +90,7 @@ class ClueGenerator(LLMConnection, ClueRetriever):
         
         prompts_library = load_prompts()
         self.prompt = prompts_library['clue_generator']
+        self.batch_prompt = prompts_library['clue_generator_batch']
     
     
     def load_clue_database(self, path: str) -> Dict[str, List[str]]:
@@ -174,18 +175,121 @@ class ClueGenerator(LLMConnection, ClueRetriever):
         
         # Order keys by slot ID
         clues = {k: clues[k] for k in sorted(clues.keys(), key=slot_sort_key)}
-        
+
         # Add the clues to the crossword
         crossword["clues"] = clues
-        
+
         return clues
+
+
+    def _finalize_clues(self, crossword: Dict, clues: Dict[str, str]) -> Dict[str, str]:
+        """Order clues by slot id and attach them to the crossword."""
+        clues = {k: clues[k] for k in sorted(clues.keys(), key=slot_sort_key)}
+        crossword["clues"] = clues
+        return clues
+
+
+    @staticmethod
+    def _is_valid_clue(word: str, clue) -> bool:
+        """A batch clue is usable only if it is a non-empty string that does not
+        contain its own answer word (case-insensitive), per the fairness rules."""
+        if not isinstance(clue, str) or not clue.strip():
+            return False
+        if word.lower() in clue.lower():
+            return False
+        return True
+
+
+    def _format_batch_entries(self, ordered_slots: List) -> str:
+        """Build the answer list block for the batch prompt: one line per slot
+        with the answer word and up to 3 sampled reference clues for context."""
+        lines = []
+        for slot_id, word in ordered_slots:
+            refs = self.get_available_clues(word)
+            if refs:
+                sampled = random.sample(refs, min(3, len(refs)))
+                ref_str = "; ".join(sampled)
+            else:
+                ref_str = "none available"
+            lines.append(f"- {slot_id} = {word} (reference clues: {ref_str})")
+        return "\n".join(lines)
+
+
+    def _request_batch_clues(self, ordered_slots: List, theme: str) -> Dict:
+        """Make a single LLM call returning a JSON object of {slot_id: clue}."""
+        model_override = os.environ.get("OPENAI_CLUE_MODEL")  # optional override
+        entries = self._format_batch_entries(ordered_slots)
+        user_prompt = self.batch_prompt['user_prompt'].format(theme=theme, entries=entries)
+
+        response = self.llm.chat.completions.create(
+            model=model_override or self.model_name,
+            messages=[
+                {"role": "system", "content": self.batch_prompt['system_prompt']},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0.7,
+            response_format={"type": "json_object"},
+        )
+        data = json.loads(response.choices[0].message.content)
+        if not isinstance(data, dict):
+            raise ValueError("Batch clue response was not a JSON object")
+        return data
+
+
+    def generate_clues_batch(self, crossword: Dict, theme: str) -> Dict[str, str]:
+        """
+        Generate clues for the whole crossword in a single LLM call.
+
+        One request returns a clue per slot, which lets the model keep the set
+        coherent (consistent voice, varied angles). Any slot whose clue is
+        missing or fails validation (empty, or contains its own answer) falls
+        back to the per-word generator, which in turn falls back to retrieval.
+        With no LLM connection, all clues are retrieved from the database.
+
+        Args:
+            crossword: The completed crossword with filled slots
+            theme: The overall crossword theme (None if no theme)
+
+        Returns:
+            Dictionary of {slot_id: clue} pairs
+        """
+        filled_slots = crossword.get("filled_slots", {})
+        if not filled_slots:
+            return self._finalize_clues(crossword, {})
+
+        if not self.llm_connection_success:
+            logger.warning("No LLM connection, retrieving clues instead of generating them.")
+            return self._finalize_clues(
+                crossword,
+                {slot_id: self.retrieve_clue(word) for slot_id, word in filled_slots.items()},
+            )
+
+        ordered_slots = sorted(filled_slots.items(), key=lambda kv: slot_sort_key(kv[0]))
+        logger.info(f"Generating clues for {len(ordered_slots)} words in a single batch call")
+
+        try:
+            raw_clues = self._request_batch_clues(ordered_slots, theme)
+        except Exception as e:
+            logger.error(f"Batch clue generation failed ({e}); falling back to per-word generation.")
+            return self.generate_clues(crossword, theme)
+
+        clues = {}
+        for slot_id, word in ordered_slots:
+            candidate = raw_clues.get(slot_id)
+            if self._is_valid_clue(word, candidate):
+                clues[slot_id] = candidate.strip()
+            else:
+                logger.info(f"Batch clue for {slot_id} ('{word}') missing or invalid; regenerating individually.")
+                clues[slot_id] = self.generate_clue(word, theme)
+
+        return self._finalize_clues(crossword, clues)
 
 
 # Helper function for use in main script
 def generate_clues(filled_grid: Dict, theme: str = None, word_db_manager: WordDatabaseManager = None) -> Dict[str, str]:
-    """Generate clues for the crossword."""
+    """Generate clues for the crossword in one batched LLM call (per-word fallback)."""
     generator = ClueGenerator(word_db_manager=word_db_manager)
-    return generator.generate_clues(filled_grid, theme)
+    return generator.generate_clues_batch(filled_grid, theme)
 
 def retrieve_existing_clues(filled_grid: Dict, word_db_manager: WordDatabaseManager = None) -> Dict[str, str]:
     """Retrieve existing clues for the crossword."""
