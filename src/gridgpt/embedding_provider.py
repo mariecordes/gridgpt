@@ -80,10 +80,14 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
 
     def get_word_list(self) -> List[str]:
         if self._word_list is None:
-            with open(self.word_list_path, "r", encoding="utf-8") as f:
-                freq_map: Dict[str, int] = json.load(f)
+            # The word list must stay aligned with the embedding matrix rows, so
+            # read the index the matrix was built from (word_index.json), not the
+            # frequency file which is regenerated on every startup and can drift
+            # out of sync (a longer list would index past the matrix -> crash).
+            with open(self.index_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
             # Store uppercase to match usage elsewhere
-            self._word_list = [w.upper() for w in freq_map.keys()]
+            self._word_list = [w.upper() for w in data.get("words", [])]
         return self._word_list
 
     # ---------------------------- Internal logic -------------------------- #
