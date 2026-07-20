@@ -30,31 +30,34 @@ class CrosswordGenerator:
         """
         # Convert to uppercase for consistency
         theme_entry = theme_entry.strip().upper()
-        
+
+        # Length is measured on the letters that fill the grid; spaces between
+        # words are not placed, so validate against the space-free form.
+        letters_only = theme_entry.replace(" ", "")
+
         # Check length constraints
-        if len(theme_entry) < min_length:
+        if len(letters_only) < min_length:
             return False, f"Theme entry too short. Minimum length is {min_length} characters."
-        
-        if len(theme_entry) > max_length:
+
+        if len(letters_only) > max_length:
             return False, f"Theme entry too long. Maximum length is {max_length} characters."
-        
-        # Check for special characters
-        if not theme_entry.isalpha():
+
+        # Only letters (A-Z), optionally separated by spaces for multi-word entries
+        if not letters_only.isalpha():
             return False, "Theme entry must contain only letters (A-Z)."
-        
-        # Check if word exists in our database
-        if theme_entry not in self.word_db_manager.word_list_with_frequencies and theme_entry.lower() not in self.word_db_manager.word_list_with_frequencies:
-            # Allow multi-word theme entries even if they're not in the database
-            if " " in theme_entry:
-                # Just check if all individual words exist
-                individual_words = theme_entry.split()
-                all_valid = all(word in self.word_db_manager.word_list_with_frequencies or word.lower() in self.word_db_manager.word_list_with_frequencies 
-                               for word in individual_words)
-                if not all_valid:
-                    return False, "Theme entry contains words not in our database."
-            else:
-                return False, "Theme entry not found in our word database."
-        
+
+        word_list = self.word_db_manager.word_list_with_frequencies
+
+        def in_database(word: str) -> bool:
+            return word in word_list or word.lower() in word_list
+
+        if " " in theme_entry:
+            # Multi-word entry: accept if every individual word is in the database.
+            if not all(in_database(word) for word in theme_entry.split()):
+                return False, "Theme entry contains words not in our database."
+        elif not in_database(theme_entry):
+            return False, "Theme entry not found in our word database."
+
         return True, "Theme entry is valid."
     
     def find_suitable_slots(self, template: Dict, theme_entry: str) -> List[Dict]:
@@ -87,11 +90,11 @@ class CrosswordGenerator:
         
         if not suitable_slots:
             logger.warning(f"No suitable slots found for theme entry '{theme_entry}' with length {entry_length}")
-            # Find closest matching slots
-            candidate_slots.sort(key=lambda s: abs(s["length"] - entry_length))
-            closest_length = candidate_slots[0]["length"]
-            logger.info(f"Closest available slot length is {closest_length}")
-        
+            # Log the closest available slot length for debugging, if any slots exist
+            if candidate_slots:
+                closest = sorted(candidate_slots, key=lambda s: abs(s["length"] - entry_length))
+                logger.info(f"Closest available slot length is {closest[0]['length']}")
+
         return suitable_slots
     
     def place_theme_entry(self, template: Dict, theme_entry: str) -> Dict:
@@ -413,14 +416,9 @@ def generate_themed_crossword(template: Dict, theme_entry: str = None, max_attem
     # crossword = generator.generate_crossword(template, theme_entry)
     
     if crossword:
-        # Print the result
-        print("\nGenerated Crossword:")
-        print_grid(crossword["grid"])
-        
-        print("\nFilled Slots:")
-        for slot_id, word in sorted(crossword["filled_slots"].items()):
-            is_theme = slot_id in crossword.get("theme_entries", {})
-            theme_marker = "🌟 " if is_theme else ""
-            print(f"{theme_marker}{slot_id}: {word}")
-        
+        logger.debug(
+            "Generated crossword filled slots: %s",
+            {slot_id: word for slot_id, word in sorted(crossword["filled_slots"].items())},
+        )
+
     return crossword

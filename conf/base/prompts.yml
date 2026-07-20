@@ -12,7 +12,7 @@ clue_generator:
     {reference_clues}
     Do **not** copy these clues - use them only to better understand the word.
 
-    You may consider the puzzle theme **"{theme}"** (optional). If a theme is given and the answer word has a clear and known link or association with that theme, you can optionally reference it in the clue. **Only do so if it fits naturally and still follows all rules below**.
+    You may consider the puzzle theme **"{theme}"** (optional). If the theme is `None`, no theme was provided: ignore it entirely and write a standard, theme-agnostic clue. Otherwise, if the answer word has a clear and known link or association with that theme, you can optionally reference it in the clue. **Only do so if it fits naturally and still follows all rules below**.
 
     **Rules:**
     

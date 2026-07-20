@@ -28,3 +28,6 @@ dependencies = [
     # Optional: for testing FastAPI endpoints
     "httpx>=0.25.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

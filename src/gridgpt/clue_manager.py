@@ -1,15 +1,27 @@
 import os
 import json
+import re
 import random
 import logging
 from typing import Dict, List
 
-from .word_database_manager import WordDatabaseManager
+from .word_database_manager import WordDatabaseManager, is_reference_clue
 from .llm_connection import LLMConnection
 from .utils import load_prompts
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+def slot_sort_key(slot_id: str):
+    """Sort key for slot ids like '2A' or '10D' by (number, direction).
+
+    Plain string sorting orders '10A' before '2A'; this keeps numeric order.
+    """
+    match = re.match(r"(\d+)([A-Za-z]*)", slot_id)
+    if match:
+        return (int(match.group(1)), match.group(2))
+    return (0, slot_id)
 
 
 class ClueRetriever():
@@ -41,7 +53,7 @@ class ClueRetriever():
             clues[slot_id] = self.retrieve_clue(word)
         
         # Order keys by slot ID
-        clues = {k: clues[k] for k in sorted(clues.keys())}
+        clues = {k: clues[k] for k in sorted(clues.keys(), key=slot_sort_key)}
         
         # Add the clues to the crossword
         crossword["clues"] = clues
@@ -56,10 +68,10 @@ class ClueRetriever():
     
     
     def get_available_clues(self, word: str):
-        available_clues = self.word_db_manager.word_database_full.get(word, {}).get("clues", {})
-        
-        # Remove any clues relating to other entries (not suitable for new crossword)
-        available_clues = [clue for clue in available_clues if "Across" not in clue and "Down" not in clue]
+        available_clues = self.word_db_manager.word_database_full.get(word, {}).get("clues", [])
+
+        # Remove cross-reference clues (e.g. "See 5-Across")
+        available_clues = [clue for clue in available_clues if not is_reference_clue(clue)]
         return available_clues
     
     
@@ -126,7 +138,6 @@ class ClueGenerator(LLMConnection, ClueRetriever):
                     {"role": "system", "content": self.prompt['system_prompt']},
                     {"role": "user", "content": formatted_prompt}
                 ],
-                max_tokens=50,
                 temperature=0.7,
             )
             
@@ -162,7 +173,7 @@ class ClueGenerator(LLMConnection, ClueRetriever):
             clues[slot_id] = self.generate_clue(word, theme)
         
         # Order keys by slot ID
-        clues = {k: clues[k] for k in sorted(clues.keys())}
+        clues = {k: clues[k] for k in sorted(clues.keys(), key=slot_sort_key)}
         
         # Add the clues to the crossword
         crossword["clues"] = clues

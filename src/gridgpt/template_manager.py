@@ -1,6 +1,9 @@
 import json
 import random
+import logging
 from typing import Dict, List
+
+logger = logging.getLogger(__name__)
 
 def load_templates(template_file: str = "data/03_templates/grid_templates.json") -> Dict:
     """Load crossword templates from JSON file."""
@@ -33,9 +36,9 @@ def select_template(template_id: str = None, difficulty: str = None) -> Dict:
     else:
         template = random.choice(templates)
     
-    print(f"Selected template: {template['name']} ({template['id']})")
-    print(f"Description: {template['description']}")
-    
+    logger.info(f"Selected template: {template['name']} ({template['id']})")
+    logger.debug(f"Description: {template['description']}")
+
     return template
 
 def identify_theme_slots(template: Dict) -> List[Dict]:

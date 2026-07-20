@@ -10,6 +10,25 @@ from .utils import load_catalog
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Matches cross-reference clues that don't stand alone in a newly generated
+# puzzle, e.g. "See 5-Across", "With 12-Down", "circled letters", "shaded
+# squares". A plain directional word inside a normal clue ("Down under") is not
+# matched because the pattern requires an accompanying number or grid feature.
+REFERENCE_CLUE_PATTERN = re.compile(
+    r'\b(?:'
+    r'(?:see|with|and|like)\s+\d+[-\s]?(?:across|down)(?:es|s)?|'  # "See 5-Across", "With 12-downs", "See 1-acrosses"
+    r'\d+[-\s]?(?:across|down)(?:es|s)?\b|'                        # "5-Across", "12 downs", "1-acrosses"
+    r'(?:circled|shaded)\s+(?:letters?|squares?)'                  # "circled letters", "circled squares", "shaded letters", "shaded squares"
+    r')',
+    re.IGNORECASE
+)
+
+
+def is_reference_clue(clue: str) -> bool:
+    """Return True if the clue references another entry or a grid feature and
+    therefore shouldn't be reused verbatim in a newly generated puzzle."""
+    return bool(REFERENCE_CLUE_PATTERN.search(clue))
+
 class WordDatabaseManager:
     def __init__(
         self,
@@ -95,23 +114,23 @@ class WordDatabaseManager:
             
             # Apply filtering criteria
             if self._should_include_word(word, frequency, min_frequency, min_length, max_length, exclude_special_chars):
-                filtered_words[word] = data
+                # Copy the entry (with a fresh clues list) so stripping reference
+                # clues below does not mutate word_database_full in memory.
+                filtered_words[word] = {**data, 'clues': list(data.get('clues', []))}
 
                 if exclude_reference_clues:
                     # Filter out reference clues like "See 5-Across", "With 12-Down", "circled letters", "circled squares", "shaded letters", "shaded squares", etc.
-                    reference_pattern = re.compile(
-                        r'\b(?:'
-                        r'(?:see|with|and|like)\s+\d+[-\s]?(?:across|down)(?:es|s)?|'  # "See 5-Across", "With 12-downs", "See 1-acrosses"
-                        r'\d+[-\s]?(?:across|down)(?:es|s)?\b|'                        # "5-Across", "12 downs", "1-acrosses"
-                        r'(?:circled|shaded)\s+(?:letters?|squares?)'                  # "circled letters", "circled squares", "shaded letters", "shaded squares"
-                        r')',
-                        re.IGNORECASE
-                    )
-                    
                     filtered_words[word]['clues'] = [
                         clue for clue in filtered_words[word]['clues']
-                        if not reference_pattern.search(clue)
+                        if not is_reference_clue(clue)
                     ]
+
+                # Drop words left without any usable clues (e.g. entries whose
+                # only published clues were cross-references that got stripped).
+                # Otherwise they can still be placed in a grid but the solver
+                # sees "Clue could not be retrieved. The answer is X".
+                if not filtered_words[word].get('clues'):
+                    del filtered_words[word]
 
         logger.info(f"Filtered database contains {len(filtered_words)} words (removed {len(word_database) - len(filtered_words)} words)")
         

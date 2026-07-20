@@ -32,16 +32,22 @@ if extra_origins:
 
 allow_all = os.getenv("ALLOW_ALL_CORS", "false").lower() in {"1", "true", "yes"}
 
-cors_args = dict(
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 if allow_all:
-    app.add_middleware(CORSMiddleware, allow_origins=["*"], **cors_args)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False, # Disable credentials when allowing all origins
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 else:
-    app.add_middleware(CORSMiddleware, allow_origins=DEFAULT_ALLOWED_ORIGINS, **cors_args)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=DEFAULT_ALLOWED_ORIGINS, # Use the list of allowed origins when not allowing all origins
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Include API routes
 app.include_router(router, prefix="/api")
