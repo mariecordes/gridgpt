@@ -72,6 +72,22 @@ def test_is_valid_clue():
     assert ClueGenerator._is_valid_clue("CAT", None) is False  # missing
 
 
+def test_is_valid_clue_catches_punctuation_and_numeral_reveals():
+    # Numeral reveal: "1:00 a.m." spells out ONEAM (the reported miss).
+    assert ClueGenerator._is_valid_clue("ONEAM", "1:00 a.m., briefly") is False
+    # Spelled-out and punctuation-split forms.
+    assert ClueGenerator._is_valid_clue("ONEAM", "One a.m., informally") is False
+    assert ClueGenerator._is_valid_clue("TENPM", "10:30 p.m. hour, roughly") is False
+
+
+def test_is_valid_clue_no_false_positive_on_embedded_number_words():
+    # "one" is embedded in STONE/PHONE; a clue mentioning "1" must NOT be flagged.
+    assert ClueGenerator._is_valid_clue("STONE", "Number 1 draft pick, maybe") is True
+    assert ClueGenerator._is_valid_clue("PHONE", "Dial 1 to reach it") is True
+    # A numeric math clue does not spell out the answer.
+    assert ClueGenerator._is_valid_clue("TEN", "5 + 5") is True
+
+
 def test_generate_clues_batch_happy_path():
     """One valid JSON response fills every slot in a single call."""
     calls = []

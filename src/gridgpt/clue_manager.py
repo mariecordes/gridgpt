@@ -24,6 +24,31 @@ def slot_sort_key(slot_id: str):
     return (0, slot_id)
 
 
+# Numerals a clue might use to stand in for a spelled-out answer (e.g. "1:00
+# a.m." for ONEAM). Used only for reveal-checking, so a modest map is enough.
+_NUMBER_WORDS = {
+    0: "zero", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+    6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven",
+    12: "twelve", 13: "thirteen", 14: "fourteen", 15: "fifteen", 16: "sixteen",
+    17: "seventeen", 18: "eighteen", 19: "nineteen", 20: "twenty", 30: "thirty",
+    40: "forty", 50: "fifty", 60: "sixty", 70: "seventy", 80: "eighty",
+    90: "ninety", 100: "hundred",
+}
+
+
+def _strip_non_alnum(text: str) -> str:
+    """Lowercase and drop everything but letters and digits."""
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def _numerals_to_words(text: str) -> str:
+    """Rewrite numerals in a clue as words, so a numeric clue can be checked
+    against a spelled-out answer. Clock times collapse to their hour first
+    ("1:00" -> "1"), then known integers become words ("1" -> "one")."""
+    text = re.sub(r"\b(\d{1,2}):\d{2}\b", r"\1", text.lower())
+    return re.sub(r"\d+", lambda m: _NUMBER_WORDS.get(int(m.group()), m.group()), text)
+
+
 class ClueRetriever():
     def __init__(self, word_db_manager: WordDatabaseManager = None):
         """Initialize the clue retriever with a word database manager."""
@@ -190,12 +215,30 @@ class ClueGenerator(LLMConnection, ClueRetriever):
 
 
     @staticmethod
+    def _clue_reveals_answer(word: str, clue: str) -> bool:
+        """True if the clue gives away its own answer, allowing for punctuation,
+        spacing and numerals. Catches plain substrings ("a cat" for CAT),
+        punctuation-split reveals ("a.m." for AM) and numeral reveals ("1:00
+        a.m." for ONEAM). The whole answer is matched against the (rewritten)
+        clue, never the reverse, so a number word merely embedded in the answer
+        (e.g. "one" in STONE) does not cause a false positive."""
+        answer = _strip_non_alnum(word)
+        if not answer:
+            return False
+        if answer in _strip_non_alnum(clue):
+            return True
+        if answer in _strip_non_alnum(_numerals_to_words(clue)):
+            return True
+        return False
+
+    @staticmethod
     def _is_valid_clue(word: str, clue) -> bool:
         """A batch clue is usable only if it is a non-empty string that does not
-        contain its own answer word (case-insensitive), per the fairness rules."""
+        give away its own answer (directly, or via punctuation or numerals),
+        per the fairness rules."""
         if not isinstance(clue, str) or not clue.strip():
             return False
-        if word.lower() in clue.lower():
+        if ClueGenerator._clue_reveals_answer(word, clue):
             return False
         return True
 
