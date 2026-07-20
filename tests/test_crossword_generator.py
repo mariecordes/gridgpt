@@ -62,6 +62,17 @@ def test_validate_theme_entry(word_db):
     assert generator.validate_theme_entry("ZZZZQ")[0] is False  # not in database
 
 
+def test_validate_multi_word_theme_entry(word_db):
+    """Multi-word entries are valid when every component word is in the DB."""
+    generator = CrosswordGenerator(word_db)
+    word_a = word_db.words_by_length[3][0][0]
+    word_b = word_db.words_by_length[4][0][0]
+
+    assert generator.validate_theme_entry(f"{word_a} {word_b}")[0] is True
+    # A space must no longer trip the letters-only check.
+    assert generator.validate_theme_entry(f"{word_a} ZZZQX")[0] is False  # unknown word
+
+
 def test_get_possible_words_respects_constraints(word_db):
     generator = CrosswordGenerator(word_db)
     slot = {"length": 3}
