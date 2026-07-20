@@ -24,7 +24,7 @@ word_db_manager = WordDatabaseManager()
 # Pydantic models for request/response
 class GenerateRequest(BaseModel):
     template: Optional[str] = None
-    theme: Optional[str] = "general knowledge"
+    theme: Optional[str] = None
     themeEntry: Optional[str] = None
     difficulty: Optional[str] = "easy"
     clueType: Optional[str] = 'existing'
@@ -104,7 +104,9 @@ async def generate_crossword(request: GenerateRequest):
             )
         
         else:
-            theme = "no theme"
+            # No theme: None flows through to clue generation, where the prompt
+            # is told to ignore a None theme and write theme-agnostic clues.
+            theme = None
             request.themeEntry = None
 
         # # Validate theme entry if provided
