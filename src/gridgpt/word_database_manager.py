@@ -95,7 +95,9 @@ class WordDatabaseManager:
             
             # Apply filtering criteria
             if self._should_include_word(word, frequency, min_frequency, min_length, max_length, exclude_special_chars):
-                filtered_words[word] = data
+                # Copy the entry (with a fresh clues list) so stripping reference
+                # clues below does not mutate word_database_full in memory.
+                filtered_words[word] = {**data, 'clues': list(data.get('clues', []))}
 
                 if exclude_reference_clues:
                     # Filter out reference clues like "See 5-Across", "With 12-Down", "circled letters", "circled squares", "shaded letters", "shaded squares", etc.

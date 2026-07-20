@@ -18,6 +18,25 @@ def test_no_word_left_without_clues(word_db):
         assert data.get("clues"), f"'{word}' has no clues but is still in the filtered DB"
 
 
+def test_filtering_does_not_mutate_full_database(word_db):
+    """Stripping reference clues in the filtered DB must not touch the full DB."""
+    # Find a word present in both DBs whose clues were actually stripped.
+    for word, filtered_data in word_db.word_database_filtered.items():
+        full_clues = word_db.word_database_full.get(word, {}).get("clues", [])
+        if len(filtered_data["clues"]) < len(full_clues):
+            # Full DB must still hold every original clue, and the two lists
+            # must be independent objects.
+            assert filtered_data["clues"] is not full_clues
+            assert len(full_clues) > len(filtered_data["clues"])
+            return
+    # If nothing was stripped, at least confirm the lists are independent objects.
+    sample = next(iter(word_db.word_database_filtered))
+    assert (
+        word_db.word_database_filtered[sample]["clues"]
+        is not word_db.word_database_full[sample]["clues"]
+    )
+
+
 def test_words_by_length_structure(word_db):
     assert set(word_db.words_by_length.keys()) == {3, 4, 5}
     for length, entries in word_db.words_by_length.items():
