@@ -138,7 +138,6 @@ class ClueGenerator(LLMConnection, ClueRetriever):
                     {"role": "system", "content": self.prompt['system_prompt']},
                     {"role": "user", "content": formatted_prompt}
                 ],
-                max_tokens=50,
                 temperature=0.7,
             )
             
