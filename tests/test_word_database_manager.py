@@ -12,6 +12,12 @@ def test_filtered_database_respects_criteria(word_db):
         assert data["frequency"] >= 1
 
 
+def test_no_word_left_without_clues(word_db):
+    """Words whose clues were all stripped as cross-references must be dropped."""
+    for word, data in word_db.word_database_filtered.items():
+        assert data.get("clues"), f"'{word}' has no clues but is still in the filtered DB"
+
+
 def test_words_by_length_structure(word_db):
     assert set(word_db.words_by_length.keys()) == {3, 4, 5}
     for length, entries in word_db.words_by_length.items():

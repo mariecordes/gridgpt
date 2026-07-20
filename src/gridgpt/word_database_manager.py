@@ -113,6 +113,13 @@ class WordDatabaseManager:
                         if not reference_pattern.search(clue)
                     ]
 
+                # Drop words left without any usable clues (e.g. entries whose
+                # only published clues were cross-references that got stripped).
+                # Otherwise they can still be placed in a grid but the solver
+                # sees "Clue could not be retrieved. The answer is X".
+                if not filtered_words[word].get('clues'):
+                    del filtered_words[word]
+
         logger.info(f"Filtered database contains {len(filtered_words)} words (removed {len(word_database) - len(filtered_words)} words)")
         
         # Save the filtered database
