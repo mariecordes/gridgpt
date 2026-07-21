@@ -46,6 +46,20 @@ def test_words_by_length_structure(word_db):
             assert frequency >= 1
 
 
+def test_word_index_is_consistent(word_db):
+    """The lookup index used by the backtracking filler must stay in sync with
+    the word list: buckets contain only matching words, and every word is indexed."""
+    for length, entries in word_db.words_by_length.items():
+        assert word_db.all_words_by_length[length] == {w for w, _ in entries}
+
+    # letter_index[5][0][L] holds exactly the 5-letter words starting with L
+    for letter, bucket in word_db.letter_index[5][0].items():
+        for word in bucket:
+            assert len(word) == 5 and word[0] == letter
+
+    assert len(word_db.word_frequencies) == len(word_db.word_list_with_frequencies)
+
+
 def test_should_include_word(word_db):
     should_include = word_db._should_include_word
     # (word, freq, min_freq, min_len, max_len, exclude_special)

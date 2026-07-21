@@ -13,6 +13,5 @@ theme_entry:
   weigh_similarity: True
 
 crossword_generator:
-  max_attempts:
-    new_crossword: 100 # creating a new crossword with a newly placed theme entry
-    backtracking: 100 # backtracking attempts for finding a valid crossword configuration for a placed theme entry
+  node_budget: 20000 # max word placements per backtracking attempt before giving up
+  restart_count: 5 # attempts, each with a different theme placement / random word order

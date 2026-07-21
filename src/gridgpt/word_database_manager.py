@@ -63,6 +63,7 @@ class WordDatabaseManager:
         )
         self.word_list_with_frequencies = self.create_word_list_with_frequencies(self.word_database_filtered, db_frequency_path)
         self.words_by_length = self.organize_words_by_length()
+        self.build_word_index()
     
     
     def load_word_database(self, path: str) -> List[str]:
@@ -200,3 +201,35 @@ class WordDatabaseManager:
 
         logger.info(f"Stored words by length. Words ranging from {min(words_by_length.keys())} to {max(words_by_length.keys())} characters.")
         return words_by_length
+
+    def build_word_index(self):
+        """Build lookup structures for fast constraint-based word retrieval.
+
+        - word_frequencies: {WORD: frequency} (uppercase)
+        - all_words_by_length: {length: frozenset(words)}
+        - letter_index: {length: {position: {letter: frozenset(words)}}}
+
+        The letter index lets the crossword filler find "words of length L with
+        letter X at position P" via set intersections instead of scanning the
+        whole word list on every candidate lookup.
+        """
+        self.word_frequencies: Dict[str, int] = {}
+        self.all_words_by_length: Dict[int, frozenset] = {}
+        self.letter_index: Dict[int, Dict[int, Dict[str, frozenset]]] = {}
+
+        for length, entries in self.words_by_length.items():
+            words = set()
+            position_index: Dict[int, Dict[str, set]] = {}
+            for word, frequency in entries:
+                self.word_frequencies[word] = frequency
+                words.add(word)
+                for pos, letter in enumerate(word):
+                    position_index.setdefault(pos, {}).setdefault(letter, set()).add(word)
+
+            self.all_words_by_length[length] = frozenset(words)
+            self.letter_index[length] = {
+                pos: {letter: frozenset(word_set) for letter, word_set in letters.items()}
+                for pos, letters in position_index.items()
+            }
+
+        logger.info(f"Built word index for {len(self.word_frequencies)} words.")

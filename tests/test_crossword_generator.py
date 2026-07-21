@@ -73,6 +73,28 @@ def test_validate_multi_word_theme_entry(word_db):
     assert generator.validate_theme_entry(f"{word_a} ZZZQX")[0] is False  # unknown word
 
 
+def test_fill_produces_consistent_assignment(word_db):
+    """The backtracking fill returns a complete, duplicate-free assignment."""
+    random.seed(3)
+    template = select_template(template_id="5x5_diagonal_cut")
+    generator = CrosswordGenerator(word_db)
+
+    assignment = generator.fill(template)
+
+    assert assignment is not None
+    assert set(assignment) == {s["id"] for s in template["slots"]}
+    assert len(set(assignment.values())) == len(assignment)  # no duplicate words
+
+
+def test_generate_crossword_exhausted_budget_returns_none(word_db):
+    """A zero node budget must return None cleanly, not raise."""
+    template = select_template(template_id="5x5_blocked_corners")
+    result = generate_themed_crossword(
+        template, node_budget=0, restart_count=2, word_db_manager=word_db
+    )
+    assert result is None
+
+
 def test_find_suitable_slots_no_candidates_does_not_crash(word_db):
     """An empty candidate set must return [] instead of an IndexError."""
     generator = CrosswordGenerator(word_db)
