@@ -11,6 +11,37 @@ logger = logging.getLogger(__name__)
 DEFAULT_NODE_BUDGET = 20000
 DEFAULT_RESTART_COUNT = 5
 
+# Defaults for theme-weighted fill (overridable via conf/base/parameters.yml).
+DEFAULT_THEME_BOOST = 4.0
+DEFAULT_SIM_LOW = 0.20
+DEFAULT_SIM_HIGH = 0.50
+
+
+def normalized_themeness(similarity: Optional[float], sim_low: float, sim_high: float) -> float:
+    """Map a raw cosine similarity to a 0..1 'themeness' by clipping to the
+    [sim_low, sim_high] band. None (word not scored) maps to 0."""
+    if similarity is None:
+        return 0.0
+    span = max(sim_high - sim_low, 1e-9)
+    return min(1.0, max(0.0, (similarity - sim_low) / span))
+
+
+def _build_theme_weight_fn(
+    word_frequencies: Dict[str, int],
+    theme_similarities: Dict[str, float],
+    boost: float,
+    sim_low: float,
+    sim_high: float,
+) -> Callable[[str], float]:
+    """Selection weight blending frequency with theme similarity:
+    weight = frequency * (1 + boost * themeness). Frequency stays the safety net;
+    similarity is a bounded booster. Only reorders candidates, never removes them."""
+    def weight(word: str) -> float:
+        frequency = word_frequencies.get(word, 1)
+        themeness = normalized_themeness(theme_similarities.get(word), sim_low, sim_high)
+        return frequency * (1.0 + boost * themeness)
+    return weight
+
 
 class CrosswordGenerator:
     def __init__(self, word_db_manager: WordDatabaseManager = None):
@@ -355,6 +386,10 @@ class CrosswordGenerator:
         theme_entry: str = None,
         node_budget: int = DEFAULT_NODE_BUDGET,
         restart_count: int = DEFAULT_RESTART_COUNT,
+        theme_similarities: Dict[str, float] = None,
+        theme_boost: float = DEFAULT_THEME_BOOST,
+        sim_low: float = DEFAULT_SIM_LOW,
+        sim_high: float = DEFAULT_SIM_HIGH,
     ) -> Optional[Dict]:
         """
         Generate a complete crossword puzzle.
@@ -364,6 +399,9 @@ class CrosswordGenerator:
             theme_entry: Optional pre-placed theme entry
             node_budget: Max word placements per attempt
             restart_count: Attempts with a different theme placement / random order
+            theme_similarities: Optional {WORD: cosine} map; when given, fill is
+                biased toward on-theme words (candidate order only, never feasibility)
+            theme_boost, sim_low, sim_high: theme-weighting parameters
 
         Returns:
             Completed crossword dict, or None if no fill was found.
@@ -372,6 +410,15 @@ class CrosswordGenerator:
             is_valid, message = self.validate_theme_entry(theme_entry)
             if not is_valid:
                 raise ValueError(message)
+
+        # Build a theme-weighted selection function once (if a theme is provided);
+        # otherwise fill() defaults to pure frequency weighting.
+        weight_fn = None
+        if theme_similarities:
+            weight_fn = _build_theme_weight_fn(
+                self.word_db_manager.word_frequencies,
+                theme_similarities, theme_boost, sim_low, sim_high,
+            )
 
         for _ in range(max(1, restart_count)):
             if theme_entry:
@@ -385,7 +432,7 @@ class CrosswordGenerator:
                 seed = {}
                 theme_entries = {}
 
-            solution = self.fill(template, seed_assignment=seed, node_budget=node_budget)
+            solution = self.fill(template, seed_assignment=seed, weight_fn=weight_fn, node_budget=node_budget)
             if solution is not None:
                 logger.info(f"Grid filled successfully with {len(solution)} unique words")
                 return self._assemble_result(template, solution, theme_entries)
@@ -408,6 +455,10 @@ def generate_themed_crossword(
     theme_entry: str = None,
     node_budget: int = DEFAULT_NODE_BUDGET,
     restart_count: int = DEFAULT_RESTART_COUNT,
+    theme_similarities: Dict[str, float] = None,
+    theme_boost: float = DEFAULT_THEME_BOOST,
+    sim_low: float = DEFAULT_SIM_LOW,
+    sim_high: float = DEFAULT_SIM_HIGH,
     word_db_manager: WordDatabaseManager = None,
 ) -> Optional[Dict]:
     """
@@ -418,6 +469,8 @@ def generate_themed_crossword(
         theme_entry: Optional pre-placed theme entry
         node_budget: Max word placements per backtracking attempt
         restart_count: Number of restart attempts
+        theme_similarities: Optional {WORD: cosine} map to bias the fill on-theme
+        theme_boost, sim_low, sim_high: theme-weighting parameters
         word_db_manager: Optional WordDatabaseManager instance to reuse
 
     Returns:
@@ -431,7 +484,9 @@ def generate_themed_crossword(
         logger.info("Generating crossword without theme entry")
 
     crossword = generator.generate_crossword(
-        template, theme_entry, node_budget=node_budget, restart_count=restart_count
+        template, theme_entry, node_budget=node_budget, restart_count=restart_count,
+        theme_similarities=theme_similarities, theme_boost=theme_boost,
+        sim_low=sim_low, sim_high=sim_high,
     )
 
     if crossword:
