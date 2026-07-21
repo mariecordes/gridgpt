@@ -15,6 +15,7 @@ DEFAULT_RESTART_COUNT = 5
 DEFAULT_THEME_BOOST = 4.0
 DEFAULT_SIM_LOW = 0.20
 DEFAULT_SIM_HIGH = 0.50
+DEFAULT_VISIBLE_THRESHOLD = 0.6
 
 
 def normalized_themeness(similarity: Optional[float], sim_low: float, sim_high: float) -> float:
@@ -170,7 +171,7 @@ class CrosswordGenerator:
         
         working_template["grid"] = grid
         working_template["filled_slots"] = {slot_id: theme_entry}
-        working_template["theme_entries"] = {slot_id: theme_entry}
+        working_template["seed_entries"] = {slot_id: theme_entry}
         
         return working_template
     
@@ -367,7 +368,7 @@ class CrosswordGenerator:
             used_words, weight_fn, node_budget, node_count,
         )
 
-    def _assemble_result(self, template: Dict, filled_slots: Dict[str, str], theme_entries: Dict[str, str]) -> Dict:
+    def _assemble_result(self, template: Dict, filled_slots: Dict[str, str], seed_entries: Dict[str, str], theme_entries: Dict[str, str] = None) -> Dict:
         """Build the crossword output dict (grid + slots) from a full assignment."""
         result = template.copy()
         grid = [row.copy() for row in template["grid"]]
@@ -377,8 +378,33 @@ class CrosswordGenerator:
                 grid[row][col] = word[i]
         result["grid"] = grid
         result["filled_slots"] = filled_slots
+        result["seed_entries"] = seed_entries
         result["theme_entries"] = theme_entries
         return result
+
+    def _identify_theme_entries(
+        self,
+        filled_slots: Dict[str, str],
+        seed_entries: Dict[str, str],
+        theme_similarities: Optional[Dict[str, float]],
+        sim_low: float,
+        sim_high: float,
+        visible_threshold: float,
+    ) -> Dict[str, str]:
+        """Which filled words are theme entries: the pinned seed (always, since it
+        was chosen for the theme) plus any filled word whose themeness clears the
+        visible threshold. Empty for an unthemed puzzle."""
+        theme_entries = {}
+        for slot_id, word in dict(seed_entries).items():
+            themeness = normalized_themeness(theme_similarities.get(word), sim_low, sim_high) if theme_similarities else 0.0
+            theme_entries[slot_id] = (word, themeness)
+        # theme_entries = dict(seed_entries)
+        if theme_similarities:
+            for slot_id, word in filled_slots.items():
+                themeness = normalized_themeness(theme_similarities.get(word), sim_low, sim_high)
+                if themeness >= visible_threshold:
+                    theme_entries[slot_id] = (word, themeness)
+        return theme_entries
 
     def generate_crossword(
         self,
@@ -390,10 +416,11 @@ class CrosswordGenerator:
         theme_boost: float = DEFAULT_THEME_BOOST,
         sim_low: float = DEFAULT_SIM_LOW,
         sim_high: float = DEFAULT_SIM_HIGH,
+        visible_threshold: float = DEFAULT_VISIBLE_THRESHOLD,
     ) -> Optional[Dict]:
         """
         Generate a complete crossword puzzle.
-        
+
         Args:
             template: The crossword template
             theme_entry: Optional pre-placed theme entry
@@ -402,6 +429,8 @@ class CrosswordGenerator:
             theme_similarities: Optional {WORD: cosine} map; when given, fill is
                 biased toward on-theme words (candidate order only, never feasibility)
             theme_boost, sim_low, sim_high: theme-weighting parameters
+            visible_threshold: normalized themeness at/above which a filled word is
+                recorded in the returned `theme_entries`
 
         Returns:
             Completed crossword dict, or None if no fill was found.
@@ -427,15 +456,19 @@ class CrosswordGenerator:
                 except ValueError:
                     return None  # theme entry does not fit any slot in this template
                 seed = dict(working["filled_slots"])
-                theme_entries = dict(working["theme_entries"])
+                seed_entries = dict(working["seed_entries"])
             else:
                 seed = {}
-                theme_entries = {}
+                seed_entries = {}
 
             solution = self.fill(template, seed_assignment=seed, weight_fn=weight_fn, node_budget=node_budget)
             if solution is not None:
                 logger.info(f"Grid filled successfully with {len(solution)} unique words")
-                return self._assemble_result(template, solution, theme_entries)
+                theme_entries = self._identify_theme_entries(
+                    solution, seed_entries, theme_similarities, sim_low, sim_high, visible_threshold
+                )
+                logger.info(f"Identified {len(theme_entries)} theme entries in the filled grid: {theme_entries}")
+                return self._assemble_result(template, solution, seed_entries, theme_entries)
 
         return None
 
@@ -459,6 +492,7 @@ def generate_themed_crossword(
     theme_boost: float = DEFAULT_THEME_BOOST,
     sim_low: float = DEFAULT_SIM_LOW,
     sim_high: float = DEFAULT_SIM_HIGH,
+    visible_threshold: float = DEFAULT_VISIBLE_THRESHOLD,
     word_db_manager: WordDatabaseManager = None,
 ) -> Optional[Dict]:
     """
@@ -471,6 +505,7 @@ def generate_themed_crossword(
         restart_count: Number of restart attempts
         theme_similarities: Optional {WORD: cosine} map to bias the fill on-theme
         theme_boost, sim_low, sim_high: theme-weighting parameters
+        visible_threshold: themeness cutoff for recording `theme_entries`
         word_db_manager: Optional WordDatabaseManager instance to reuse
 
     Returns:
@@ -486,7 +521,7 @@ def generate_themed_crossword(
     crossword = generator.generate_crossword(
         template, theme_entry, node_budget=node_budget, restart_count=restart_count,
         theme_similarities=theme_similarities, theme_boost=theme_boost,
-        sim_low=sim_low, sim_high=sim_high,
+        sim_low=sim_low, sim_high=sim_high, visible_threshold=visible_threshold,
     )
 
     if crossword:

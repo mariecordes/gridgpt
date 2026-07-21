@@ -7,7 +7,7 @@ import os
 # Add the project root to the path so we can import our modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword, normalized_themeness
+from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword
 from src.gridgpt.theme_manager import generate_theme_entry, ThemeManager
 from src.gridgpt.template_manager import select_template, load_templates
 from src.gridgpt.clue_manager import retrieve_existing_clues, generate_clues
@@ -126,6 +126,7 @@ async def generate_crossword(request: GenerateRequest):
             theme_boost=params["theme_fill"]["boost"],
             sim_low=params["theme_fill"]["sim_low"],
             sim_high=params["theme_fill"]["sim_high"],
+            visible_threshold=params["theme_fill"]["visible_threshold"],
             word_db_manager=word_db_manager
         )
 
@@ -150,6 +151,7 @@ async def generate_crossword(request: GenerateRequest):
             "grid": crossword["grid"],
             "filled_slots": crossword["filled_slots"],
             "clues": crossword["clues"],
+            "seed_entries": crossword.get("seed_entries", {}),
             "theme_entries": crossword.get("theme_entries", {}),
             "slots": crossword.get("slots", []),
             "template_info": {
