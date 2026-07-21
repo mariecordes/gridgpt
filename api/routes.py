@@ -7,8 +7,8 @@ import os
 # Add the project root to the path so we can import our modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword
-from src.gridgpt.theme_manager import generate_theme_entry
+from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword, normalized_themeness
+from src.gridgpt.theme_manager import generate_theme_entry, ThemeManager
 from src.gridgpt.template_manager import select_template, load_templates
 from src.gridgpt.clue_manager import retrieve_existing_clues, generate_clues
 from src.gridgpt.utils import load_parameters
@@ -88,19 +88,19 @@ async def generate_crossword(request: GenerateRequest):
         template = select_template(template_id=request.template)
         
         # Manage theme and theme entry
+        theme_similarities = None
         if request.theme:
             theme = request.theme
-            
-            # Generate theme entry based on the given theme
-            request.themeEntry = generate_theme_entry(
-                request.theme,
+
+            # ThemeManager yields both the seed entry and a similarity map
+            # over every word (shared theme embedding, single API call).
+            theme_manager = ThemeManager(theme, word_db_manager)
+            request.themeEntry, theme_similarities = theme_manager.prepare_theme(
+                threshold=params["theme_entry"]["similarity_threshold"],
+                weigh_similarity=params["theme_entry"]["weigh_similarity"],
                 min_chars=params["theme_entry"]["min_chars"],
                 max_chars=params["theme_entry"]["max_chars"],
                 min_frequency=params["theme_entry"]["min_frequency"],
-                similarity_mode=params["theme_entry"]["similarity_mode"],
-                similarity_threshold=params["theme_entry"]["similarity_threshold"],
-                weigh_similarity=params["theme_entry"]["weigh_similarity"],
-                word_db_manager=word_db_manager,
             )
         
         else:
@@ -116,12 +116,16 @@ async def generate_crossword(request: GenerateRequest):
         #     if not is_valid:
         #         raise HTTPException(status_code=400, detail=f"Invalid theme entry: {message}")
         
-        # Generate crossword
+        # Generate crossword (theme_similarities biases the fill toward on-theme words)
         crossword = generate_themed_crossword(
             template,
             request.themeEntry,
             node_budget=params["crossword_generator"]["node_budget"],
             restart_count=params["crossword_generator"]["restart_count"],
+            theme_similarities=theme_similarities,
+            theme_boost=params["theme_fill"]["boost"],
+            sim_low=params["theme_fill"]["sim_low"],
+            sim_high=params["theme_fill"]["sim_high"],
             word_db_manager=word_db_manager
         )
 
