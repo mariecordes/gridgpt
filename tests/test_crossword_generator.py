@@ -2,7 +2,12 @@ import random
 
 import pytest
 
-from src.gridgpt.crossword_generator import CrosswordGenerator, generate_themed_crossword
+from src.gridgpt.crossword_generator import (
+    CrosswordGenerator,
+    generate_themed_crossword,
+    normalized_themeness,
+    _build_theme_weight_fn,
+)
 from src.gridgpt.template_manager import select_template
 
 
@@ -93,6 +98,53 @@ def test_generate_crossword_exhausted_budget_returns_none(word_db):
         template, node_budget=0, restart_count=2, word_db_manager=word_db
     )
     assert result is None
+
+
+def test_normalized_themeness():
+    # Raw cosine clipped to the [sim_low, sim_high] band, mapped to 0..1.
+    assert normalized_themeness(None, 0.2, 0.5) == 0.0
+    assert normalized_themeness(0.2, 0.2, 0.5) == 0.0
+    assert normalized_themeness(0.5, 0.2, 0.5) == 1.0
+    assert normalized_themeness(0.8, 0.2, 0.5) == 1.0  # clipped above
+    assert normalized_themeness(0.35, 0.2, 0.5) == pytest.approx(0.5)
+
+
+def test_theme_weight_fn():
+    # weight = frequency * (1 + boost * themeness)
+    weight = _build_theme_weight_fn({"A": 10, "B": 10}, {"A": 0.5, "B": 0.2}, 4.0, 0.2, 0.5)
+    assert weight("A") == 50.0   # themeness 1.0 -> 10 * (1 + 4)
+    assert weight("B") == 10.0   # themeness 0.0 -> 10 * 1
+    assert weight("MISSING") == 1.0  # unknown word: frequency 1, themeness 0
+
+
+def test_generate_with_theme_similarities_is_valid(word_db):
+    """Theme weighting must still produce a fully valid grid (it only reorders)."""
+    random.seed(5)
+    template = select_template(template_id="5x5_diagonal_cut")
+    sims = {word: 0.5 for word in list(word_db.word_frequencies)[:2000]}
+    crossword = generate_themed_crossword(template, theme_similarities=sims, word_db_manager=word_db)
+    assert_valid_crossword(crossword, template, word_db)
+
+
+def test_theme_weighting_shifts_words_on_theme(word_db):
+    """With weighting, the filled grid contains more of the favored (on-theme) words."""
+    template = select_template(template_id="5x5_blocked_corners")
+    favored = {word for word in word_db.word_frequencies if word[0] in "AEIOU"}
+    sims = {word: 0.5 for word in favored}  # 0.5 -> themeness 1.0
+
+    def count_favored(weighting):
+        random.seed(123)  # deterministic comparison
+        total = 0
+        for _ in range(20):
+            crossword = generate_themed_crossword(
+                template,
+                theme_similarities=sims if weighting else None,
+                word_db_manager=word_db,
+            )
+            total += sum(1 for word in crossword["filled_slots"].values() if word in favored)
+        return total
+
+    assert count_favored(weighting=True) > count_favored(weighting=False)
 
 
 def test_find_suitable_slots_no_candidates_does_not_crash(word_db):
