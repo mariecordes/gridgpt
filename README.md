@@ -340,7 +340,7 @@ GridGPT builds crosswords through a pipeline that blends real data, embeddings, 
 
 📚 **Crossword database:** A curated set of published words and clues ensures authenticity and quality.
 
-🎯 **Theme matching:** Embeddings rank database words by semantic similarity to your theme, picking atheme entry that initializes the grid.
+🎯 **Theme matching:** Embeddings score every database word by semantic similarity to your theme and steer the whole grid fill toward on-theme words, so your theme influences the entire puzzle, not just a single entry.
 
 🤖 **Backfill optimization:** A custom algorithm fills the grid via constraint satisfaction, keeping every intersection valid and solvable.
 
@@ -348,6 +348,8 @@ GridGPT builds crosswords through a pipeline that blends real data, embeddings, 
 
 - **Retrieved:** Randomly selected, authentic clues pulled from the database
 - **Generated:** LLM-generated clues, prompted for theme-alignment, fairness and wit
+
+📊 **Evaluation:** To ensure and improve game performance, the pipeline stages are carefully evaluated. See the [evaluation notes](docs/evaluation.md) for what was tested, the results, and how to reproduce them.
 
 ### Background
 
