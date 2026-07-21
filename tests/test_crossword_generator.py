@@ -117,6 +117,23 @@ def test_theme_weight_fn():
     assert weight("MISSING") == 1.0  # unknown word: frequency 1, themeness 0
 
 
+def test_identify_theme_entries_includes_seed_and_on_theme_words(word_db):
+    """theme_entries = the pinned seed (always) plus filled words over threshold."""
+    generator = CrosswordGenerator(word_db)
+    filled = {"1A": "CAT", "1D": "DOG", "2D": "OWL"}
+    seed = {"1A": "CAT"}
+    sims = {"OWL": 0.5}  # 0.5 -> themeness 1.0 (on-theme); DOG unscored -> 0
+
+    entries = generator._identify_theme_entries(filled, seed, sims, 0.2, 0.5, 0.6)
+
+    assert entries == {"1A": "CAT", "2D": "OWL"}  # seed kept, OWL added, DOG excluded
+
+
+def test_identify_theme_entries_empty_without_theme(word_db):
+    generator = CrosswordGenerator(word_db)
+    assert generator._identify_theme_entries({"1A": "CAT"}, {}, None, 0.2, 0.5, 0.6) == {}
+
+
 def test_generate_with_theme_similarities_is_valid(word_db):
     """Theme weighting must still produce a fully valid grid (it only reorders)."""
     random.seed(5)
