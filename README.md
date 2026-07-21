@@ -141,6 +141,18 @@ The filtering process can flexibly:
 - exclude special characters
 - remove reference clues (e.g., "See 15-Across")
 
+### 4. All in one command: Keeping the DB up to date
+
+Instead of running the scrape, build, and embedding steps by hand, use:
+```bash
+make refresh-db                    # scrape new dates, rebuild the DB, refresh embeddings
+make refresh-db ARGS="--dry-run"   # show what it would do, change nothing
+make refresh-db ARGS="--force"     # rebuild word list + embeddings even with no new data
+```
+It detects the gap between the newest scraped NYT mini date and today, scrapes only the missing days (merged into `nyt_mini_clues.json`), rebuilds `word_database_full.json`, regenerates the filtered word list, and force-rebuilds the embedding cache so everything stays in sync. This is the only command that makes embedding API calls; running the app never re-embeds when the cache already exists.
+
+After a refresh, **commit `word_database_full.json`** (the one tracked data file). On deploy, Railway rebuilds the filtered word list and embeddings from it, so the live site picks up the new data.
+
 ### Additional sources
 
 *⚠️ The output of the data pipeline below is currently not in use. In the future, it is planned to integrate this data as well as extend the word database with additional sources.*
@@ -251,13 +263,13 @@ Main interface component **`CrosswordGenerator`**:
 
 ### Embeddings & caching
 
-Embeddings (OpenAI `text-embedding-3-small`) are cached on first build:
+Embeddings (OpenAI `text-embedding-3-small`) are cached on disk and reused. They are built once and must be rebuilt whenever the word database changes, otherwise new words score as unrelated to every theme.
 
 Cached files:
 - `data/02_intermediary/word_database/word_embeddings_fp16.npy`
 - `data/02_intermediary/word_database/word_index.json`
 
-Generation requests only embed the theme phrase; similarity is computed over the cached matrix.
+Generation requests only embed the theme phrase; similarity is computed over the cached matrix. Running the app never rebuilds the cache when it already exists, so startup makes no embedding calls.
 
 #### Precompute (optional but recommended for deploy)
 ```bash
@@ -265,12 +277,13 @@ python -m scripts.precompute_embeddings --verbose
 # or
 make precompute
 ```
-Idempotent; add `--force` to rebuild.
+`make precompute` is build-if-missing: it does nothing if the cache is already present. To refresh a cache after a database change, run `make refresh-db` (recommended) or `python -m scripts.precompute_embeddings --force`.
 
 ### Makefile shortcuts
 ```bash
 make develop         # install deps + editable package
-make precompute      # build embeddings cache
+make precompute      # build embeddings cache (if missing)
+make refresh-db      # scrape new data, rebuild DB + embeddings
 make build-backend   # deps + embeddings (deploy helper)
 make dev-backend     # uvicorn with reload
 make dev-frontend    # Next.js dev
