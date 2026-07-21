@@ -10,8 +10,8 @@ and after the backtracking rewrite to compare:
   words not in the database, or inconsistent intersections
 
 Themes are simulated with fixed *seed entries* (a real word pinned into a slot),
-which stresses the fill without needing embeddings. WP2 later extends this script
-with true theme-similarity metrics.
+which stresses the fill without needing embeddings. A later theme-weighting change
+extends this script with theme-similarity metrics.
 
 Usage:
     python -m scripts.evaluate_generation --runs 30
