@@ -273,8 +273,8 @@ class CrosswordGenerator:
 
         Each word gets key = random()**(1/weight); sorting by key descending
         yields a random order biased toward higher weights. This keeps output
-        varied across generations while trying likely words first. A future
-        theme-weighting change can fold a theme boost into `weight_fn`."""
+        varied across generations while trying likely words first. Theme-weighted
+        fill folds a theme boost into `weight_fn` (see `_build_theme_weight_fn`)."""
         keyed = []
         for word in candidates:
             weight = weight_fn(word)
