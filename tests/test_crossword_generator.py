@@ -54,7 +54,8 @@ def test_generate_crossword_with_theme_entry(word_db):
 
     assert_valid_crossword(crossword, template, word_db)
     assert theme_entry in crossword["filled_slots"].values()
-    assert theme_entry in crossword["theme_entries"].values()
+    # theme_entries maps slot -> (word, themeness); check the words.
+    assert theme_entry in [word for word, _ in crossword["theme_entries"].values()]
 
 
 def test_validate_theme_entry(word_db):
@@ -126,7 +127,8 @@ def test_identify_theme_entries_includes_seed_and_on_theme_words(word_db):
 
     entries = generator._identify_theme_entries(filled, seed, sims, 0.2, 0.5, 0.6)
 
-    assert entries == {"1A": "CAT", "2D": "OWL"}  # seed kept, OWL added, DOG excluded
+    # Each entry is (word, themeness): seed CAT unscored -> 0.0, OWL 0.5 -> 1.0, DOG excluded.
+    assert entries == {"1A": ("CAT", 0.0), "2D": ("OWL", 1.0)}
 
 
 def test_identify_theme_entries_empty_without_theme(word_db):
