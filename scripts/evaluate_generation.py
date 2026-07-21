@@ -1,27 +1,21 @@
-"""Benchmark crossword grid generation.
+"""Benchmark the crossword grid fill algorithm: success rate and timing.
 
-Two modes:
+Measures the fill directly, with no LLM or embedding calls, so it can be run
+before and after a fill change (e.g. legacy greedy-restart vs backtracking) to
+compare:
 
-1. Fill benchmark (default, no --themes): measures the fill algorithm directly,
-   with no LLM or embedding calls, reporting fill success rate, generation time
-   (mean, p50, p95), and validity violations (should always be zero). Themes are
-   simulated with fixed *seed entries* (a real word pinned into a slot) to stress
-   the fill. This is the mode used to compare fill algorithms (legacy vs current).
+- fill success rate (fraction of runs that produce a valid grid)
+- generation time (mean, p50, p95) in milliseconds
+- validity violations (should always be zero): empty cells, duplicate words,
+  words not in the database, or inconsistent intersections
 
-2. Theme benchmark (--themes): evaluates the *theme-weighting feature* on the
-   current fill algorithm (no algorithm comparison). For each theme it scores every
-   word against the theme (one embedding call) and runs generation with weighting
-   off vs on, reporting how on-theme the filled words are (mean themeness and the
-   count of on-theme words) next to success and time. Use this to judge and tune the
-   theme feature. Needs OPENAI_API_KEY.
+Themes are simulated with fixed *seed entries* (a real word pinned into a slot),
+which stresses the fill without needing embeddings. To evaluate the theme feature
+itself (weighting off vs on, and parameter tuning), see scripts/evaluate_themes.py.
 
 Usage:
-    # Fill benchmark (offline): stress the fill / compare algorithms
     python -m scripts.evaluate_generation --runs 30
     python -m scripts.evaluate_generation --algorithm both --seeds APPLE MUSIC OCEAN
-
-    # Theme benchmark (needs OPENAI_API_KEY): evaluate the theme feature only
-    python -m scripts.evaluate_generation --themes food space music
 """
 
 from __future__ import annotations
@@ -29,6 +23,7 @@ from __future__ import annotations
 import argparse
 import logging
 import os
+import random
 import statistics
 import sys
 import time
@@ -36,19 +31,10 @@ from typing import Callable, Dict, List, Optional, Tuple
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.gridgpt.crossword_generator import (  # noqa: E402
-    generate_themed_crossword,
-    normalized_themeness,
-    DEFAULT_THEME_BOOST,
-    DEFAULT_SIM_LOW,
-    DEFAULT_SIM_HIGH,
-)
+from src.gridgpt.crossword_generator import generate_themed_crossword  # noqa: E402
 from src.gridgpt.crossword_generator_legacy import generate_themed_crossword_legacy  # noqa: E402
 from src.gridgpt.template_manager import load_templates  # noqa: E402
-from src.gridgpt.theme_manager import ThemeManager  # noqa: E402
 from src.gridgpt.word_database_manager import WordDatabaseManager  # noqa: E402
-
-VISIBLE_THEMENESS = 0.6  # normalized themeness at/above which a filled word is "on-theme"
 
 TEMPLATE_IDS = ["5x5_blocked_corners", "5x5_bottom_pillars", "5x5_diagonal_cut"]
 
@@ -177,63 +163,8 @@ def run_benchmark(algorithm: str, args, word_db, templates_by_id, seeds) -> floa
     return overall
 
 
-def run_themed_benchmark(args, word_db) -> None:
-    """Compare theme-weighted fill OFF vs ON: fill success, time, and how on-theme
-    the filled words are. Makes one theme-embedding call per theme (cached); the
-    themeness of filled words is measured independently via the embedding provider."""
-    templates_by_id = {t["id"]: t for t in load_templates()["templates"]}
-    print(f"\n### themed fill: weighting off vs on ({args.runs} runs per config)\n")
-    header = (
-        f"| {'theme':<10} | {'template':<22} | {'weight':<3} | {'success':>7} "
-        f"| {'mean ms':>8} | {'mean themeness':>14} | {'theme words':>11} |"
-    )
-    print(header)
-    print("|" + "-" * 12 + "|" + "-" * 24 + "|" + "-" * 5 + "|" + "-" * 9
-          + "|" + "-" * 10 + "|" + "-" * 16 + "|" + "-" * 13 + "|")
-
-    for theme in args.themes:
-        theme_manager = ThemeManager(theme, word_db)
-        seed_entry, similarities = theme_manager.prepare_theme(
-            threshold=0.35, weigh_similarity=True, min_chars=5, max_chars=5, min_frequency=1,
-        )
-        if not similarities:
-            print(f"| {theme:<10} | (no embeddings available) |")
-            continue
-
-        for template_id in args.templates:
-            template = templates_by_id[template_id]
-            for weighting in (False, True):
-                times_ms, successes, themeness_means, visible_counts = [], 0, [], []
-                for _ in range(args.runs):
-                    start = time.perf_counter()
-                    crossword = generate_themed_crossword(
-                        template, seed_entry,
-                        theme_similarities=similarities if weighting else None,
-                        theme_boost=DEFAULT_THEME_BOOST, sim_low=DEFAULT_SIM_LOW, sim_high=DEFAULT_SIM_HIGH,
-                        word_db_manager=word_db,
-                    )
-                    times_ms.append((time.perf_counter() - start) * 1000.0)
-                    if crossword is not None:
-                        successes += 1
-                        themeness = [
-                            normalized_themeness(similarities.get(w), DEFAULT_SIM_LOW, DEFAULT_SIM_HIGH)
-                            for w in crossword["filled_slots"].values()
-                        ]
-                        themeness_means.append(statistics.mean(themeness))
-                        visible_counts.append(sum(1 for t in themeness if t >= VISIBLE_THEMENESS))
-
-                mean_themeness = statistics.mean(themeness_means) if themeness_means else 0.0
-                mean_visible = statistics.mean(visible_counts) if visible_counts else 0.0
-                print(
-                    f"| {theme:<10} | {template_id:<22} | {'on' if weighting else 'off':<3} "
-                    f"| {successes/args.runs*100:>6.0f}% | {statistics.mean(times_ms):>8.1f} "
-                    f"| {mean_themeness:>14.3f} | {mean_visible:>11.1f} |"
-                )
-    print()
-
-
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Benchmark crossword grid generation")
+    parser = argparse.ArgumentParser(description="Benchmark crossword grid fill (success rate and timing)")
     parser.add_argument("--runs", type=int, default=30, help="Runs per configuration")
     parser.add_argument("--seeds", nargs="*", default=None, help="Seed entries (5-letter words)")
     parser.add_argument("--templates", nargs="*", default=TEMPLATE_IDS, help="Template ids")
@@ -243,40 +174,18 @@ def main() -> int:
     )
     parser.add_argument("--legacy-outer", type=int, default=20, help="Legacy outer attempt cap")
     parser.add_argument("--legacy-inner", type=int, default=50, help="Legacy inner attempt cap")
-    parser.add_argument(
-        "--themes", nargs="*", default=None,
-        help="Real themes to evaluate theme-weighted fill (off vs on). Makes embedding calls.",
-    )
     parser.add_argument("--rng-seed", type=int, default=0, help="Global RNG seed for reproducibility")
     args = parser.parse_args()
 
     # Keep the fill logs quiet so timing output stays readable.
     logging.getLogger().setLevel(logging.ERROR)
-
-    # Themed mode needs the OpenAI key for theme embeddings; load it from .env.
-    try:
-        from dotenv import load_dotenv
-        load_dotenv()
-    except ImportError:
-        pass
-
-    import random
-
     random.seed(args.rng_seed)
 
     word_db = WordDatabaseManager()
-
-    # Themed mode: measure the theme-weighting lift (needs embeddings).
-    if args.themes:
-        print(f"\nThemed fill benchmark (rng-seed={args.rng_seed})")
-        run_themed_benchmark(args, word_db)
-        return 0
-
-    # Default mode: pure fill timing/success, no LLM or embedding calls.
     templates_by_id = {t["id"]: t for t in load_templates()["templates"]}
     seeds: List[Optional[str]] = [None] + (args.seeds or pick_default_seeds(word_db))
 
-    print(f"\nGrid generation benchmark (rng-seed={args.rng_seed})")
+    print(f"\nGrid fill benchmark (rng-seed={args.rng_seed})")
     algorithms = ["legacy", "backtracking"] if args.algorithm == "both" else [args.algorithm]
     for algorithm in algorithms:
         run_benchmark(algorithm, args, word_db, templates_by_id, seeds)
