@@ -3,7 +3,7 @@
 This is a snapshot of the original grid filler: greedy fill with full restarts
 (fill every slot in one pass, discard the whole grid on the first dead end, and
 retry up to max_attempts x backtracking_max_attempts times). It was replaced by
-the backtracking filler in `crossword_generator.py` (WP4). It is kept, unchanged,
+the backtracking filler in `crossword_generator.py`. It is kept, unchanged,
 purely as the "before" side of the algorithm-comparison case study
 (see `scripts/evaluate_generation.py` and the comparison notebook). Nothing in
 the app imports this module.

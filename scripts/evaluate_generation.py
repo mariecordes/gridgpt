@@ -1,6 +1,6 @@
 """Benchmark crossword grid generation: fill success rate and timing.
 
-This is the theme-agnostic core of the evaluation harness (WP4). It measures the
+This is the theme-agnostic core of the evaluation harness. It measures the
 fill algorithm directly, with no LLM or embedding calls, so it can be run before
 and after the backtracking rewrite to compare:
 
