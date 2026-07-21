@@ -1,5 +1,5 @@
 import numpy as np
-from typing import List, Tuple
+from typing import Dict, List, Optional, Tuple
 import logging
 import random
 
@@ -116,13 +116,7 @@ class ThemeManager:
                 logger.warning("No candidate words had precomputed embeddings.")
                 return []
 
-            word_embeddings = np.array(selected_vectors)
-            theme_emb = self.theme_embedding.astype(np.float32)
-            # Normalize cosine similarity
-            if word_embeddings.dtype != np.float32:
-                word_embeddings = word_embeddings.astype(np.float32)
-            denom = (np.linalg.norm(word_embeddings, axis=1) * np.linalg.norm(theme_emb) + 1e-12)
-            similarities = (word_embeddings @ theme_emb) / denom
+            similarities = self._cosine_to_theme(np.array(selected_vectors), self.theme_embedding)
             theme_entries = list(zip(filtered_words_for_vectors, similarities.tolist()))
 
         elif similarity_mode == "string":
@@ -139,6 +133,61 @@ class ThemeManager:
         logger.info(f"Top results: {theme_entries[:5]}")
         self._theme_entries_cache = theme_entries
         return theme_entries
+
+
+    @staticmethod
+    def _cosine_to_theme(word_matrix: np.ndarray, theme_embedding: np.ndarray) -> np.ndarray:
+        """Cosine similarity of each row in word_matrix (N, D) to the theme (D,)."""
+        matrix = word_matrix if word_matrix.dtype == np.float32 else word_matrix.astype(np.float32)
+        theme = theme_embedding.astype(np.float32)
+        denom = np.linalg.norm(matrix, axis=1) * np.linalg.norm(theme) + 1e-12
+        return (matrix @ theme) / denom
+
+
+    def score_all_words(self) -> Dict[str, float]:
+        """Cosine similarity of every embedded word to the theme.
+
+        Returns {WORD: raw_cosine} over all words in the embedding cache, reusing
+        the theme embedding computed for entry selection (no extra API call). One
+        matrix multiply over the full ~10k x 1536 matrix, well under 100 ms. Words
+        not in the cache are simply absent from the result (treated as 0 downstream).
+        """
+        if self.embedding_provider is None:
+            logger.warning("Embedding provider unavailable; cannot score words against theme.")
+            return {}
+
+        if self.theme_embedding is None:
+            self.theme_embedding = self.embedding_provider.embed([self.theme])[0]
+
+        word_matrix = np.asarray(self.embedding_provider.get_word_embeddings())  # (N, D)
+        provider_words = self.embedding_provider.get_word_list()                 # uppercase, aligned
+        similarities = self._cosine_to_theme(word_matrix, self.theme_embedding)
+        return {word: float(sim) for word, sim in zip(provider_words, similarities)}
+
+
+    def prepare_theme(
+        self,
+        threshold: float = 0.5,
+        weigh_similarity: bool = True,
+        min_chars: int = None,
+        max_chars: int = None,
+        min_frequency: int = 0,
+    ) -> Tuple[Optional[str], Dict[str, float]]:
+        """Pick one seed theme entry and score every word against the theme.
+
+        Both share a single theme embedding (one API call). Returns
+        (seed_entry_or_None, {WORD: raw_cosine}).
+        """
+        self.find_theme_entries(
+            min_chars=min_chars, max_chars=max_chars,
+            min_frequency=min_frequency, similarity_mode="semantic",
+        )
+        selected = self.choose_theme_entries(
+            number_of_theme_entries=1, threshold=threshold, weigh_similarity=weigh_similarity,
+        )
+        seed_entry = selected[0] if selected else None
+        similarities = self.score_all_words()
+        return seed_entry, similarities
 
 
     def calculate_similarity(

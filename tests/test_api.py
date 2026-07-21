@@ -51,6 +51,41 @@ def test_generate_crossword_defaults_to_unthemed(client):
     assert response.json()["theme_entries"] == {}
 
 
+def test_generate_crossword_reports_theme_entries(client, monkeypatch):
+    """A themed request returns `theme_entries` (the theme-related filled words the
+    generator identified), passed straight through, and no longer a `theme_words` key."""
+
+    class _FakeThemeManager:
+        def __init__(self, theme, word_db=None):
+            pass
+
+        def prepare_theme(self, **kwargs):
+            return "CAT", {"CAT": 0.5, "ARTS": 0.5}
+
+    # The generator now returns theme_entries itself; the route just passes it on.
+    fixed_crossword = {
+        "grid": [["C", "A", "T"]],
+        "filled_slots": {"1A": "CAT", "1D": "ARTS", "2D": "DOG"},
+        "theme_entries": {"1A": "CAT", "1D": "ARTS"},
+        "slots": [],
+    }
+    monkeypatch.setattr("api.routes.ThemeManager", _FakeThemeManager)
+    monkeypatch.setattr("api.routes.generate_themed_crossword", lambda *a, **k: dict(fixed_crossword))
+    monkeypatch.setattr(
+        "api.routes.retrieve_existing_clues", lambda cw, wdb: {k: "a clue" for k in cw["filled_slots"]}
+    )
+
+    response = client.post(
+        "/api/generate-crossword",
+        json={"template": "5x5_blocked_corners", "theme": "animals", "clueType": "existing"},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["theme_entries"] == {"1A": "CAT", "1D": "ARTS"}
+    assert set(data["theme_entries"]).issubset(data["filled_slots"])
+    assert "theme_words" not in data
+
+
 def test_generate_crossword_failure_returns_clean_error(client, monkeypatch):
     """A failed fill (None crossword) must surface as a 503, not a 500 crash."""
     monkeypatch.setattr("api.routes.generate_themed_crossword", lambda *a, **k: None)

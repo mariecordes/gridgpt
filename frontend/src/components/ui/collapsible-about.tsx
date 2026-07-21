@@ -92,7 +92,7 @@ export default function CollapsibleAbout() {
                         📚 <strong>Crossword database:</strong> A curated set of published words and clues ensures authenticity and quality.
                     </p>
                     <p className="mb-3">
-                        🎯 <strong>Theme matching:</strong> Embeddings rank database words by semantic similarity to your theme, picking a strong theme entry that initializes the grid.
+                        🎯 <strong>Theme matching:</strong> Embeddings score every database word by semantic similarity to your theme and steer the whole grid fill toward on-theme words, so your theme influences the entire puzzle, not just a single entry.
                     </p>
                     <p className="mb-3">
                         🤖 <strong>Backfill optimization:</strong> A custom algorithm fills the grid via constraint satisfaction, keeping every intersection valid and solvable.
@@ -108,6 +108,9 @@ export default function CollapsibleAbout() {
                             <strong>Generated:</strong> LLM-generated clues, prompted for theme alignment, fairness, and wit
                         </li>
                     </ul>
+                    <p className="mb-3">
+                        📊 <strong>Evaluation:</strong> To ensure and improve game performance, the pipeline stages are carefully evaluated. See the <a href="https://github.com/mariecordes/gridgpt/blob/main/docs/evaluation.md" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">evaluation notes</a> for what was tested, the results, and how to reproduce them.
+                    </p>
                 </div>
             </CollapsibleSection>
             

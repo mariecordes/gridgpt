@@ -1,8 +1,8 @@
-"""Benchmark crossword grid generation: fill success rate and timing.
+"""Benchmark the crossword grid fill algorithm: success rate and timing.
 
-This is the theme-agnostic core of the evaluation harness. It measures the
-fill algorithm directly, with no LLM or embedding calls, so it can be run before
-and after the backtracking rewrite to compare:
+Measures the fill directly, with no LLM or embedding calls, so it can be run
+before and after a fill change (e.g. legacy greedy-restart vs backtracking) to
+compare:
 
 - fill success rate (fraction of runs that produce a valid grid)
 - generation time (mean, p50, p95) in milliseconds
@@ -10,12 +10,12 @@ and after the backtracking rewrite to compare:
   words not in the database, or inconsistent intersections
 
 Themes are simulated with fixed *seed entries* (a real word pinned into a slot),
-which stresses the fill without needing embeddings. A later theme-weighting change
-extends this script with theme-similarity metrics.
+which stresses the fill without needing embeddings. To evaluate the theme feature
+itself (weighting off vs on, and parameter tuning), see scripts/evaluate_themes.py.
 
 Usage:
     python -m scripts.evaluate_generation --runs 30
-    python -m scripts.evaluate_generation --runs 50 --seeds APPLE MUSIC OCEAN
+    python -m scripts.evaluate_generation --algorithm both --seeds APPLE MUSIC OCEAN
 """
 
 from __future__ import annotations
@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import logging
 import os
+import random
 import statistics
 import sys
 import time
@@ -163,7 +164,7 @@ def run_benchmark(algorithm: str, args, word_db, templates_by_id, seeds) -> floa
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Benchmark crossword grid generation")
+    parser = argparse.ArgumentParser(description="Benchmark crossword grid fill (success rate and timing)")
     parser.add_argument("--runs", type=int, default=30, help="Runs per configuration")
     parser.add_argument("--seeds", nargs="*", default=None, help="Seed entries (5-letter words)")
     parser.add_argument("--templates", nargs="*", default=TEMPLATE_IDS, help="Template ids")
@@ -178,16 +179,13 @@ def main() -> int:
 
     # Keep the fill logs quiet so timing output stays readable.
     logging.getLogger().setLevel(logging.ERROR)
-
-    import random
-
     random.seed(args.rng_seed)
 
     word_db = WordDatabaseManager()
     templates_by_id = {t["id"]: t for t in load_templates()["templates"]}
     seeds: List[Optional[str]] = [None] + (args.seeds or pick_default_seeds(word_db))
 
-    print(f"\nGrid generation benchmark (rng-seed={args.rng_seed})")
+    print(f"\nGrid fill benchmark (rng-seed={args.rng_seed})")
     algorithms = ["legacy", "backtracking"] if args.algorithm == "both" else [args.algorithm]
     for algorithm in algorithms:
         run_benchmark(algorithm, args, word_db, templates_by_id, seeds)
