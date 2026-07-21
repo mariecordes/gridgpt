@@ -12,12 +12,13 @@ EMBED_MATRIX := word_embeddings_fp16.npy
 EMBED_INDEX := word_index.json
 EMBED_MODEL := text-embedding-3-small
 
-.PHONY: help install precompute build-backend dev-backend dev-frontend test clean-embeddings clean all clean-and-build-backend
+.PHONY: help install precompute refresh-db build-backend dev-backend dev-frontend test clean-embeddings clean all clean-and-build-backend
 
 help:
 	@echo "Available targets:"
 	@echo "  install          - Install backend runtime dependencies"
 	@echo "  precompute       - Precompute word embeddings (idempotent)"
+	@echo "  refresh-db       - Scrape new NYT mini data, rebuild word DB + embeddings (ARGS="--dry-run" / "--force")"
 	@echo "  build-backend    - Install deps + precompute embeddings (use this in Railway Build Command)"
 	@echo "  dev-backend      - Run uvicorn backend (reload)"
 	@echo "  dev-frontend     - Run Next.js dev server"
@@ -35,6 +36,10 @@ precompute: install
 		--word-list $(EMBED_WORD_LIST) \
 		--embeddings-file $(EMBED_MATRIX) \
 		--index-file $(EMBED_INDEX)
+
+refresh-db:
+	@echo "[refresh-db] Refreshing word database and embedding cache..."
+	$(PYTHON) -m scripts.refresh_database $(ARGS)
 
 build-backend: precompute
 	@echo "[build] Backend build complete (dependencies + embeddings)."
