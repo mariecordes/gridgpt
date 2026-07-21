@@ -1,11 +1,14 @@
 import os
 import json
 import time
+import logging
 import threading
 import numpy as np
 from typing import List, Dict, Any
 
 from openai import OpenAI
+
+logger = logging.getLogger(__name__)
 
 
 class EmbeddingProvider:
@@ -146,6 +149,21 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
             # Basic sanity check
             if len(stored_words) != self._word_embeddings.shape[0]:  # type: ignore
                 raise ValueError("Word count and embedding rows mismatch")
+            # Warn (never rebuild) if the cache has drifted from the current word
+            # list, so a stale cache after a DB change is visible in the logs.
+            try:
+                if os.path.exists(self.word_list_path):
+                    with open(self.word_list_path, "r", encoding="utf-8") as wf:
+                        current = {w.upper() for w in json.load(wf).keys()}
+                    cached = {w.upper() for w in stored_words}
+                    if current != cached:
+                        logger.warning(
+                            "Embedding cache is out of sync with the word list "
+                            "(%d cached vs %d current words). Run `make refresh-db` to rebuild.",
+                            len(cached), len(current),
+                        )
+            except Exception:  # a diagnostic check must never break loading
+                pass
 
     # ------------------------- Similarity Utilities ------------------------ #
     @staticmethod
