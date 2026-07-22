@@ -37,6 +37,7 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
         batch_size: int = 1000,
         api_key_env: str = "OPENAI_API_KEY",
         create_if_missing: bool = True,
+        dimension: int = None,
     ):
         self.model = model
         self.data_dir = data_dir
@@ -45,6 +46,7 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
         self.index_path = os.path.join(data_dir, index_filename)
         self.batch_size = batch_size
         self.api_key_env = api_key_env
+        self._config_dimension = dimension
         # Internal state
         self._client = None  # lazy OpenAI client
         self._word_embeddings = None  # type: ignore
@@ -54,6 +56,29 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
 
         if create_if_missing:
             self._ensure_embeddings_exist()
+
+    @classmethod
+    def from_config(cls, model: str = None, params: dict = None, create_if_missing: bool = True):
+        """Build a provider from the `embeddings` block in parameters.yml.
+
+        `model` overrides the active model in config (used for the small-vs-large
+        A/B). Each model has its own cache files, so switching models never
+        overwrites another model's cache.
+        """
+        from .utils import load_parameters
+
+        params = params if params is not None else load_parameters()
+        emb = params["embeddings"]
+        model = model or emb["model"]
+        spec = emb["models"][model]
+        return cls(
+            model=model,
+            data_dir=emb.get("data_dir", "data/02_intermediary/word_database"),
+            embeddings_filename=spec["embeddings_file"],
+            index_filename=spec["index_file"],
+            dimension=spec.get("dimension"),
+            create_if_missing=create_if_missing,
+        )
 
     # ----------------------------- Public API ----------------------------- #
     def embed(self, texts: List[str]) -> np.ndarray:
@@ -68,10 +93,12 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
 
     @property
     def dimension(self) -> int:
-        # Infer from existing matrix or fallback to known dims for chosen model
+        # Infer from the loaded matrix, else the configured dimension, else the
+        # text-embedding-3-small default.
         if self._word_embeddings is not None:
             return self._word_embeddings.shape[1]
-        # default dimension for text-embedding-3-small
+        if self._config_dimension:
+            return self._config_dimension
         return 1536
 
     def get_word_embeddings(self) -> np.ndarray:

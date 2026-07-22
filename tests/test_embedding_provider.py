@@ -24,3 +24,35 @@ def test_word_list_stays_aligned_with_matrix(tmp_path):
     # Aligns with the matrix (3), not the frequency file (5).
     assert words == ["AAA", "BBB", "CCC"]
     assert len(provider.get_word_list()) == provider.get_word_embeddings().shape[0]
+
+
+def test_from_config_selects_model_specific_cache():
+    """from_config picks each model's own cache files + dimension, and honors an
+    explicit model override (the small-vs-large switch)."""
+    params = {
+        "embeddings": {
+            "model": "text-embedding-3-small",
+            "data_dir": "some/dir",
+            "models": {
+                "text-embedding-3-small": {
+                    "embeddings_file": "small.npy", "index_file": "small.json", "dimension": 1536,
+                },
+                "text-embedding-3-large": {
+                    "embeddings_file": "large.npy", "index_file": "large.json", "dimension": 3072,
+                },
+            },
+        }
+    }
+
+    default = OpenAIEmbeddingProvider.from_config(params=params, create_if_missing=False)
+    assert default.model == "text-embedding-3-small"
+    assert default.embeddings_path.endswith("small.npy")
+    assert default._config_dimension == 1536
+    assert default.dimension == 1536  # no matrix loaded -> configured dimension
+
+    override = OpenAIEmbeddingProvider.from_config(
+        model="text-embedding-3-large", params=params, create_if_missing=False
+    )
+    assert override.embeddings_path.endswith("large.npy")
+    assert override.index_path.endswith("large.json")
+    assert override.dimension == 3072

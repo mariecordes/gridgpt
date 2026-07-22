@@ -13,8 +13,12 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class ThemeManager:
-    def __init__(self, theme: str, word_db_manager: WordDatabaseManager = None):
-        """Initialize the theme manager class."""
+    def __init__(self, theme: str, word_db_manager: WordDatabaseManager = None, embedding_model: str = None):
+        """Initialize the theme manager class.
+
+        `embedding_model` overrides the active model from parameters.yml (used to
+        compare embedding models); None uses the configured default.
+        """
         if word_db_manager is None:
             self.word_db_manager = WordDatabaseManager()
         else:
@@ -25,9 +29,9 @@ class ThemeManager:
         self.theme_entry_min_char = 5 # TODO: parameterize
         self.theme_entry_max_char = 5 # TODO: parameterize
         
-        # Initialize embedding provider (lazy creation of word embeddings file if missing)
+        # Initialize embedding provider from config (lazy creation of word embeddings file if missing)
         try:
-            self.embedding_provider = OpenAIEmbeddingProvider()
+            self.embedding_provider = OpenAIEmbeddingProvider.from_config(model=embedding_model)
         except Exception as e:
             logger.warning(f"Failed to initialize OpenAIEmbeddingProvider: {e}")
             self.embedding_provider = None

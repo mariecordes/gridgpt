@@ -7,10 +7,6 @@ PYTHON ?= python
 BACKEND_PORT ?= 8000
 FRONTEND_DIR := frontend
 EMBED_DATA_DIR := data/02_intermediary/word_database
-EMBED_WORD_LIST := word_list_with_frequencies.json
-EMBED_MATRIX := word_embeddings_fp16.npy
-EMBED_INDEX := word_index.json
-EMBED_MODEL := text-embedding-3-small
 
 .PHONY: help install precompute refresh-db build-backend dev-backend dev-frontend test clean-embeddings clean all clean-and-build-backend
 
@@ -30,12 +26,8 @@ install:
 	pip install -r api/requirements.txt
 
 precompute: install
-	@echo "[precompute] Building embedding cache if missing..."
-	$(PYTHON) scripts/precompute_embeddings.py --model $(EMBED_MODEL) \
-		--data-dir $(EMBED_DATA_DIR) \
-		--word-list $(EMBED_WORD_LIST) \
-		--embeddings-file $(EMBED_MATRIX) \
-		--index-file $(EMBED_INDEX)
+	@echo "[precompute] Building embedding cache if missing (model from parameters.yml)..."
+	$(PYTHON) scripts/precompute_embeddings.py
 
 refresh-db:
 	@echo "[refresh-db] Refreshing word database and embedding cache..."
@@ -56,8 +48,8 @@ test:
 	pytest -q
 
 clean-embeddings:
-	rm -f $(EMBED_DATA_DIR)/$(EMBED_MATRIX) || true
-	rm -f $(EMBED_DATA_DIR)/$(EMBED_INDEX) || true
+	rm -f $(EMBED_DATA_DIR)/word_embeddings*.npy || true
+	rm -f $(EMBED_DATA_DIR)/word_index*.json || true
 
 clean: clean-embeddings
 	@echo "Clean complete."
