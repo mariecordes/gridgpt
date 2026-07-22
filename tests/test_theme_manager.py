@@ -50,10 +50,3 @@ def test_score_all_words_cosine():
 def test_score_all_words_without_provider_returns_empty():
     tm = _bare_theme_manager("anything", None)
     assert tm.score_all_words() == {}
-
-
-def test_calculate_similarity_string_mode():
-    tm = _bare_theme_manager("music", None)
-    # A substring match scores 1.0; unrelated words stay in [0, 1].
-    assert tm.calculate_similarity("music", theme="music", mode="string") == 1.0
-    assert 0.0 <= tm.calculate_similarity("xylophone", theme="music", mode="string") <= 1.0

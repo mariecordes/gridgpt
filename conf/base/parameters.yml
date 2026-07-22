@@ -17,14 +17,6 @@ embeddings:
       index_file: word_index_large.json
       dimension: 3072
 
-theme_entry:
-  min_chars: 5
-  max_chars: 5
-  min_frequency: 1
-  similarity_mode: semantic
-  similarity_threshold: 0.35
-  weigh_similarity: True
-
 crossword_generator:
   node_budget: 20000 # max word placements per backtracking attempt before giving up
   restart_count: 5 # attempts, each with a different theme placement / random word order
