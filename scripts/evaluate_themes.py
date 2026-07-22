@@ -55,16 +55,27 @@ TEMPLATE_IDS = ["5x5_blocked_corners", "5x5_bottom_pillars", "5x5_diagonal_cut"]
 PreparedThemes = Dict[str, Tuple[Optional[str], Dict[str, float]]]
 
 
-def prepare_themes(themes: List[str], word_db, threshold: float = 0.35) -> PreparedThemes:
+def prepare_themes(themes: List[str], word_db, threshold: float = 0.35, model: str = None) -> PreparedThemes:
     """Score every word against each theme (one embedding call per theme).
-    Returns {theme: (seed_entry, {WORD: cosine})}."""
+    `model` overrides the active embedding model from parameters.yml (for the
+    small-vs-large A/B). Returns {theme: (seed_entry, {WORD: cosine})}."""
     prepared: PreparedThemes = {}
     for theme in themes:
-        seed_entry, similarities = ThemeManager(theme, word_db).prepare_theme(
+        seed_entry, similarities = ThemeManager(theme, word_db, embedding_model=model).prepare_theme(
             threshold=threshold, weigh_similarity=True, min_chars=5, max_chars=5, min_frequency=1,
         )
         prepared[theme] = (seed_entry, similarities)
     return prepared
+
+
+def top_theme_words(prepared: PreparedThemes, k: int = 15) -> Dict[str, List[str]]:
+    """Top-k most similar DB words per theme: a qualitative on-theme / wrong-sense
+    check (does the model rank genuinely on-theme words above noise?)."""
+    return {
+        theme: sorted(sims, key=sims.get, reverse=True)[:k]
+        for theme, (_seed, sims) in prepared.items()
+        if sims
+    }
 
 
 def theme_benchmark(
@@ -226,6 +237,7 @@ def main() -> int:
     parser.add_argument("--templates", nargs="*", default=TEMPLATE_IDS, help="Template ids")
     parser.add_argument("--runs", type=int, default=30, help="Runs per configuration")
     parser.add_argument("--tune", action="store_true", help="Run the boost + visible-threshold sweeps instead of the off-vs-on benchmark")
+    parser.add_argument("--model", default=None, help="Embedding model override for the A/B (default: parameters.yml)")
     parser.add_argument("--rng-seed", type=int, default=0, help="Global RNG seed for reproducibility")
     args = parser.parse_args()
 
@@ -239,10 +251,14 @@ def main() -> int:
 
     word_db = WordDatabaseManager()
     templates = [select_template(template_id=tid) for tid in args.templates]
-    prepared = prepare_themes(args.themes, word_db)
+    print(f"\nEmbedding model: {args.model or '(parameters.yml default)'}")
+    prepared = prepare_themes(args.themes, word_db, model=args.model)
 
     if args.tune:
         print(f"\nTheme parameter tuning (rng-seed={args.rng_seed})")
+        print("\n### top on-theme words per theme (most similar in the DB)\n")
+        for theme, words in top_theme_words(prepared).items():
+            print(f"  {theme:<9}: {words}")
         print("\n### boost sweep: mean raw cosine of filled words (band-independent)\n")
         _print_table(boost_sweep(prepared, templates, word_db))
         print("\n### visible_threshold: avg on-theme words per puzzle at each cutoff\n")

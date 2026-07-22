@@ -4,6 +4,19 @@ word_database:
   max_length: 5
   exclude_special_chars: True
 
+embeddings:
+  model: text-embedding-3-large # active embedding model, switch to text-embedding-3-small for lighter cache
+  data_dir: data/02_intermediary/word_database
+  models: # cache files + dimension per model, so caches for different models coexist on disk
+    text-embedding-3-small:
+      embeddings_file: word_embeddings_fp16.npy
+      index_file: word_index.json
+      dimension: 1536
+    text-embedding-3-large:
+      embeddings_file: word_embeddings_large_fp16.npy
+      index_file: word_index_large.json
+      dimension: 3072
+
 theme_entry:
   min_chars: 5
   max_chars: 5
