@@ -326,7 +326,7 @@ Then select the **gridgpt** kernel in the notebook.
 
 ### Deployment
 
-- **Backend:** Railway (FastAPI), configured in [`railway.json`](railway.json): build command `make build-backend` (bootstraps uv, installs runtime deps from the lockfile, precomputes embeddings) and start command `uv run uvicorn api.main:app --host 0.0.0.0 --port $PORT`. The `uv run` prefix matters, since dependencies live in the project `.venv` rather than the image's system Python.
+- **Backend:** Railway (FastAPI), configured in [`railway.json`](railway.json): build command `make build-backend` (bootstraps uv, installs runtime deps from the lockfile, precomputes embeddings) and start command `uv run --no-sync uvicorn api.main:app --host 0.0.0.0 --port $PORT`. The `uv run` prefix matters, since dependencies live in the project `.venv` rather than the image's system Python; `--no-sync` stops uv re-syncing at boot, which would otherwise pull the dev dependency group into the running container.
 - **Frontend:** Vercel. Client calls go to `/api/crossword` (server-side proxy using `BACKEND_URL`).
 - **CORS:** Restricted allowlist (localhost + production domain). Expand via `EXTRA_CORS_ORIGINS` or temporarily with `ALLOW_ALL_CORS=true`.
 - **Embeddings:** Precompute step eliminates first-request latency.
