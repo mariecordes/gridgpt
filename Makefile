@@ -43,7 +43,8 @@ refresh-db:
 	@echo "[refresh-db] Refreshing word database and embedding cache..."
 	$(PYTHON) -m scripts.refresh_database $(ARGS)
 
-build-backend: install precompute
+build-backend: install
+	$(MAKE) precompute PYTHON="uv run --no-sync python"
 	@echo "[build] Backend build complete (dependencies + embeddings)."
 
 # Development helpers
