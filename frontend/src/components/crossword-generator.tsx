@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import GridPreview from '@/components/ui/grid-preview';
 import CollapsibleAbout from '@/components/ui/collapsible-about';
+import InfoTooltip from '@/components/ui/info-tooltip';
 import { CrosswordData, GenerateRequest } from '@/lib/types';
 import colors from '@/lib/colors';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -996,10 +997,13 @@ export default function CrosswordGenerator() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="theme" className="text-base font-semibold">Theme (optional)</Label>
+              <div className="flex items-center gap-1.5">
+                <Label htmlFor="theme" className="text-base font-semibold">Theme (optional)</Label>
+                <InfoTooltip text="Your theme guides which database words are chosen for the grid and shapes the generation of new clues. It's guidance, not a guarantee though: construction of such a small grid is highly constrained, so puzzles won't be perfectly themed." />
+              </div>
               <Input
                 id="theme"
-                placeholder="e.g., food, music, space"
+                placeholder="e.g., sports, music, planets"
                 value={formData.theme || ''}
                 onChange={(e) => handleInputChange('theme', e.target.value)}
               />
