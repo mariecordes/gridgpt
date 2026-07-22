@@ -15426,7 +15426,7 @@
   },
   "DRY": {
     "length": 3,
-    "frequency": 33,
+    "frequency": 34,
     "clues": [
       "Finish doing the dishes",
       "Free of moisture",
@@ -15441,6 +15441,7 @@
       "Like a martini without much vermouth",
       "Like deserts",
       "Like overcooked Thanksgiving turkey",
+      "Like overcooked chicken",
       "Like some martinis",
       "Like summers in a Mediterranean climate",
       "Like the American West, recently",
@@ -15490,7 +15491,8 @@
       "2024-07-28",
       "2025-02-23",
       "2026-01-02",
-      "2026-04-14"
+      "2026-04-14",
+      "2026-07-22"
     ]
   },
   "HEY": {
@@ -18402,7 +18404,7 @@
   },
   "EDDY": {
     "length": 4,
-    "frequency": 13,
+    "frequency": 14,
     "clues": [
       "Swirl of water",
       "Swirl, as water",
@@ -18427,7 +18429,8 @@
       "2024-05-07",
       "2024-10-24",
       "2025-03-10",
-      "2025-09-20"
+      "2025-09-20",
+      "2026-07-22"
     ]
   },
   "REF": {
@@ -24288,9 +24291,10 @@
   },
   "IKNOW": {
     "length": 5,
-    "frequency": 9,
+    "frequency": 10,
     "clues": [
       "\"No need to remind me!\"",
+      "\"No need to remind me\"",
       "\"Tell me about it\"",
       "\"That's no surprise to me\"",
       "\"You already told me that\"",
@@ -24308,7 +24312,8 @@
       "2022-07-18",
       "2023-12-12",
       "2024-02-09",
-      "2025-04-09"
+      "2025-04-09",
+      "2026-07-21"
     ]
   },
   "REINS": {
@@ -30607,12 +30612,13 @@
   },
   "LADY": {
     "length": 4,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "\"Luck Be a ___\" (\"Guys and Dolls\" song)",
       "\"___ Madonna\" (Beatles song)",
       "Broadway's \"My Fair ___\"",
       "With 5-Down, 2017 film nominated for Best Picture",
+      "Word after \"leading\" and \"first\"",
       "___ Edith, \"Downton Abbey\" role"
     ],
     "dates": [
@@ -30620,7 +30626,8 @@
       "2018-02-06",
       "2021-07-12",
       "2023-03-13",
-      "2025-05-13"
+      "2025-05-13",
+      "2026-07-22"
     ]
   },
   "SPIKE": {
@@ -35001,7 +35008,7 @@
   },
   "DAD": {
     "length": 3,
-    "frequency": 17,
+    "frequency": 18,
     "clues": [
       "Apt palindrome for Father's Day",
       "Eugene Levy, to Dan Levy",
@@ -35014,7 +35021,8 @@
       "Pop",
       "Pop back and forth?",
       "Pops",
-      "Stereotypical bad joke teller"
+      "Stereotypical bad joke teller",
+      "___ joke"
     ],
     "dates": [
       "2015-01-31",
@@ -35033,7 +35041,8 @@
       "2024-05-09",
       "2025-06-07",
       "2026-03-21",
-      "2026-06-21"
+      "2026-06-21",
+      "2026-07-22"
     ]
   },
   "GOO": {
@@ -42843,7 +42852,7 @@
   },
   "HEN": {
     "length": 3,
-    "frequency": 19,
+    "frequency": 20,
     "clues": [
       "Egg layer",
       "Egg-laying mother",
@@ -42853,6 +42862,7 @@
       "Female c _ ick _ _",
       "It comes home to roost",
       "Lady bird",
+      "Mother chicken",
       "Mother of chicks",
       "Mother to chicks",
       "Rooster's mate",
@@ -42877,7 +42887,8 @@
       "2024-05-19",
       "2024-10-21",
       "2025-08-30",
-      "2026-03-18"
+      "2026-03-18",
+      "2026-07-22"
     ]
   },
   "MAJOR": {
@@ -84547,7 +84558,7 @@
   },
   "SIGMA": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Greek \"S\"",
       "This Greek letter: Σ"
@@ -84555,7 +84566,8 @@
     "dates": [
       "2017-03-01",
       "2022-01-19",
-      "2025-11-22"
+      "2025-11-22",
+      "2026-07-21"
     ]
   },
   "UNRIG": {
@@ -89174,7 +89186,7 @@
   },
   "NYY": {
     "length": 3,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "The Yankees, on a sports ticker",
       "The Yankees, on scoreboards"
@@ -89182,7 +89194,8 @@
     "dates": [
       "2018-10-11",
       "2022-03-17",
-      "2022-06-26"
+      "2022-06-26",
+      "2026-07-22"
     ]
   },
   "PENA": {
@@ -97752,14 +97765,16 @@
   },
   "HOCHI": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
       "Vietnam's ___ Minh City",
+      "Vietnamese revolutionary ___ Minh",
       "___ Minh City, Vietnam"
     ],
     "dates": [
       "2016-10-08",
-      "2022-07-16"
+      "2022-07-16",
+      "2026-07-21"
     ]
   },
   "AUSTIN": {
@@ -99763,16 +99778,18 @@
   },
   "MACHO": {
     "length": 5,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "\"___ Man\" (Village People hit)",
       "Hypermasculine",
+      "Ultra-masculine",
       "Very masculine"
     ],
     "dates": [
       "2018-11-25",
       "2020-05-16",
-      "2022-08-13"
+      "2022-08-13",
+      "2026-07-21"
     ]
   },
   "FAWN": {
@@ -108770,14 +108787,16 @@
   },
   "KNICK": {
     "length": 5,
-    "frequency": 2,
+    "frequency": 3,
     "clues": [
+      "2026 N.B.A champion",
       "Madison Square Garden player",
       "New York basketball player"
     ],
     "dates": [
       "2023-01-06",
-      "2023-04-07"
+      "2023-04-07",
+      "2026-07-21"
     ]
   },
   "LIBIDOS": {
@@ -139200,12 +139219,14 @@
   },
   "IKEAS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Furniture stores that average 300,000 square feet (or five football fields!)"
+      "Furniture stores that average 300,000 square feet (or five football fields!)",
+      "Swedish furniture stores"
     ],
     "dates": [
-      "2020-11-27"
+      "2020-11-27",
+      "2026-07-21"
     ]
   },
   "FLOUTED": {
@@ -152346,12 +152367,14 @@
   },
   "HANDY": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Helpful",
       "Useful"
     ],
     "dates": [
-      "2017-02-05"
+      "2017-02-05",
+      "2026-07-22"
     ]
   },
   "EDIE": {
@@ -156488,11 +156511,12 @@
   },
   "GEICO": {
     "length": 5,
-    "frequency": 5,
+    "frequency": 6,
     "clues": [
       "\"15 minutes can save you ...\" sloganeer",
       "Company with a spokeslizard",
       "Competitor of Progressive",
+      "Insurance company whose mascot helped to solve a crossword in a 2025 ad",
       "Insurer known for its funny ads",
       "Its slogan begins \"15 minutes could save you ...\""
     ],
@@ -156501,7 +156525,8 @@
       "2017-06-30",
       "2017-09-21",
       "2017-09-25",
-      "2019-10-12"
+      "2019-10-12",
+      "2026-07-21"
     ]
   },
   "MARRY": {
@@ -165746,7 +165771,7 @@
   },
   "LAIR": {
     "length": 4,
-    "frequency": 3,
+    "frequency": 4,
     "clues": [
       "Place to hibernate",
       "Private den",
@@ -165755,7 +165780,8 @@
     "dates": [
       "2014-10-30",
       "2018-06-24",
-      "2019-04-14"
+      "2019-04-14",
+      "2026-07-22"
     ]
   },
   "DORKY": {
@@ -165832,12 +165858,14 @@
   },
   "SWOON": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Faint after eye contact with one's crush, say",
       "Get weak in the knees around a crush"
     ],
     "dates": [
-      "2018-06-27"
+      "2018-06-27",
+      "2026-07-21"
     ]
   },
   "WILLY": {
@@ -171928,12 +171956,14 @@
   },
   "AIDY": {
     "length": 4,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
+      "Bryant of \"S.N.L.\" fame",
       "Bryant of the \"S.N.L.\" cast"
     ],
     "dates": [
-      "2019-03-10"
+      "2019-03-10",
+      "2026-07-22"
     ]
   },
   "MRFOX": {
@@ -172607,12 +172637,14 @@
   },
   "DANDY": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Fashion-focused guy"
+      "Fashion-focused guy",
+      "Just peachy ... or a hint to the two letters that appear most often in this grid"
     ],
     "dates": [
-      "2019-04-12"
+      "2019-04-12",
+      "2026-07-22"
     ]
   },
   "HALFWAY": {
@@ -185014,12 +185046,14 @@
   },
   "SIKHS": {
     "length": 5,
-    "frequency": 1,
+    "frequency": 2,
     "clues": [
-      "Members of a Punjab sect"
+      "Members of a Punjab sect",
+      "Roughly 20 million people in India, religiously"
     ],
     "dates": [
-      "2016-02-10"
+      "2016-02-10",
+      "2026-07-21"
     ]
   },
   "CLAPS": {
@@ -195330,6 +195364,16 @@
     ],
     "dates": [
       "2026-07-19"
+    ]
+  },
+  "ASKIN": {
+    "length": 5,
+    "frequency": 1,
+    "clues": [
+      "Invite to enter"
+    ],
+    "dates": [
+      "2026-07-21"
     ]
   }
 }
