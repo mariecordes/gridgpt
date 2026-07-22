@@ -14,6 +14,13 @@ import { CrosswordData, GenerateRequest } from '@/lib/types';
 import colors from '@/lib/colors';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+// Fallback template list, used only if the backend template fetch fails.
+const FALLBACK_TEMPLATES = [
+  { id: '5x5_blocked_corners', name: '5x5 Blocked Corners' },
+  { id: '5x5_bottom_pillars', name: '5x5 Bottom Pillars' },
+  { id: '5x5_diagonal_cut', name: '5x5 Diagonal Cut' },
+];
+
 // Helper function to find the next empty cell in a slot
 const findNextEmptyInSlot = (slot: { cells: [number, number][] }, currentIndex: number, direction: number, userSolution: { [key: string]: string } = {}) => {
   const cells = slot.cells;
@@ -84,11 +91,23 @@ export default function CrosswordGenerator() {
     "🎨 Adding finishing touches..."
   ];
 
-  const templates = [
-    { id: '5x5_blocked_corners', name: '5x5 Blocked Corners' },
-    { id: '5x5_bottom_pillars', name: '5x5 Bottom Pillars' },
-    { id: '5x5_diagonal_cut', name: '5x5 Diagonal Cut' }
-  ];
+  // Templates come from the backend (single source of truth: grid_templates.json).
+  // The built-in list is only a fallback so the form still works if that fetch fails.
+  const [templates, setTemplates] = useState<{ id: string; name: string }[]>(FALLBACK_TEMPLATES);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/templates')
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`))))
+      .then((data) => {
+        const loaded = (data?.templates ?? [])
+          .filter((t: { id?: string }) => t?.id)
+          .map((t: { id: string; name?: string }) => ({ id: t.id, name: t.name || t.id }));
+        if (!cancelled && loaded.length) setTemplates(loaded);
+      })
+      .catch((err) => console.warn('Could not load templates, using built-in list:', err));
+    return () => { cancelled = true; };
+  }, []);
 
   // Detect mobile device
   useEffect(() => {
@@ -1008,35 +1027,6 @@ export default function CrosswordGenerator() {
                 onChange={(e) => handleInputChange('theme', e.target.value)}
               />
             </div>
-            
-            {/* TODO: Theme entry component in case we want to make it available to the user to set their own theme entry */}
-            {/* <div className="space-y-2">
-              <Label htmlFor="themeEntry">Theme Entry (Optional)</Label>
-              <Input
-                id="themeEntry"
-                placeholder="e.g., ASTRONAUT, PIZZA"
-                value={formData.themeEntry || ''}
-                onChange={(e) => handleInputChange('themeEntry', e.target.value)}
-              />
-            </div> */}
-
-            {/* TODO: Difficulty selection for when this becomes an input parameter (e.g., for template selection, clue generation or crossword generation) */}
-            {/* <div className="space-y-2">
-              <Label>Difficulty</Label>
-              <Select
-                value={formData.difficulty || 'easy'}
-                onValueChange={(value) => handleInputChange('difficulty', value as 'easy' | 'medium' | 'hard')}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="easy">Easy</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="hard">Hard</SelectItem>
-                </SelectContent>
-              </Select>
-            </div> */}
           </div>
           
           <Button 
