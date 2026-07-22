@@ -193,3 +193,58 @@ def test_get_possible_words_respects_constraints(word_db):
     used = {possible[0][0]}
     remaining = generator.get_possible_words(slot, fixed_letters, used_words=used)
     assert all(word not in used for word, _ in remaining)
+
+
+def test_place_theme_entries_consistent_and_skips_bad_length(word_db):
+    """Placed anchors sit in matching-length slots with agreeing intersections;
+    an anchor with no fitting slot is skipped rather than raising."""
+    random.seed(1)
+    template = select_template(template_id="5x5_blocked_corners")
+    generator = CrosswordGenerator(word_db)
+
+    working = generator.place_theme_entries(template, ["CAT", "TOOLONGWORD"])
+    placed = working["filled_slots"]
+
+    assert "TOOLONGWORD" not in placed.values()  # no length-11 slot -> skipped
+    slots_by_id = {s["id"]: s for s in template["slots"]}
+    cell_letter = {}
+    for slot_id, word in placed.items():
+        slot = slots_by_id[slot_id]
+        assert slot["length"] == len(word)
+        for i, (row, col) in enumerate(slot["cells"]):
+            # No two placed anchors disagree at a shared cell.
+            assert cell_letter.get((row, col), word[i]) == word[i]
+            cell_letter[(row, col)] = word[i]
+
+
+def test_generate_with_theme_entries_places_anchors(word_db):
+    """A list of anchors is pinned (best-effort) and shows up as theme entries in
+    a fully valid grid."""
+    random.seed(2)
+    template = select_template(template_id="5x5_diagonal_cut")
+    a3 = word_db.words_by_length[3][0][0]
+    a5 = word_db.words_by_length[5][0][0]
+
+    crossword = generate_themed_crossword(template, theme_entries=[a5, a3], word_db_manager=word_db)
+
+    assert_valid_crossword(crossword, template, word_db)
+    seed_words = set(crossword["seed_entries"].values())
+    assert seed_words, "expected at least one anchor to be placed"
+    assert seed_words.issubset(set(crossword["filled_slots"].values()))
+    # Seeds are recorded as theme entries (each value is a (word, themeness) tuple).
+    entry_words = {word for word, _themeness in crossword["theme_entries"].values()}
+    assert seed_words.issubset(entry_words)
+
+
+def test_generate_theme_entries_falls_back_to_valid_grid(word_db):
+    """Over-constraining with many same-length anchors must still yield a valid
+    grid: placement/fill degrades to fewer anchors (down to none)."""
+    random.seed(3)
+    template = select_template(template_id="5x5_blocked_corners")
+    fives = [w for w, _ in word_db.words_by_length[5][:5]]  # more 5-letter anchors than can co-exist
+
+    crossword = generate_themed_crossword(template, theme_entries=fives, word_db_manager=word_db)
+
+    assert_valid_crossword(crossword, template, word_db)
+    # Never pins more anchors than there are slots, and each placed anchor is one we asked for.
+    assert set(crossword["seed_entries"].values()).issubset(set(fives))

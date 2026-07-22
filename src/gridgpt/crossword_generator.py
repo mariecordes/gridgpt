@@ -1,4 +1,5 @@
 import random
+import itertools
 from typing import Dict, List, Tuple, Optional, Callable
 import logging
 
@@ -173,6 +174,53 @@ class CrosswordGenerator:
         working_template["filled_slots"] = {slot_id: theme_entry}
         working_template["seed_entries"] = {slot_id: theme_entry}
         
+        return working_template
+    
+    def place_theme_entries(self, template: Dict, anchors: List[str]) -> Dict:
+        """Place several theme anchors into distinct slots, best-effort.
+
+        Each anchor is placed in an unused slot of matching length whose cells
+        agree, at any shared intersection, with anchors already placed. Anchors
+        that cannot be placed consistently (no free slot of the right length, or a
+        letter clash) are skipped, so the result may hold fewer than were asked
+        for. Returns a working template with `filled_slots` / `seed_entries` for
+        the anchors that were placed.
+        """
+        placed_letters: Dict[Tuple[int, int], str] = {}
+        filled_slots: Dict[str, str] = {}
+        seed_entries: Dict[str, str] = {}
+        used_slots = set()
+
+        for anchor in anchors:
+            anchor = anchor.strip().upper()
+            if not anchor or anchor in filled_slots.values():
+                continue
+            # Slots of the right length, still free, and letter-compatible with
+            # everything placed so far.
+            candidates = [
+                slot for slot in template["slots"]
+                if slot["id"] not in used_slots and slot["length"] == len(anchor)
+                and all(
+                    placed_letters.get((row, col)) in (None, anchor[i])
+                    for i, (row, col) in enumerate(slot["cells"])
+                )
+            ]
+            if not candidates:
+                continue
+            chosen = random.choice(candidates)
+            for i, (row, col) in enumerate(chosen["cells"]):
+                placed_letters[(row, col)] = anchor[i]
+            filled_slots[chosen["id"]] = anchor
+            seed_entries[chosen["id"]] = anchor
+            used_slots.add(chosen["id"])
+
+        working_template = template.copy()
+        grid = [row.copy() for row in template["grid"]]
+        for (row, col), letter in placed_letters.items():
+            grid[row][col] = letter
+        working_template["grid"] = grid
+        working_template["filled_slots"] = filled_slots
+        working_template["seed_entries"] = seed_entries
         return working_template
     
     def get_intersecting_slots(self, template: Dict, slot_id: str) -> List[Tuple[str, int, int]]:
@@ -417,13 +465,17 @@ class CrosswordGenerator:
         sim_low: float = DEFAULT_SIM_LOW,
         sim_high: float = DEFAULT_SIM_HIGH,
         visible_threshold: float = DEFAULT_VISIBLE_THRESHOLD,
+        theme_entries: List[str] = None,
     ) -> Optional[Dict]:
         """
         Generate a complete crossword puzzle.
 
         Args:
             template: The crossword template
-            theme_entry: Optional pre-placed theme entry
+            theme_entry: Optional single pre-placed theme entry (validated; legacy)
+            theme_entries: Optional list of on-theme anchor words to pin as seeds,
+                best first. Placed best-effort with graceful fallback to fewer when
+                the fill is over-constrained. Takes precedence over theme_entry.
             node_budget: Max word placements per attempt
             restart_count: Attempts with a different theme placement / random order
             theme_similarities: Optional {WORD: cosine} map; when given, fill is
@@ -435,11 +487,6 @@ class CrosswordGenerator:
         Returns:
             Completed crossword dict, or None if no fill was found.
         """
-        if theme_entry:
-            is_valid, message = self.validate_theme_entry(theme_entry)
-            if not is_valid:
-                raise ValueError(message)
-
         # Build a theme-weighted selection function once (if a theme is provided);
         # otherwise fill() defaults to pure frequency weighting.
         weight_fn = None
@@ -448,6 +495,43 @@ class CrosswordGenerator:
                 self.word_db_manager.word_frequencies,
                 theme_similarities, theme_boost, sim_low, sim_high,
             )
+
+        sim_args = (theme_similarities, sim_low, sim_high, visible_threshold)
+
+        # Multiple anchors: pin as many as fit, then fall back to fewer
+        # (N -> N-1 -> ... -> 0) so the added constraint never reduces fill success
+        # below the unseeded case. Anchors are ordered best-first, so degrading
+        # drops the least on-theme ones.
+        if theme_entries is not None:
+            anchors = [a.strip().upper() for a in theme_entries if a and a.strip()]
+            # Land as many anchors as will co-fill, preferring the most and the best
+            # (earliest). Try every k-subset from k=N down to 1: because two long
+            # anchors often leave a crossing slot unfillable, the fillable set is
+            # usually a *subset*, not a prefix, so plain N->N-1 truncation misses it.
+            # `combinations` keeps the best-first order, so the first fill found holds
+            # the most, most-on-theme anchors. An unseeded grid is the last resort.
+            for k in range(len(anchors), 0, -1):
+                for combo in itertools.combinations(anchors, k):
+                    for _ in range(max(1, restart_count)):
+                        working = self.place_theme_entries(template, list(combo))
+                        seed = dict(working["filled_slots"])
+                        if len(seed) < k:
+                            continue  # combo could not all be placed; a smaller k catches it
+                        seed_entries = dict(working["seed_entries"])
+                        result = self._attempt(template, seed, seed_entries, weight_fn, node_budget, *sim_args)
+                        if result is not None:
+                            return result
+            for _ in range(max(1, restart_count)):  # no anchors: guaranteed-grid fallback
+                result = self._attempt(template, {}, {}, weight_fn, node_budget, *sim_args)
+                if result is not None:
+                    return result
+            return None
+
+        # Single legacy theme entry (validated, raises on invalid) or no theme.
+        if theme_entry:
+            is_valid, message = self.validate_theme_entry(theme_entry)
+            if not is_valid:
+                raise ValueError(message)
 
         for _ in range(max(1, restart_count)):
             if theme_entry:
@@ -458,19 +542,28 @@ class CrosswordGenerator:
                 seed = dict(working["filled_slots"])
                 seed_entries = dict(working["seed_entries"])
             else:
-                seed = {}
-                seed_entries = {}
-
-            solution = self.fill(template, seed_assignment=seed, weight_fn=weight_fn, node_budget=node_budget)
-            if solution is not None:
-                logger.info(f"Grid filled successfully with {len(solution)} unique words")
-                theme_entries = self._identify_theme_entries(
-                    solution, seed_entries, theme_similarities, sim_low, sim_high, visible_threshold
-                )
-                logger.info(f"Identified {len(theme_entries)} theme entries in the filled grid: {theme_entries}")
-                return self._assemble_result(template, solution, seed_entries, theme_entries)
+                seed, seed_entries = {}, {}
+            result = self._attempt(template, seed, seed_entries, weight_fn, node_budget, *sim_args)
+            if result is not None:
+                return result
 
         return None
+
+    def _attempt(
+        self, template: Dict, seed_assignment: Dict[str, str], seed_entries: Dict[str, str],
+        weight_fn, node_budget: int,
+        theme_similarities, sim_low: float, sim_high: float, visible_threshold: float,
+    ) -> Optional[Dict]:
+        """One fill attempt from a seed assignment; assemble the result or None."""
+        solution = self.fill(template, seed_assignment=seed_assignment, weight_fn=weight_fn, node_budget=node_budget)
+        if solution is None:
+            return None
+        logger.info(f"Grid filled successfully with {len(solution)} unique words")
+        theme_entries = self._identify_theme_entries(
+            solution, seed_entries, theme_similarities, sim_low, sim_high, visible_threshold
+        )
+        logger.info(f"Identified {len(theme_entries)} theme entries in the filled grid: {theme_entries}")
+        return self._assemble_result(template, solution, seed_entries, theme_entries)
 
 
 def print_grid(grid: List[List[str]]):
@@ -494,13 +587,16 @@ def generate_themed_crossword(
     sim_high: float = DEFAULT_SIM_HIGH,
     visible_threshold: float = DEFAULT_VISIBLE_THRESHOLD,
     word_db_manager: WordDatabaseManager = None,
+    theme_entries: List[str] = None,
 ) -> Optional[Dict]:
     """
     Generate a themed crossword puzzle.
 
     Args:
         template: The crossword template to use
-        theme_entry: Optional pre-placed theme entry
+        theme_entry: Optional single pre-placed theme entry (legacy)
+        theme_entries: Optional list of on-theme anchor words to pin as seeds
+            (best-effort, ordered best first); takes precedence over theme_entry
         node_budget: Max word placements per backtracking attempt
         restart_count: Number of restart attempts
         theme_similarities: Optional {WORD: cosine} map to bias the fill on-theme
@@ -513,7 +609,9 @@ def generate_themed_crossword(
     """
     generator = CrosswordGenerator(word_db_manager)
 
-    if theme_entry:
+    if theme_entries:
+        logger.info(f"Generating crossword with {len(theme_entries)} theme anchor(s): {theme_entries}")
+    elif theme_entry:
         logger.info(f"Generating crossword with theme entry: '{theme_entry}'")
     else:
         logger.info("Generating crossword without theme entry")
@@ -522,6 +620,7 @@ def generate_themed_crossword(
         template, theme_entry, node_budget=node_budget, restart_count=restart_count,
         theme_similarities=theme_similarities, theme_boost=theme_boost,
         sim_low=sim_low, sim_high=sim_high, visible_threshold=visible_threshold,
+        theme_entries=theme_entries,
     )
 
     if crossword:
