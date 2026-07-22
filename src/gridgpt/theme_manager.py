@@ -194,6 +194,20 @@ class ThemeManager:
         return seed_entry, similarities
 
 
+    def get_anchor_candidates(
+        self, pool_size: int = 30, min_chars: int = 3, max_chars: int = 5, min_frequency: int = 1,
+    ) -> List[str]:
+        """Top `pool_size` on-theme DB words across the given length range, best
+        first, to hand to the anchor selector. Deterministic (unlike
+        `choose_theme_entries`, which samples), and spans all usable lengths rather
+        than only 5-letter seeds."""
+        entries = self.find_theme_entries(
+            min_chars=min_chars, max_chars=max_chars,
+            min_frequency=min_frequency, similarity_mode="semantic",
+        )
+        return [word.upper() for word, _score in entries[:pool_size]]
+
+
     def calculate_similarity(
         self,
         word: str,
