@@ -66,13 +66,19 @@ The project consists of three main components:
    ```
 
 2. **Set up the backend**
+
+   Dependencies are managed with [uv](https://docs.astral.sh/uv/): `pyproject.toml` + `uv.lock` are the only manifest, and the same lockfile is used locally and on Railway.
    ```bash
-   # Create and activate a virtual environment
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   
-   # Install the package in editable mode with all dependencies
-   pip install -e .
+   # Install uv once (see the uv docs for other platforms)
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+
+   # Create .venv and install runtime + dev dependencies from the lockfile
+   uv sync
+   ```
+   Run project commands through `uv run` (or the `make` targets, which do it for you), so they always use the project environment:
+   ```bash
+   uv run pytest          # or: make test
+   uv run python run_api.py
    ```
 
 3. **Configure environment**
@@ -93,7 +99,7 @@ The project consists of three main components:
 
 1. **Start the backend API** (development)
    ```bash
-   python run_api.py  # or: uvicorn api.main:app --reload
+   uv run python run_api.py  # or: uv run uvicorn api.main:app --reload
    ```
 
 2. **Start the frontend** (in a new terminal)
@@ -115,7 +121,7 @@ GridGPT uses a word database built from online crossword sources. Follow these s
 
 **Scrape NYT's Mini Crosswords from [`worddb.com`](https://worddb.com)**
 ```bash
-python scripts/scrape_worddb.py --start-date 2023-01-01 --end-date 2023-12-31
+uv run python scripts/scrape_worddb.py --start-date 2023-01-01 --end-date 2023-12-31
 ```
 This creates and updates: `data/01_raw/worddb_com/nyt_mini_clues.json`
 
@@ -124,7 +130,7 @@ This creates and updates: `data/01_raw/worddb_com/nyt_mini_clues.json`
 
 **Create the main word database**
 ```bash
-python scripts/create_worddb_database.py
+uv run python scripts/create_worddb_database.py
 ```
 This processes the scraped data and creates: `data/02_intermediary/word_database/word_database_full.json`
 
@@ -159,13 +165,13 @@ After a refresh, **commit `word_database_full.json`** (the one tracked data file
 
 **Scrape crossword data from [`crosswordtracker.com`](http://crosswordtracker.com/)**
 ```bash
-python scripts/scrape_crosswords_2.py letters A B C # list which letter to scrape individually
+uv run python scripts/scrape_crosswords_2.py letters A B C # list which letter to scrape individually
 ```
 This creates: `data/01_raw/crossword_tracker/crossword_words_[A-Z].json`
 
 **Create crossword tracker database**
 ```bash
-python scripts/create_crosswordtracker_word_db.py
+uv run python scripts/create_crosswordtracker_word_db.py
 ```
 
 
@@ -290,27 +296,37 @@ Generation requests only embed the theme phrase; similarity is computed over the
 
 #### Precompute (optional but recommended for deploy)
 ```bash
-python -m scripts.precompute_embeddings --verbose
+uv run python -m scripts.precompute_embeddings --verbose
 # or
 make precompute
 ```
-`make precompute` is build-if-missing: it does nothing if the cache is already present. To refresh a cache after a database change, run `make refresh-db` (recommended) or `python -m scripts.precompute_embeddings --force`.
+`make precompute` is build-if-missing: it does nothing if the cache is already present. To refresh a cache after a database change, run `make refresh-db` (recommended) or `uv run python -m scripts.precompute_embeddings --force`.
 
 ### Makefile shortcuts
 ```bash
-make develop         # install deps + editable package
+make install-dev     # runtime + dev dependencies (local)
+make install         # runtime dependencies only (what the deploy build runs)
 make precompute      # build embeddings cache (if missing)
 make refresh-db      # scrape new data, rebuild DB + embeddings
 make build-backend   # deps + embeddings (deploy helper)
 make dev-backend     # uvicorn with reload
 make dev-frontend    # Next.js dev
+make test            # backend test suite
 make clean           # remove embedding artifacts
 make clean-and-build-backend  # clean then rebuild
 ```
 
+### Running the notebooks
+
+The notebooks need a Jupyter kernel pointing at this project's environment, otherwise imports fail even though the packages are installed:
+```bash
+uv run python -m ipykernel install --user --name gridgpt --display-name "gridgpt"
+```
+Then select the **gridgpt** kernel in the notebook.
+
 ### Deployment
 
-- **Backend:** Railway (FastAPI). Build command `make build-backend` and start command `uvicorn api.main:app --host 0.0.0.0 --port $PORT`.
+- **Backend:** Railway (FastAPI), configured in [`railway.json`](railway.json): build command `make build-backend` (bootstraps uv, installs runtime deps from the lockfile, precomputes embeddings) and start command `uv run uvicorn api.main:app --host 0.0.0.0 --port $PORT`. The `uv run` prefix matters, since dependencies live in the project `.venv` rather than the image's system Python.
 - **Frontend:** Vercel. Client calls go to `/api/crossword` (server-side proxy using `BACKEND_URL`).
 - **CORS:** Restricted allowlist (localhost + production domain). Expand via `EXTRA_CORS_ORIGINS` or temporarily with `ALLOW_ALL_CORS=true`.
 - **Embeddings:** Precompute step eliminates first-request latency.

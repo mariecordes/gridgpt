@@ -15,10 +15,10 @@ You can use the following commands to reproduce the evaluation:
 
 ```bash
 # Side-by-side benchmark of both algorithms
-python -m scripts.evaluate_generation --algorithm both
+uv run python -m scripts.evaluate_generation --algorithm both
 
 # Just the current filler, more runs
-python -m scripts.evaluate_generation --runs 50
+uv run python -m scripts.evaluate_generation --runs 50
 ```
 
 **Results**
@@ -53,7 +53,7 @@ You can reproduce the evaluation with:
 
 ```bash
 # Evaluate the theme feature only (off vs on), needs OPENAI_API_KEY
-python -m scripts.evaluate_themes --themes food space music
+uv run python -m scripts.evaluate_themes --themes food space music
 ```
 
 **Results**
@@ -160,7 +160,7 @@ For a step-by-step walkthrough of the pipeline (including the actual LLM prompt 
 **How it was measured.** [`scripts/evaluate_themes.py`](../scripts/evaluate_themes.py) (function `anchor_benchmark`) generates 30 puzzles per theme on one fixed template (`5x5_diagonal_cut`, which has 3-, 4- and 5-letter slots) in two modes: `single` is the legacy path with one fixed seed entry, and `pool` is the current path sampling anchors from the vetted pool. Both share the same RNG stream. Reproduce with:
 
 ```bash
-python -m scripts.evaluate_themes --anchors --themes food planets sports music
+uv run python -m scripts.evaluate_themes --anchors --themes food planets sports music
 ```
 
 **Results**
