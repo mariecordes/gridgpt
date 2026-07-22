@@ -109,7 +109,7 @@ async def generate_crossword(request: GenerateRequest):
             # (falls back to cosine order when no LLM is available).
             theme_entries = ThemeAnchorSelector().select_anchors(
                 theme, candidates, word_db_manager,
-                max_anchors=anchor_cfg["max_anchors"],
+                max_words=anchor_cfg["vetted_pool"],
                 allow_llm_words=anchor_cfg["allow_llm_words"],
                 min_zipf=anchor_cfg["min_zipf"],
                 min_chars=anchor_cfg["min_chars"],
@@ -141,6 +141,8 @@ async def generate_crossword(request: GenerateRequest):
             visible_threshold=params["theme_fill"]["visible_threshold"],
             word_db_manager=word_db_manager,
             theme_entries=theme_entries,
+            max_anchors=params["theme_anchors"]["max_anchors"],
+            anchor_attempts=params["theme_anchors"]["anchor_attempts"],
         )
 
         # Return friendly error if generation fails
