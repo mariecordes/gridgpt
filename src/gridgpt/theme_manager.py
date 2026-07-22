@@ -212,33 +212,24 @@ class ThemeManager:
         self,
         word: str,
         theme: str = None,
-        mode: str = "semantic",  # options: 'semantic' or 'string'
-        theme_embedding: np.ndarray = None,
+        mode: str = "string",  # only 'string'; semantic scoring goes through score_all_words
     ) -> float:
         """
-        Calculate similarity between a word and the theme.
+        Calculate string similarity between a word and the theme.
+
+        Semantic similarity is not handled here: it is computed in bulk against the
+        cached embedding matrix (`find_theme_entries` / `score_all_words`), which is
+        both faster and avoids a per-word API call.
 
         Args:
             word: Single word to compare.
-            theme: Full theme string (required for string similarity).
-            mode: 'semantic' (default) or 'string'
-            theme_embedding: Precomputed theme embedding (only for semantic)
+            theme: Full theme string.
+            mode: 'string' (the only supported mode).
 
         Returns:
             Similarity score between 0 and 1.
         """
-        if mode == "semantic":
-            if theme_embedding is None:
-                raise ValueError("theme_embedding must be provided for semantic similarity.")
-            if self.embedding_provider is None:
-                raise RuntimeError("Embedding provider unavailable for semantic similarity.")
-            word_vec = self.embedding_provider.embed([word])[0]
-            return float(
-                np.dot(word_vec, theme_embedding) /
-                (np.linalg.norm(word_vec) * np.linalg.norm(theme_embedding) + 1e-12)
-            )
-        
-        elif mode == "string":
+        if mode == "string":
             if theme is None:
                 raise ValueError("theme must be provided for string similarity.")
             

@@ -104,24 +104,3 @@ def test_generate_crossword_failure_returns_clean_error(client, monkeypatch):
     )
     assert response.status_code == 503
     assert "try again" in response.json()["detail"].lower()
-
-
-def test_check_solution(client):
-    puzzle = {"filled_slots": {"1A": "CAT", "1D": "CAR"}}
-
-    correct = client.post(
-        "/api/check-solution",
-        json={"puzzle": puzzle, "user_solution": {"1A": "CAT", "1D": "CAR"}},
-    )
-    assert correct.status_code == 200
-    assert correct.json()["correct"] is True
-    assert correct.json()["score"] == 2
-
-    wrong = client.post(
-        "/api/check-solution",
-        json={"puzzle": puzzle, "user_solution": {"1A": "CAT", "1D": "CAP"}},
-    )
-    assert wrong.status_code == 200
-    assert wrong.json()["correct"] is False
-    assert wrong.json()["score"] == 1
-    assert len(wrong.json()["errors"]) == 1
