@@ -5,7 +5,7 @@ word_database:
   exclude_special_chars: True
 
 embeddings:
-  model: text-embedding-3-small # active embedding model
+  model: text-embedding-3-large # active embedding model, switch to text-embedding-3-small for lighter cache
   data_dir: data/02_intermediary/word_database
   models: # cache files + dimension per model, so caches for different models coexist on disk
     text-embedding-3-small:
