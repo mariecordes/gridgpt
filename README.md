@@ -25,7 +25,7 @@ A smart mini crossword generator powered by GPT that creates themed crossword pu
 ## Features
 
 - 🧩 **Smart grid generation**: Creates crossword grids using various templates and patterns
-- 🎯 **Theme-based puzzles**: Generates crosswords around specific themes or topics
+- 🎯 **Theme-based puzzles**: Generates crosswords around specific themes, with several LLM-vetted on-theme entries per grid and a different puzzle each run
 - 🤖 **AI-powered clues**: Uses GPT to create creative and contextual clues
 - 🎨 **Visual interface**: Modern React frontend with interactive grid previews
 - 📊 **Word database**: Comprehensive database with frequency analysis and filtering
@@ -173,13 +173,30 @@ python scripts/create_crosswordtracker_word_db.py
 
 ### Core components
 
-**`CrosswordGenerator`**: Grid generator that fills a crossword template grid with a theme entry under the given constraints.
+**`CrosswordGenerator`**: Grid generator that pins theme anchors into a template and fills the remaining slots under the given constraints.
 ```python
-from src.gridgpt.crossword_generator import CrosswordGenerator
+from src.gridgpt.crossword_generator import generate_themed_crossword
 
-generator = CrosswordGenerator()
-result = generator.generate_themed_crossword(template=template_dict, theme_entry="FRUIT")
+# Draw anchors at random from a pool of vetted on-theme words, then fill around them
+result = generate_themed_crossword(template_dict, theme_entries=["PIZZA", "PASTA", "CHEF"])
 ```
+
+**`ThemeManager`**: Scores every database word against the theme (embedding similarity) and shortlists candidate theme entries
+```python
+from src.gridgpt.theme_manager import ThemeManager
+
+theme_manager = ThemeManager("food", db_manager)
+similarities = theme_manager.score_all_words()               # {WORD: cosine}
+candidates = theme_manager.get_anchor_candidates(pool_size=60)
+```
+
+**`ThemeAnchorSelector`**: LLM judge that vets those candidates down to a pool of genuinely on-theme words, filtering out loose matches that similarity alone lets through. Validation is two-tier: a word in the database always passes, and a word the LLM adds itself (optional, off by default) must also clear a dictionary-frequency check.
+```python
+from src.gridgpt.theme_anchor import ThemeAnchorSelector
+
+pool = ThemeAnchorSelector().select_anchors("food", candidates, db_manager, max_words=30)
+```
+Sizes and behaviour are tunable under `theme_anchors` in `conf/base/parameters.yml` (how many candidates the LLM sees, how many it may approve, how many are pinned per grid).
 
 **`WordDatabaseManager`**: Fundamental manager for word database operations
 ```python
@@ -353,7 +370,7 @@ GridGPT builds crosswords through a pipeline that blends real data, embeddings, 
 
 📚 **Crossword database:** A curated set of published words and clues ensures authenticity and quality.
 
-🎯 **Theme matching:** Embeddings score every database word by semantic similarity to your theme and steer the whole grid fill toward on-theme words, so your theme influences the entire puzzle, not just a single entry.
+🎯 **Theme matching:** Embeddings score every database word by semantic similarity to your theme, then an LLM judges which of those a solver would genuinely recognise as on-theme (and can optionally be allowed to suggest words of its own). Several approved words are pinned into the grid as anchors, drawn at random from the approved pool so the same theme gives a different puzzle each time, while the rest of the fill is still steered toward the theme.
 
 🤖 **Backfill optimization:** A custom algorithm fills the grid via constraint satisfaction, keeping every intersection valid and solvable.
 

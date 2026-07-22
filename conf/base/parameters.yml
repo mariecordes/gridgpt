@@ -34,3 +34,13 @@ theme_fill:
   sim_low: 0.20 # cosine baseline for unrelated words (text-embedding-3-small)
   sim_high: 0.50 # cosine for clearly related words; sim in [low, high] maps to themeness 0..1
   visible_threshold: 0.6 # normalized themeness at/above which a filled word counts as on-theme
+
+theme_anchors:
+  candidate_pool: 60 # top-N cosine words handed to the LLM to vet
+  vetted_pool: 30 # max validated on-theme words the LLM may return (the pool to draw from)
+  max_anchors: 3 # how many anchors are actually placed in one grid (fill falls back to fewer)
+  anchor_attempts: 25 # random anchor combinations tried per anchor count; higher = more variety
+  min_chars: 3 # anchors span all usable slot lengths, not just 5
+  max_chars: 5
+  allow_llm_words: True # if True, the LLM may also suggest on-theme words not in the DB (guarded, see below)
+  min_zipf: 2.5 # own-words only: min wordfreq Zipf for a non-DB word to count as real + common

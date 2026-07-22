@@ -21,6 +21,7 @@ the logic.
 Usage:
     python -m scripts.evaluate_themes --themes food space music
     python -m scripts.evaluate_themes --tune --themes food music planets sports plants
+    python -m scripts.evaluate_themes --anchors --themes food planets sports music
 """
 
 from __future__ import annotations
@@ -32,6 +33,7 @@ import random
 import statistics
 import sys
 import time
+from collections import Counter
 from typing import Dict, List, Optional, Tuple
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -45,8 +47,12 @@ from src.gridgpt.crossword_generator import (  # noqa: E402
     DEFAULT_VISIBLE_THRESHOLD,
 )
 from src.gridgpt.template_manager import load_templates, select_template  # noqa: E402
+from src.gridgpt.theme_anchor import ThemeAnchorSelector  # noqa: E402
 from src.gridgpt.theme_manager import ThemeManager  # noqa: E402
+from src.gridgpt.utils import load_parameters  # noqa: E402
 from src.gridgpt.word_database_manager import WordDatabaseManager  # noqa: E402
+
+ANCHOR_TEMPLATE = "5x5_diagonal_cut"  # fixed template for anchor/diversity runs (3-to-5 letter slots)
 
 DEFAULT_THEMES = ["food", "space", "music"]
 TEMPLATE_IDS = ["5x5_blocked_corners", "5x5_bottom_pillars", "5x5_diagonal_cut"]
@@ -200,6 +206,129 @@ def threshold_analysis(
     return rows, band_words
 
 
+def build_theme_pool(
+    theme: str, word_db, candidate_pool: int, vetted_pool: int,
+    allow_llm_words: bool, min_zipf: float, min_chars: int, max_chars: int,
+) -> Tuple[List[str], List[str], Dict[str, float]]:
+    """One LLM call per theme: cosine candidates -> vetted on-theme pool.
+    Returns (pool, cosine_candidates, similarities)."""
+    manager = ThemeManager(theme, word_db)
+    similarities = manager.score_all_words()
+    candidates = manager.get_anchor_candidates(
+        pool_size=candidate_pool, min_chars=min_chars, max_chars=max_chars,
+    )
+    pool = ThemeAnchorSelector().select_anchors(
+        theme, candidates, word_db, max_words=vetted_pool, allow_llm_words=allow_llm_words,
+        min_zipf=min_zipf, min_chars=min_chars, max_chars=max_chars,
+    )
+    return pool, candidates, similarities
+
+
+def anchor_benchmark(
+    themes: List[str],
+    word_db,
+    template: Dict,
+    runs: int = 30,
+    candidate_pool: int = 60,
+    vetted_pool: int = 30,
+    max_anchors: int = 3,
+    anchor_attempts: int = 25,
+    allow_llm_words: bool = False,
+    min_zipf: float = 2.5,
+    min_chars: int = 3,
+    max_chars: int = 5,
+) -> Tuple[List[Dict], Dict[str, Dict]]:
+    """Theme presence and puzzle variety, single seed vs vetted pool.
+
+    For each theme, generates `runs` puzzles on one fixed template in two modes:
+
+    - `single`: the legacy path, one fixed seed entry (`theme_entry`), which is
+      what produced the same theme words every time.
+    - `pool`: anchors sampled at random from the vetted pool (`theme_entries`).
+
+    Per mode it reports how many theme words land, and how much the puzzles vary:
+    distinct anchor sets is the key number (the fill is randomised either way, so
+    distinct grids alone would flatter the single-seed baseline).
+
+    Returns (rows, details) where details carries the pool, the candidates the LLM
+    rejected, and the most repeated anchor words.
+    """
+    rows: List[Dict] = []
+    details: Dict[str, Dict] = {}
+
+    for theme in themes:
+        pool, candidates, similarities = build_theme_pool(
+            theme, word_db, candidate_pool, vetted_pool,
+            allow_llm_words, min_zipf, min_chars, max_chars,
+        )
+        if not pool:
+            continue
+        # The legacy baseline pins one fixed DB word, mimicking the old behaviour.
+        # It must be a word the legacy path can actually place: `place_theme_entry`
+        # only uses the template's `theme_slots` whitelist, which holds 5-letter
+        # slots only. (The multi-anchor path deliberately ignores that whitelist so
+        # 3-to-5 letter anchors can land, which is what makes several fit.)
+        theme_slot_ids = template.get("theme_slots", [])
+        legacy_lengths = {
+            slot["length"] for slot in template["slots"]
+            if not theme_slot_ids or slot["id"] in theme_slot_ids
+        }
+        db_words = [
+            w for w in pool
+            if w in word_db.word_list_with_frequencies and len(w) in legacy_lengths
+        ]
+        baseline_seed = db_words[0] if db_words else None
+
+        for mode in ("single", "pool"):
+            if mode == "single" and baseline_seed is None:
+                continue
+            anchor_sets, grids, counts, times, successes = [], set(), Counter(), [], 0
+            for run in range(runs):
+                random.seed(run)  # same RNG stream for both modes
+                start = time.perf_counter()
+                if mode == "single":
+                    crossword = generate_themed_crossword(
+                        template, baseline_seed, theme_similarities=similarities,
+                        word_db_manager=word_db,
+                    )
+                else:
+                    crossword = generate_themed_crossword(
+                        template, theme_entries=pool, theme_similarities=similarities,
+                        word_db_manager=word_db, max_anchors=max_anchors,
+                        anchor_attempts=anchor_attempts,
+                    )
+                times.append((time.perf_counter() - start) * 1000.0)
+                if crossword is None:
+                    continue
+                successes += 1
+                placed = sorted(crossword["seed_entries"].values())
+                anchor_sets.append(frozenset(placed))
+                counts.update(placed)
+                grids.add(tuple(tuple(row) for row in crossword["grid"]))
+
+            used = len(counts)
+            rows.append({
+                "theme": theme,
+                "mode": mode,
+                "pool": len(pool),
+                "anchors": round(statistics.mean(len(s) for s in anchor_sets), 2) if anchor_sets else 0.0,
+                "anchor_sets": f"{len(set(anchor_sets))}/{runs}",
+                "words_used": used,
+                "coverage": f"{used / len(pool):.0%}",
+                "grids": f"{len(grids)}/{runs}",
+                "success": f"{successes / runs:.0%}",
+                "mean_ms": round(statistics.mean(times), 1) if times else 0.0,
+            })
+            if mode == "pool":
+                details[theme] = {
+                    "pool": pool,
+                    "rejected": [c for c in candidates if c not in set(pool)],
+                    "most_repeated": counts.most_common(3),
+                }
+
+    return rows, details
+
+
 # ------------------------------ CLI printing ------------------------------ #
 
 def _print_table(rows: List[Dict]) -> None:
@@ -237,6 +366,7 @@ def main() -> int:
     parser.add_argument("--templates", nargs="*", default=TEMPLATE_IDS, help="Template ids")
     parser.add_argument("--runs", type=int, default=30, help="Runs per configuration")
     parser.add_argument("--tune", action="store_true", help="Run the boost + visible-threshold sweeps instead of the off-vs-on benchmark")
+    parser.add_argument("--anchors", action="store_true", help="Run the theme-anchor benchmark (theme words landed + puzzle variety)")
     parser.add_argument("--model", default=None, help="Embedding model override for the A/B (default: parameters.yml)")
     parser.add_argument("--rng-seed", type=int, default=0, help="Global RNG seed for reproducibility")
     args = parser.parse_args()
@@ -252,6 +382,28 @@ def main() -> int:
     word_db = WordDatabaseManager()
     templates = [select_template(template_id=tid) for tid in args.templates]
     print(f"\nEmbedding model: {args.model or '(parameters.yml default)'}")
+
+    if args.anchors:
+        cfg = load_parameters()["theme_anchors"]
+        template = select_template(template_id=ANCHOR_TEMPLATE)
+        print(f"\nTheme anchors: words landed + puzzle variety "
+              f"({args.runs} runs per mode, template {ANCHOR_TEMPLATE})\n")
+        rows, details = anchor_benchmark(
+            args.themes, word_db, template, runs=args.runs,
+            candidate_pool=cfg["candidate_pool"], vetted_pool=cfg["vetted_pool"],
+            max_anchors=cfg["max_anchors"], anchor_attempts=cfg["anchor_attempts"],
+            allow_llm_words=cfg["allow_llm_words"], min_zipf=cfg["min_zipf"],
+            min_chars=cfg["min_chars"], max_chars=cfg["max_chars"],
+        )
+        _print_table(rows)
+        for theme, info in details.items():
+            print(f"\n{theme}:")
+            print(f"  vetted pool ({len(info['pool'])}): {info['pool']}")
+            print(f"  rejected by the LLM (first 12 of {len(info['rejected'])}): {info['rejected'][:12]}")
+            print(f"  most repeated anchors: {info['most_repeated']}")
+        print()
+        return 0
+
     prepared = prepare_themes(args.themes, word_db, model=args.model)
 
     if args.tune:

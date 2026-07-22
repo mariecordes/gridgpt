@@ -59,8 +59,15 @@ def test_generate_crossword_reports_theme_entries(client, monkeypatch):
         def __init__(self, theme, word_db=None):
             pass
 
-        def prepare_theme(self, **kwargs):
-            return "CAT", {"CAT": 0.5, "ARTS": 0.5}
+        def score_all_words(self):
+            return {"CAT": 0.5, "ARTS": 0.5}
+        
+        def get_anchor_candidates(self, **kwargs):
+            return ["CAT", "ARTS"]
+
+    class _FakeAnchorSelector:
+        def select_anchors(self, *args, **kwargs):
+            return ["CAT", "ARTS"]
 
     # The generator now returns theme_entries itself; the route just passes it on.
     fixed_crossword = {
@@ -70,6 +77,7 @@ def test_generate_crossword_reports_theme_entries(client, monkeypatch):
         "slots": [],
     }
     monkeypatch.setattr("api.routes.ThemeManager", _FakeThemeManager)
+    monkeypatch.setattr("api.routes.ThemeAnchorSelector", lambda: _FakeAnchorSelector())
     monkeypatch.setattr("api.routes.generate_themed_crossword", lambda *a, **k: dict(fixed_crossword))
     monkeypatch.setattr(
         "api.routes.retrieve_existing_clues", lambda cw, wdb: {k: "a clue" for k in cw["filled_slots"]}

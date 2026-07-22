@@ -92,7 +92,7 @@ export default function CollapsibleAbout() {
                         📚 <strong>Crossword database:</strong> A curated set of published words and clues ensures authenticity and quality.
                     </p>
                     <p className="mb-3">
-                        🎯 <strong>Theme matching:</strong> Embeddings score every database word by semantic similarity to your theme and steer the whole grid fill toward on-theme words, so your theme influences the entire puzzle, not just a single entry.
+                        🎯 <strong>Theme matching:</strong> Embeddings score every database word by semantic similarity to your theme, and an LLM judges which of those are genuinely on-theme. A few of the approved words are seeded into the grid, and the rest of the fill leans toward on-theme words too.
                     </p>
                     <p className="mb-3">
                         🤖 <strong>Backfill optimization:</strong> A custom algorithm fills the grid via constraint satisfaction, keeping every intersection valid and solvable.

@@ -140,3 +140,61 @@ For "planets" and "plants" the win is clear: small surfaces spelling-similar noi
 - **A curated theme / category tagging of the word database**, turning "on-theme" into a verified lookup instead of a similarity guess.
 - **Guaranteed multiple seeded theme entries**: pin two or three verified on-theme words as hard anchors so every themed puzzle has a few real theme words regardless of what the fill finds (a heavier placement constraint, deferred for now).
 
+## 3. Theme anchors: how many theme words, and how varied are the puzzles?
+
+**What it is.** Weighting alone (section 2) left every themed puzzle with exactly **one** guaranteed theme word, the single pinned seed, and any extra on-theme word was incidental and often weak (for "food", FUN). Theme anchors replace that with a four-step pipeline: score every database word against the theme (cosine), have an LLM vet the top candidates down to genuinely on-theme words, draw a few of those at random, and pin them into the grid before filling around them.
+
+Three separate sizes in `conf/base/parameters.yml` under `theme_anchors` control it, and keeping them separate is the whole point:
+
+| setting | meaning | default |
+|---|---|---|
+| `candidate_pool` | how many cosine-ranked words the LLM is shown | 60 |
+| `vetted_pool` | how many on-theme words the LLM may return (the pool to draw from) | 30 |
+| `max_anchors` | how many anchors are actually pinned into one grid | 3 |
+| `anchor_attempts` | random draws tried per anchor count before using fewer | 25 |
+
+The vetted pool is deliberately large and **unranked**: once the LLM certifies a word as on-theme it counts exactly as much as any other, so the generator samples from the pool at random. When these were a single number, the LLM returned only three words and the generator walked them in a fixed best-first order, so one theme always produced the same puzzle.
+
+For a step-by-step walkthrough of the pipeline (including the actual LLM prompt and the validation guardrails), see [`notebooks/05_multi_anchor_theme_entries.ipynb`](../notebooks/05_multi_anchor_theme_entries.ipynb).
+
+**How it was measured.** [`scripts/evaluate_themes.py`](../scripts/evaluate_themes.py) (function `anchor_benchmark`) generates 30 puzzles per theme on one fixed template (`5x5_diagonal_cut`, which has 3-, 4- and 5-letter slots) in two modes: `single` is the legacy path with one fixed seed entry, and `pool` is the current path sampling anchors from the vetted pool. Both share the same RNG stream. Reproduce with:
+
+```bash
+python -m scripts.evaluate_themes --anchors --themes food planets sports music
+```
+
+**Results**
+
+| theme | mode | pool | anchors | anchor sets | words used | coverage | grids | success | mean ms |
+|---|---|---|---|---|---|---|---|---|---|
+| food | single | 30 | 1.00 | 1/30 | 1 | 3% | 27/30 | 100% | 1.2 |
+| food | pool | 30 | 2.33 | 29/30 | 24 | 80% | 30/30 | 100% | 1.7 |
+| planets | single | 29 | 1.00 | 1/30 | 1 | 3% | 30/30 | 100% | 1.2 |
+| planets | pool | 29 | 2.53 | 30/30 | 24 | 83% | 30/30 | 100% | 1.3 |
+| sports | single | 30 | 1.00 | 1/30 | 1 | 3% | 30/30 | 100% | 1.1 |
+| sports | pool | 30 | 2.53 | 30/30 | 26 | 87% | 30/30 | 100% | 1.7 |
+| music | single | 30 | 1.00 | 1/30 | 1 | 3% | 30/30 | 100% | 1.3 |
+| music | pool | 30 | 2.17 | 30/30 | 23 | 77% | 30/30 | 100% | 1.4 |
+
+- `mode` states if only a `single` theme word was placed as a seed entry or if a `pool` of theme words was tried
+- `pool` is the number of theme words available to be used as theme entries upon grid generation
+- `anchors` is the mean number of successfully pinned theme words per generated puzzle
+- `anchor sets` counts distinct anchor combinations (combinations of successfully pinned theme entries) across the 30 runs
+- `words used` and `coverage` show how much of the vetted theme entry candidate pool actually gets exercised.
+
+**Assessment**
+
+**Theme presence roughly doubled**, from exactly 1 word per puzzle to **2.2-2.5**, and three anchors do land when a drawn trio happens to co-fill.
+
+**Variety went from none to near-total.** Distinct anchor sets went from **1/30 to 29-30/30**, and pool coverage from 3% to **77-87%**, so a theme now draws on roughly two dozen different words across runs instead of the same one.
+
+**The `grids` column is why "distinct grids" is the wrong headline metric.** The single-seed baseline already scored 27-30/30 distinct grids, because the fill is randomised regardless. Judged on grids alone the old behaviour looks fine; it is `anchor sets` (1/30) that exposes the real problem, since the *theme words* never changed. That is the number to watch.
+
+**It costs nothing.** Fill success stays 100% and generation stays 1-2 ms in both modes: the extra work is a handful of cheap redraws, and a draw that cannot fill is simply replaced.
+
+**The LLM is doing real filtering.** From the "food" candidates it rejected FUN, along with GOODS, FAST, STUFF and SPORT, while keeping PIZZA, SUSHI, BREAD, PASTA, SALAD and CHEF. That judgement is what cosine alone could not provide.
+
+**A deliberate divergence worth noting:** every template's `theme_slots` whitelist contains only 5-letter slots (`5x5_diagonal_cut` has just two). The legacy path honours that whitelist, which is why it can only ever pin one 5-letter seed. Multi-anchor placement ignores it and uses any slot of matching length, which is precisely what lets 3- and 4-letter anchors land and several fit at once. If `theme_slots` is later meant to encode design intent about where theme entries belong, that intent is currently not applied to anchors.
+
+**Limits.** Three anchors are not guaranteed; two is the typical outcome, because pinning three words in a 5x5 often leaves a crossing no database word can complete. Coverage is bounded by `vetted_pool`, and the pools include foreign-language database entries (ESSEN, CARNE, MONDE) that are genuinely on-theme but may read as obscure to a solver.
+
