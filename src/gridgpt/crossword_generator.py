@@ -1,5 +1,4 @@
 import random
-import itertools
 from typing import Dict, List, Tuple, Optional, Callable
 import logging
 
@@ -17,6 +16,10 @@ DEFAULT_THEME_BOOST = 4.0
 DEFAULT_SIM_LOW = 0.20
 DEFAULT_SIM_HIGH = 0.50
 DEFAULT_VISIBLE_THRESHOLD = 0.6
+
+# Defaults for theme anchors (overridable via conf/base/parameters.yml).
+DEFAULT_MAX_ANCHORS = 3
+DEFAULT_ANCHOR_ATTEMPTS = 25
 
 
 def normalized_themeness(similarity: Optional[float], sim_low: float, sim_high: float) -> float:
@@ -466,6 +469,8 @@ class CrosswordGenerator:
         sim_high: float = DEFAULT_SIM_HIGH,
         visible_threshold: float = DEFAULT_VISIBLE_THRESHOLD,
         theme_entries: List[str] = None,
+        max_anchors: int = DEFAULT_MAX_ANCHORS,
+        anchor_attempts: int = DEFAULT_ANCHOR_ATTEMPTS,
     ) -> Optional[Dict]:
         """
         Generate a complete crossword puzzle.
@@ -473,9 +478,12 @@ class CrosswordGenerator:
         Args:
             template: The crossword template
             theme_entry: Optional single pre-placed theme entry (validated; legacy)
-            theme_entries: Optional list of on-theme anchor words to pin as seeds,
-                best first. Placed best-effort with graceful fallback to fewer when
-                the fill is over-constrained. Takes precedence over theme_entry.
+            theme_entries: Optional *pool* of validated on-theme words to draw
+                anchors from. Treated as unranked (every word equally on-theme);
+                anchors are sampled at random so repeated generations for one theme
+                give different puzzles. Takes precedence over theme_entry.
+            max_anchors: How many anchors to try to pin in one grid
+            anchor_attempts: Random anchor combinations tried per anchor count
             node_budget: Max word placements per attempt
             restart_count: Attempts with a different theme placement / random order
             theme_similarities: Optional {WORD: cosine} map; when given, fill is
@@ -503,24 +511,25 @@ class CrosswordGenerator:
         # below the unseeded case. Anchors are ordered best-first, so degrading
         # drops the least on-theme ones.
         if theme_entries is not None:
-            anchors = [a.strip().upper() for a in theme_entries if a and a.strip()]
-            # Land as many anchors as will co-fill, preferring the most and the best
-            # (earliest). Try every k-subset from k=N down to 1: because two long
-            # anchors often leave a crossing slot unfillable, the fillable set is
-            # usually a *subset*, not a prefix, so plain N->N-1 truncation misses it.
-            # `combinations` keeps the best-first order, so the first fill found holds
-            # the most, most-on-theme anchors. An unseeded grid is the last resort.
-            for k in range(len(anchors), 0, -1):
-                for combo in itertools.combinations(anchors, k):
-                    for _ in range(max(1, restart_count)):
-                        working = self.place_theme_entries(template, list(combo))
-                        seed = dict(working["filled_slots"])
-                        if len(seed) < k:
-                            continue  # combo could not all be placed; a smaller k catches it
-                        seed_entries = dict(working["seed_entries"])
-                        result = self._attempt(template, seed, seed_entries, weight_fn, node_budget, *sim_args)
-                        if result is not None:
-                            return result
+            pool = list(dict.fromkeys(a.strip().upper() for a in theme_entries if a and a.strip()))
+            # Every word in the pool has already been vetted as on-theme, so they are
+            # treated as equally good: anchors are drawn at *random* rather than by
+            # walking a ranking. Enumerating best-first would make the same theme
+            # settle on the same combination, and so the same puzzle, every time.
+            # Land as many as will co-fill (max_anchors -> 1); two long anchors often
+            # leave a crossing unfillable, so a fresh draw is tried each attempt. An
+            # unseeded grid is the last resort.
+            for k in range(min(max_anchors, len(pool)), 0, -1):
+                for _ in range(max(1, anchor_attempts)):
+                    combo = random.sample(pool, k)
+                    working = self.place_theme_entries(template, combo)
+                    seed = dict(working["filled_slots"])
+                    if len(seed) < k:
+                        continue  # letters clashed on this draw; try another
+                    seed_entries = dict(working["seed_entries"])
+                    result = self._attempt(template, seed, seed_entries, weight_fn, node_budget, *sim_args)
+                    if result is not None:
+                        return result
             for _ in range(max(1, restart_count)):  # no anchors: guaranteed-grid fallback
                 result = self._attempt(template, {}, {}, weight_fn, node_budget, *sim_args)
                 if result is not None:
@@ -588,6 +597,8 @@ def generate_themed_crossword(
     visible_threshold: float = DEFAULT_VISIBLE_THRESHOLD,
     word_db_manager: WordDatabaseManager = None,
     theme_entries: List[str] = None,
+    max_anchors: int = DEFAULT_MAX_ANCHORS,
+    anchor_attempts: int = DEFAULT_ANCHOR_ATTEMPTS,
 ) -> Optional[Dict]:
     """
     Generate a themed crossword puzzle.
@@ -595,8 +606,10 @@ def generate_themed_crossword(
     Args:
         template: The crossword template to use
         theme_entry: Optional single pre-placed theme entry (legacy)
-        theme_entries: Optional list of on-theme anchor words to pin as seeds
-            (best-effort, ordered best first); takes precedence over theme_entry
+        theme_entries: Optional unranked pool of vetted on-theme words to sample
+            anchors from (best-effort); takes precedence over theme_entry
+        max_anchors: How many anchors to try to pin in one grid
+        anchor_attempts: Random anchor combinations tried per anchor count
         node_budget: Max word placements per backtracking attempt
         restart_count: Number of restart attempts
         theme_similarities: Optional {WORD: cosine} map to bias the fill on-theme
@@ -610,7 +623,7 @@ def generate_themed_crossword(
     generator = CrosswordGenerator(word_db_manager)
 
     if theme_entries:
-        logger.info(f"Generating crossword with {len(theme_entries)} theme anchor(s): {theme_entries}")
+        logger.info(f"Generating crossword from a pool of {len(theme_entries)} vetted theme words: {theme_entries}")
     elif theme_entry:
         logger.info(f"Generating crossword with theme entry: '{theme_entry}'")
     else:
@@ -620,7 +633,7 @@ def generate_themed_crossword(
         template, theme_entry, node_budget=node_budget, restart_count=restart_count,
         theme_similarities=theme_similarities, theme_boost=theme_boost,
         sim_low=sim_low, sim_high=sim_high, visible_threshold=visible_threshold,
-        theme_entries=theme_entries,
+        theme_entries=theme_entries, max_anchors=max_anchors, anchor_attempts=anchor_attempts,
     )
 
     if crossword:

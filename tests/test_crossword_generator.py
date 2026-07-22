@@ -248,3 +248,23 @@ def test_generate_theme_entries_falls_back_to_valid_grid(word_db):
     assert_valid_crossword(crossword, template, word_db)
     # Never pins more anchors than there are slots, and each placed anchor is one we asked for.
     assert set(crossword["seed_entries"].values()).issubset(set(fives))
+
+
+def test_theme_entries_pool_produces_varied_puzzles(word_db):
+    """The vetted pool is unranked and anchors are sampled from it, so repeated
+    generations for one theme give different puzzles rather than always settling
+    on the same 'best' combination."""
+    template = select_template(template_id="5x5_diagonal_cut")
+    pool = ([w for w, _ in word_db.words_by_length[4][:12]]
+            + [w for w, _ in word_db.words_by_length[3][:12]])
+
+    anchor_sets, grids = set(), set()
+    for s in range(12):
+        random.seed(s)
+        crossword = generate_themed_crossword(template, theme_entries=pool, word_db_manager=word_db)
+        assert_valid_crossword(crossword, template, word_db)
+        anchor_sets.add(frozenset(crossword["seed_entries"].values()))
+        grids.add(tuple(tuple(row) for row in crossword["grid"]))
+
+    assert len(anchor_sets) > 1, "anchors should vary across runs, not repeat one combination"
+    assert len(grids) > 1, "grids should vary across runs"
