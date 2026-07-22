@@ -42,5 +42,5 @@ theme_anchors:
   anchor_attempts: 25 # random anchor combinations tried per anchor count; higher = more variety
   min_chars: 3 # anchors span all usable slot lengths, not just 5
   max_chars: 5
-  allow_llm_words: False # if True, the LLM may also suggest on-theme words not in the DB (guarded, see below)
+  allow_llm_words: True # if True, the LLM may also suggest on-theme words not in the DB (guarded, see below)
   min_zipf: 2.5 # own-words only: min wordfreq Zipf for a non-DB word to count as real + common
