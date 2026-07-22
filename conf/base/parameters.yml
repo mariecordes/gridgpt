@@ -36,8 +36,10 @@ theme_fill:
   visible_threshold: 0.6 # normalized themeness at/above which a filled word counts as on-theme
 
 theme_anchors:
-  max_anchors: 3 # best-effort number of on-theme seed entries; fill falls back to fewer if needed
-  candidate_pool: 30 # top-N cosine words handed to the LLM to vet
+  candidate_pool: 60 # top-N cosine words handed to the LLM to vet
+  vetted_pool: 30 # max validated on-theme words the LLM may return (the pool to draw from)
+  max_anchors: 3 # how many anchors are actually placed in one grid (fill falls back to fewer)
+  anchor_attempts: 25 # random anchor combinations tried per anchor count; higher = more variety
   min_chars: 3 # anchors span all usable slot lengths, not just 5
   max_chars: 5
   allow_llm_words: False # if True, the LLM may also suggest on-theme words not in the DB (guarded, see below)

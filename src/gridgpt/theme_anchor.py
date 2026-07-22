@@ -35,26 +35,33 @@ class ThemeAnchorSelector(LLMConnection):
         theme: str,
         candidates: List[str],
         word_db_manager,
-        max_anchors: int = 3,
+        max_words: int = 30,
         allow_llm_words: bool = False,
         min_zipf: float = 2.5,
         min_chars: int = 3,
         max_chars: int = 5,
     ) -> List[str]:
-        """Return up to `max_anchors` validated, on-theme anchor words, best first."""
+        """Return the validated pool of on-theme words (up to `max_words`).
+
+        This is a *pool*, not a ranking: once a word is vetted as on-theme it is
+        treated as exactly as good as any other in the pool, and the generator
+        samples from it at random. That is what keeps repeated generations for the
+        same theme from producing the same puzzle. How many of these actually get
+        pinned into a grid is decided later by `max_anchors`.
+        """
         candidates = [c.strip().upper() for c in candidates if c and c.strip()]
 
-        # 1. LLM vetting (best first), or fall back to the cosine order.
+        # 1. LLM vetting, or fall back to the cosine candidates.
         if self.llm_connection_success and candidates:
             try:
-                vetted = self._request_anchor_words(theme, candidates, max_anchors, allow_llm_words)
+                vetted = self._request_anchor_words(theme, candidates, max_words, allow_llm_words)
             except Exception as e:  # noqa: BLE001 - any LLM/parse failure degrades gracefully
                 logger.error(f"Theme anchor selection failed ({e}); falling back to cosine order.")
                 vetted = candidates
         else:
             vetted = candidates
 
-        # 2. Two-tier validation, preserving order and de-duping.
+        # 2. Two-tier validation, de-duping.
         word_list = word_db_manager.word_list_with_frequencies
         anchors: List[str] = []
         for word in vetted:
@@ -65,20 +72,20 @@ class ThemeAnchorSelector(LLMConnection):
                 anchors.append(w)
             elif allow_llm_words and self._is_valid_own_word(w, min_zipf, min_chars, max_chars):  # Tier 2
                 anchors.append(w)
-            if len(anchors) >= max_anchors:
+            if len(anchors) >= max_words:
                 break
         return anchors
 
     def _request_anchor_words(
-        self, 
+        self,
         theme: str,
         candidates: List[str],
-        max_anchors: int,
+        max_words: int,
         allow_llm_words: bool,
         min_chars: int = 3,
         max_chars: int = 5,
     ) -> List[str]:
-        """One LLM call returning an ordered {"words": [...]} list."""
+        """One LLM call returning a {"words": [...]} list of on-theme words."""
         own_words_instruction = (
             self.prompt["own_words_instructions_llm_allowed"].format(
                 min_chars=min_chars,
@@ -90,7 +97,7 @@ class ThemeAnchorSelector(LLMConnection):
         user_prompt = self.prompt["user_prompt"].format(
             theme=theme,
             candidates="\n".join(f"- {c}" for c in candidates),
-            max_anchors=max_anchors,
+            max_words=max_words,
             own_words_instruction=own_words_instruction,
         )
         response = self.llm.chat.completions.create(

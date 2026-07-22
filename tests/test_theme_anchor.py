@@ -24,7 +24,7 @@ def test_fallback_to_cosine_order_is_db_only(monkeypatch):
     db = FakeWordDB(["PLUTO", "VENUS", "EARTH"])
 
     anchors = sel.select_anchors(
-        "planets", ["PLUTO", "VENUS", "EARTH", "NOTADBWORD"], db, max_anchors=2,
+        "planets", ["PLUTO", "VENUS", "EARTH", "NOTADBWORD"], db, max_words=2,
     )
 
     assert anchors == ["PLUTO", "VENUS"]  # order preserved, capped at 2, non-DB dropped
@@ -56,13 +56,13 @@ def test_own_words_kept_when_valid_junk_rejected(monkeypatch):
     assert "ZZZQX" not in anchors
 
 
-def test_max_anchors_and_dedup(monkeypatch):
+def test_max_words_and_dedup(monkeypatch):
     sel = _selector()
     sel.llm_connection_success = True
     monkeypatch.setattr(sel, "_request_anchor_words", lambda *a, **k: ["MARS", "MARS", "VENUS", "PLUTO"])
     db = FakeWordDB(["MARS", "VENUS", "PLUTO"])
 
-    anchors = sel.select_anchors("planets", ["MARS", "VENUS", "PLUTO"], db, max_anchors=2)
+    anchors = sel.select_anchors("planets", ["MARS", "VENUS", "PLUTO"], db, max_words=2)
 
     assert anchors == ["MARS", "VENUS"]  # duplicate collapsed, capped at 2
 

@@ -94,7 +94,8 @@ theme_anchor_selector:
   system_prompt: |
     You decide which answer words genuinely fit a crossword puzzle theme.
     A word "fits" only if a solver would clearly recognize it as related to the theme, not through a loose, technical, or accidental association.
-    Return ONLY a JSON object of the form {"words": ["WORD1", "WORD2", ...]}, ordered best first, and nothing else.
+    Return ONLY a JSON object of the form {"words": ["WORD1", "WORD2", ...]} and nothing else.
+    Order does not matter: every word you return is treated as equally on-theme, so return all of them that qualify rather than a ranked few.
 
   user_prompt: |
     Theme: "{theme}"
@@ -102,7 +103,7 @@ theme_anchor_selector:
     Candidate answer words (already filtered for length; every one is a valid crossword answer):
     {candidates}
 
-    Pick up to {max_anchors} words that are genuinely on-theme, ordered from most to least clearly related. Drop any word whose link to the theme is only loose, coincidental, or requires a stretch (for the theme "food", CAKE fits but FUN does not).
+    Return EVERY word that is genuinely on-theme, up to a maximum of {max_words}. Do not rank them and do not stop early: a larger pool gives the puzzle generator more variety to draw from. Drop only words whose link to the theme is loose, coincidental, or requires a stretch (for the theme "food", CAKE fits but FUN does not).
 
     {own_words_instruction}
 
@@ -112,5 +113,5 @@ theme_anchor_selector:
     Only choose from the candidate list above; do not add any words that are not listed.
 
   own_words_instructions_llm_allowed: |
-    You may also add a few genuinely on-theme words that are not in the list, as long as they are common, real English words a solver would know.
+    You are encouraged to also add a few genuinely on-theme words that are not in the list, as long as they are common, real English words a solver would know.
     Due to the size of the crossword grid, words you suggest must have at least {min_chars} letters and at most {max_chars} letters.
