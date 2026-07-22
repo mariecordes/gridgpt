@@ -104,14 +104,38 @@ That is the vocabulary ceiling again: favoring on-theme words harder cannot help
 
 The words 0.4 surfaces are a mix of genuinely related (BEETS, SALAD, CHEFS for food; DRAMA, IMAGE for music; SUN for planets; ARENA, ASICS for sports; GREEN for plants) and noise (FOR, MSN, ASS, and assorted short abbreviations). Given a preference for showing a few theme words over none, **`visible_threshold = 0.4`** is the better default here; 0.5 is a cleaner middle ground. `boost` and the `sim_low` / `sim_high` band are best left at their defaults (4, and 0.20 / 0.50).
 
-### 2.3 Further analysis and potential improvements
+### 2.3 Embedding model: small vs large
+
+`text-embedding-3-small` (1536-dim) was the original model. We rebuilt the word cache with `text-embedding-3-large` (3072-dim) and compared them on the same six themes. The active model lives in `conf/base/parameters.yml` (`embeddings.model`), and each model keeps its own cache files, so both coexist and switching never overwrites the other.
+
+**How it was compared.** `python -m scripts.evaluate_themes --tune --model text-embedding-3-large` (vs `--model text-embedding-3-small`). The decisive view is the **top on-theme words** each model ranks highest in the database per theme, a direct read on the "wrong sense" problem. The numeric sweeps (boost, visible_threshold) are per-model and are **not** directly comparable across models: the raw-cosine scale and the `[sim_low, sim_high]` band differ between the two embedding spaces, so treat those tables as within-model tuning, not cross-model scores.
+
+**Result: large ranks genuinely on-theme words higher, especially where small was fooled by spelling.** 
+
+Representative top matches:
+
+| theme | small (top matches) | large (top matches) |
+|---|---|---|
+| planets | PLUTO, EARTH, VENUS, MARS, but also **PLANA, PLANS, PLATO** | PLUTO, VENUS, EARTH, ORBIT, **STARS, SOLAR, SKIES, SUNS, COSMO** |
+| plants | PLANT, SEEDS, BULBS, TREE, but also **PLY, RAFT** | PLANT, **FERNS, HERBS, FLORA, WEEDS, SHRUB, CROPS, CACTI, FUNGI** |
+| food | FOOD, BREAD, MEALS, MEAT, FEED/FEEDS | FOOD, **PIZZA, SUSHI, SNACK, LUNCH**, CHOW, DIET |
+
+For "planets" and "plants" the win is clear: small surfaces spelling-similar noise (PLANA / PLANS / PLATO from "plan...", PLY / RAFT), while large replaces it with real astronomy (STARS, SOLAR, SUNS) and botany (FERNS, HERBS, FLORA). "food", "music", and "sports" are comparable, with large leaning toward more concrete, varied words.
+
+**What large does not fix: genuinely ambiguous one-word themes.** Ask for "space" and both models rank the room/area sense (SPAN, PLACE, AREA, SPA) above the outer-space sense; neither surfaces STARS or GALAXY at the top. That ambiguity is in the query, not the model, and a sharper embedding cannot resolve it without more context (the same limit described in 2.4).
+
+**Cost.** Large is 3072-dim, so the cache roughly doubles (~31 MB to ~62 MB) and is rebuilt on each deploy; the one-time build was ~49 s and a fraction of a cent, and the per-request cost is unchanged (still one theme phrase embedded).
+
+**Action taken: switched the default from `text-embedding-3-small` to `text-embedding-3-large`.** The cleaner on-theme ranking directly serves the goal of surfacing real theme words, and the extra storage and build time are negligible for a hobby project. The active model is set in `conf/base/parameters.yml` (`embeddings.model`), and the small cache is kept on disk so the switch is reversible without a rebuild. The `[sim_low, sim_high]` band was left at the small-calibrated 0.20 / 0.50; a light re-tune for large's distribution remains a possible follow-up, since the visible-threshold behavior is similar in magnitude.
+
+### 2.4 Further analysis and potential improvements
 
 **A subtler limit: the numbers can label the wrong sense of the theme.** Cosine similarity measures semantic proximity, not what the user actually pictured, and short common words are often ambiguous. Ask for "space" and a person imagines STARS, MOON, SUN, EARTH; but the embedding also scores words tied to space-as-in-room, like AREA, FLOOR or METER, as highly related. Those come out labeled on-theme by the metric while missing the intended meaning, so a grid can be "on-theme" by the numbers yet feel off-theme to a solver. This is a qualitative, creative mismatch that a similarity threshold cannot see and that is hard to detect automatically. A stronger or more sense-aware embedding would help disambiguate, but the gap between literal semantic proximity and an intended theme is real regardless.
 
 **Ways to push it further.** Themes are genuinely hard in this little space, and the most promising improvements attack the raw material rather than the selector:
 
 - **Larger grids / longer entries** (7x7 and up): more slots and longer words, and longer words tend to be more distinctive and easier to relate to a theme.
-- **A stronger embedding model** (e.g. `text-embedding-3-large`) or one better suited to single short words: the current signal on 3-to-5-letter words is weak and noisy, so a sharper similarity would make the boost actually bite.
+- **A stronger embedding model:** `text-embedding-3-large` was tested and adopted (see 2.3); it sharpens the on-theme ranking but does not resolve ambiguous one-word themes. An embedding purpose-built for single short words could help further.
 - **LLM-suggested theme words**: ask an LLM for genuinely on-theme words (that exist in the database, or that we add to it), rather than trusting noisy cosine, so a themed puzzle is guaranteed some real theme entries.
 - **A curated theme / category tagging of the word database**, turning "on-theme" into a verified lookup instead of a similarity guess.
 - **Guaranteed multiple seeded theme entries**: pin two or three verified on-theme words as hard anchors so every themed puzzle has a few real theme words regardless of what the fill finds (a heavier placement constraint, deferred for now).
