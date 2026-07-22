@@ -57,7 +57,10 @@ clue_generator_batch:
 
     Puzzle theme: "{theme}"
     If the theme is `None`, no theme was provided: ignore it and write standard, theme-agnostic clues.
-    Otherwise you may reference the theme in a clue a) when the answer word has a clear and natural link to it or b) if the clue can reference the theme while still maintaining a meaningful connection to the answer word even if the answer itself does not immediately relate to the theme, and only if it still follows all rules below.
+    Otherwise you should reference the theme in a clue a) when the answer word has a clear and natural link to it or b) if the clue can reference the theme while still maintaining a meaningful connection to the answer word even if the answer itself does not immediately relate to the theme, and only if it still follows all rules below.
+    Ideally, as many clues as possible reference the theme. Think about the different contexts in which a word can be employed to identify potential theme links. Most crossword entries can have multiple meanings.
+    - e.g., the entry "FEED" can be a social media FEED (themes around media, internet) or someone can FEED someone else (themes around food)
+    - e.g., the entry "SET" can be a movie SET (themes around media, films, cinema), can be a dinner set (food, parties), set of cards (gaming), etc.
 
     Answers (slot id, answer word, and reference clues for context only):
     {entries}
