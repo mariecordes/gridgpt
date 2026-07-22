@@ -165,7 +165,7 @@ After a refresh, **commit `word_database_full.json`** (the one tracked data file
 
 **Scrape crossword data from [`crosswordtracker.com`](http://crosswordtracker.com/)**
 ```bash
-uv run python scripts/scrape_crosswords_2.py letters A B C # list which letter to scrape individually
+uv run python scripts/scrape_crosswordtracker.py letters A B C # list which letter to scrape individually
 ```
 This creates: `data/01_raw/crossword_tracker/crossword_words_[A-Z].json`
 
@@ -360,15 +360,9 @@ Key configuration files:
 - `prompts.yml`: AI prompt templates
 - `catalog.yml`: List of used data files
 
-## Next steps:
+## Next steps
 
-Some of my ideas for future updates and enhancements are:
-
-- Include a difficulty parameter that influences word selection and clue generation
-- Expand word database sources to include a greater number of words
-- Allow inclusion of words that are not listed in the word database (i.e., new entries; potentially with LLM verification)
-- Expand templates to different sizes than the plain 5x5 Mini set-up, or even allow flexible user creation of a grid template
-- Integrate other LLM providers
+Ideas for future updates and enhancements (bigger grids, a difficulty setting, shareable puzzles, richer theme data) are collected in the [backlog](docs/backlog.md), along with the reasoning behind each.
 
 ## About
 
