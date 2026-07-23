@@ -23,8 +23,8 @@ crossword_generator:
 
 theme_fill:
   boost: 4.0 # strength of the theme bias; weight = frequency * (1 + boost * themeness)
-  sim_low: 0.20 # cosine baseline for unrelated words (text-embedding-3-small)
-  sim_high: 0.50 # cosine for clearly related words; sim in [low, high] maps to themeness 0..1
+  sim_low: 0.30 # cosine baseline for unrelated words (calibrated for text-embedding-3-large)
+  sim_high: 0.45 # cosine for clearly related words; sim in [low, high] maps to themeness 0..1
   visible_threshold: 0.6 # normalized themeness at/above which a filled word counts as on-theme
 
 theme_anchors:

@@ -8,7 +8,6 @@ The strict limit on how themed a 5x5 can get is the **raw material**, not the al
 
 - **Expand the word database with more sources.** More short, common answers means more genuinely on-theme options to draw from. A second scraper already exists for `crosswordtracker.com` but its output is not yet integrated. Other sources may be considered as well.
 - **Curated theme / category tagging.** Tag database words with categories so "on-theme" becomes a verified lookup instead of a similarity guess. Slow to build (manual data work) but it removes the noise that cosine similarity cannot avoid.
-- **Re-tune the similarity band for the large embedding model.** `sim_low` / `sim_high` in `conf/base/parameters.yml` were calibrated for `text-embedding-3-small` and were left unchanged when the default moved to `text-embedding-3-large`. A light sweep would confirm or improve them.
 
 ## Bigger grids
 

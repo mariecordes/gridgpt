@@ -12,8 +12,8 @@ DEFAULT_RESTART_COUNT = 5
 
 # Defaults for theme-weighted fill (overridable via conf/base/parameters.yml).
 DEFAULT_THEME_BOOST = 4.0
-DEFAULT_SIM_LOW = 0.20
-DEFAULT_SIM_HIGH = 0.50
+DEFAULT_SIM_LOW = 0.30
+DEFAULT_SIM_HIGH = 0.45
 DEFAULT_VISIBLE_THRESHOLD = 0.6
 
 # Defaults for theme anchors (overridable via conf/base/parameters.yml).
