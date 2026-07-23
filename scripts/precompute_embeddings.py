@@ -29,6 +29,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv  # type: ignore
 
 from src.gridgpt.embedding_provider import OpenAIEmbeddingProvider  # type: ignore
+from src.gridgpt.utils import init_logging  # type: ignore
 from src.gridgpt.word_database_manager import WordDatabaseManager  # type: ignore
 
 
@@ -79,6 +80,7 @@ def _load_env(env_file: str, verbose: bool):
 
 
 def main() -> int:
+    init_logging()
     args = parse_args()
     _load_env(args.env_file, args.verbose)
 

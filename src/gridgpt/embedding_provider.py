@@ -191,15 +191,3 @@ class OpenAIEmbeddingProvider(EmbeddingProvider):
                         )
             except Exception:  # a diagnostic check must never break loading
                 pass
-
-    # ------------------------- Similarity Utilities ------------------------ #
-    @staticmethod
-    def cosine_similarity_batch(matrix: np.ndarray, vector: np.ndarray) -> np.ndarray:
-        # matrix: (N, D), vector: (D,)
-        # Ensure float32 for stability in cosine computation
-        if matrix.dtype != np.float32:
-            matrix = matrix.astype(np.float32)
-        if vector.dtype != np.float32:
-            vector = vector.astype(np.float32)
-        denom = (np.linalg.norm(matrix, axis=1) * np.linalg.norm(vector) + 1e-12)
-        return (matrix @ vector) / denom

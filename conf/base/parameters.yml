@@ -17,22 +17,14 @@ embeddings:
       index_file: word_index_large.json
       dimension: 3072
 
-theme_entry:
-  min_chars: 5
-  max_chars: 5
-  min_frequency: 1
-  similarity_mode: semantic
-  similarity_threshold: 0.35
-  weigh_similarity: True
-
 crossword_generator:
   node_budget: 20000 # max word placements per backtracking attempt before giving up
   restart_count: 5 # attempts, each with a different theme placement / random word order
 
 theme_fill:
   boost: 4.0 # strength of the theme bias; weight = frequency * (1 + boost * themeness)
-  sim_low: 0.20 # cosine baseline for unrelated words (text-embedding-3-small)
-  sim_high: 0.50 # cosine for clearly related words; sim in [low, high] maps to themeness 0..1
+  sim_low: 0.30 # cosine baseline for unrelated words (calibrated for text-embedding-3-large)
+  sim_high: 0.45 # cosine for clearly related words; sim in [low, high] maps to themeness 0..1
   visible_threshold: 0.6 # normalized themeness at/above which a filled word counts as on-theme
 
 theme_anchors:

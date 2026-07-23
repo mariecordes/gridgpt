@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.word_database.worddb import WordDBProcessor
-from src.gridgpt.utils import load_catalog
+from src.gridgpt.utils import init_logging, load_catalog
 
 
 def main():
@@ -24,6 +24,7 @@ def main():
     - simple_word_list.json: Simple word -> frequency mapping
     """
     
+    init_logging()
     catalog = load_catalog()
 
     input_file_path = catalog['scraped_data']['worddb_com']['file_path']

@@ -9,7 +9,6 @@ from .word_database_manager import WordDatabaseManager, is_reference_clue
 from .llm_connection import LLMConnection
 from .utils import load_prompts
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 
@@ -107,30 +106,16 @@ class ClueRetriever():
     
     
 class ClueGenerator(LLMConnection, ClueRetriever):
-    def __init__(self, clue_database_path: str = "data/02_intermediary/crossword_clues.json", word_db_manager: WordDatabaseManager = None):
-        """Initialize clue generator with a clue database if available."""
+    def __init__(self, word_db_manager: WordDatabaseManager = None):
+        """Initialize clue generator with LLM connection and prompts."""
         LLMConnection.__init__(self)  # Initialize LLM connection
         ClueRetriever.__init__(self, word_db_manager)  # Initialize ClueRetriever with word database manager
-        self.clue_database = self.load_clue_database(clue_database_path)
         
         prompts_library = load_prompts()
         self.prompt = prompts_library['clue_generator']
         self.batch_prompt = prompts_library['clue_generator_batch']
-    
-    
-    def load_clue_database(self, path: str) -> Dict[str, List[str]]:
-        """Load clue database from JSON file if it exists."""
-        if os.path.exists(path):
-            try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    return json.load(f)
-            except Exception as e:
-                logger.warning(f"Error loading clue database from {path}: {e}")
-        
-        logger.info(f"No clue database found at {path}, will generate all clues")
-        return {}
-    
-    
+
+
     def generate_clue(self, word: str, theme: str) -> str:
         """
         Generate a clue for a theme word using the LLM.

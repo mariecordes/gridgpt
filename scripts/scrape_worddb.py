@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from scraper.worddb import WordDBScraper
+from gridgpt.utils import init_logging
 
 
 def parse_date(date_string):
@@ -27,6 +28,7 @@ def parse_date(date_string):
 
 
 def main():
+    init_logging()
     parser = argparse.ArgumentParser(
         description="Scrape NYT Mini crossword clues and answers from WordDB.com",
         formatter_class=argparse.RawDescriptionHelpFormatter,

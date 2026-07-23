@@ -4,10 +4,13 @@ import os
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from src.gridgpt.utils import init_logging  # noqa: E402
+
 from scraper.crosswordtracker import scrape_specific_letters, scrape_all_letters_full
 
 def main():
     """Command line interface for scraping."""
+    init_logging()
     if len(sys.argv) < 2:
         print("Usage:")
         print("  python scripts/scrape_crosswordtracker.py test          # Test with letter A")

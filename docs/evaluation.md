@@ -126,7 +126,25 @@ For "planets" and "plants" the win is clear: small surfaces spelling-similar noi
 
 **Cost.** Large is 3072-dim, so the cache roughly doubles (~31 MB to ~62 MB) and is rebuilt on each deploy; the one-time build was ~49 s and a fraction of a cent, and the per-request cost is unchanged (still one theme phrase embedded).
 
-**Action taken: switched the default from `text-embedding-3-small` to `text-embedding-3-large`.** The cleaner on-theme ranking directly serves the goal of surfacing real theme words, and the extra storage and build time are negligible for a hobby project. The active model is set in `conf/base/parameters.yml` (`embeddings.model`), and the small cache is kept on disk so the switch is reversible without a rebuild. The `[sim_low, sim_high]` band was left at the small-calibrated 0.20 / 0.50; a light re-tune for large's distribution remains a possible follow-up, since the visible-threshold behavior is similar in magnitude.
+**Action taken: switched the default from `text-embedding-3-small` to `text-embedding-3-large`.** The cleaner on-theme ranking directly serves the goal of surfacing real theme words, and the extra storage and build time are negligible for a hobby project. The active model is set in `conf/base/parameters.yml` (`embeddings.model`), and the small cache is kept on disk so the switch is reversible without a rebuild. The `[sim_low, sim_high]` band was initially left at the small-calibrated 0.20 / 0.50 and re-tuned afterwards (below).
+
+### 2.3.1 Re-tuning the similarity band for the large model
+
+**Why.** `sim_low` / `sim_high` map a raw cosine to the 0-1 "themeness" that drives both the fill weighting and the `visible_threshold` labelling. Those two numbers were calibrated for the small model and did not fit large's distribution:
+
+| theme | median | p90 | p99 | genuinely on-theme (top 30) |
+|---|---|---|---|---|
+| food | 0.237 | 0.295 | 0.375 | 0.433 |
+| planets | 0.199 | 0.253 | 0.322 | 0.419 |
+| sports | 0.234 | 0.287 | 0.350 | 0.415 |
+| music | 0.228 | 0.282 | 0.348 | 0.429 |
+| plants | 0.228 | 0.280 | 0.345 | 0.416 |
+
+Two mismatches: `sim_low = 0.20` sat **below the median**, so more than half the dictionary received a small nonzero themeness, and `sim_high = 0.50` sat **above** where genuinely on-theme words actually land (~0.42), so real theme words never saturated. The band was retuned to **0.30 / 0.45**: unrelated words (up to roughly p90) now map to exactly 0, and on-theme words spread across ~0.5 to 1.0.
+
+**Result: the numbers became honest, the puzzles did not change.** Mean cosine of the filled words is unchanged within noise (food 0.2529 -> 0.2511, sports 0.2561 -> 0.2513, planets 0.2040 -> 0.1996 over 15 runs each), which is the same vocabulary ceiling that made `boost` nearly inert in 2.2: re-weighting cannot help when there are barely any on-theme short words to favour.
+
+What it does fix is the meaning of the score that gets reported. A typical unrelated word now scores themeness 0.00 instead of ~0.12, and a genuine theme word saturates properly (YUM 1.00, BREAD 0.92, where the old band capped comparable words near 0.7). That matters because themeness is what `theme_entries` reports back through the API and what `visible_threshold` is compared against, so the retune is a correctness fix rather than a quality improvement, and it is recorded as such.
 
 ### 2.4 Further analysis and potential improvements
 

@@ -3,13 +3,10 @@ from typing import Dict, List, Optional, Tuple
 import logging
 import random
 
-from difflib import SequenceMatcher
-
 from .embedding_provider import OpenAIEmbeddingProvider
 
 from .word_database_manager import WordDatabaseManager
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 class ThemeManager:
@@ -46,27 +43,25 @@ class ThemeManager:
         min_chars: int = None,
         max_chars: int = None,
         min_frequency: int = 0,
-        similarity_mode: str = "semantic",
         exclude_substring: bool = True,
     ) -> List[Tuple[str, float]]:
         """
-        Find all possible theme entries with scoring of theme similarity.
+        Find all possible theme entries, scored by semantic similarity to the theme.
         
         Args:
             min_chars: minimum number of characters of possible theme entries.
             max_chars: maximum number of characters of possible theme entries.
             min_frequency: minimum frequency of possible theme entries; frequency as listed in original word database.
-            similarity_mode: mode with which to calculate similarity scores (default: "semantic", other options: "string")
-        
+
         Returns:
-            List of possible theme entries with their similarity scores. 
+            List of possible theme entries with their similarity scores.
         """
         if min_chars is None:
             min_chars = self.theme_entry_min_char
         if max_chars is None:
             max_chars = self.theme_entry_max_char
 
-        logger.info(f"Finding theme entries for '{self.theme}' using '{similarity_mode}' similarity")
+        logger.info(f"Finding theme entries for '{self.theme}'")
 
         # Filter words (length + frequency)
         candidate_words = []
@@ -95,42 +90,32 @@ class ThemeManager:
             return []
 
         # Compute similarities
-        if similarity_mode == "semantic":
-            if self.embedding_provider is None:
-                raise RuntimeError("Semantic similarity requested but embedding provider unavailable.")
+        if self.embedding_provider is None:
+            raise RuntimeError("Semantic similarity requested but embedding provider unavailable.")
 
-            # Compute theme embedding if not already
-            if self.theme_embedding is None:
-                self.theme_embedding = self.embedding_provider.embed([self.theme])[0]
+        # Compute theme embedding if not already
+        if self.theme_embedding is None:
+            self.theme_embedding = self.embedding_provider.embed([self.theme])[0]
 
-            # Retrieve precomputed word embeddings and corresponding word list
-            word_matrix = self.embedding_provider.get_word_embeddings()  # (N, D) fp16
-            provider_words = self.embedding_provider.get_word_list()     # list of uppercase words
-            index_map = {w: i for i, w in enumerate(provider_words)}
+        # Retrieve precomputed word embeddings and corresponding word list
+        word_matrix = self.embedding_provider.get_word_embeddings()  # (N, D) fp16
+        provider_words = self.embedding_provider.get_word_list()     # list of uppercase words
+        index_map = {w: i for i, w in enumerate(provider_words)}
 
-            selected_vectors = []
-            filtered_words_for_vectors = []
-            for w in candidate_words:
-                idx = index_map.get(w.upper())
-                if idx is not None:
-                    selected_vectors.append(word_matrix[idx])
-                    filtered_words_for_vectors.append(w)
+        selected_vectors = []
+        filtered_words_for_vectors = []
+        for w in candidate_words:
+            idx = index_map.get(w.upper())
+            if idx is not None:
+                selected_vectors.append(word_matrix[idx])
+                filtered_words_for_vectors.append(w)
 
-            if not selected_vectors:
-                logger.warning("No candidate words had precomputed embeddings.")
-                return []
+        if not selected_vectors:
+            logger.warning("No candidate words had precomputed embeddings.")
+            return []
 
-            similarities = self._cosine_to_theme(np.array(selected_vectors), self.theme_embedding)
-            theme_entries = list(zip(filtered_words_for_vectors, similarities.tolist()))
-
-        elif similarity_mode == "string":
-            theme_entries = [
-                (word, self.calculate_similarity(word, theme=self.theme, mode="string"))
-                for word in candidate_words
-            ]
-        
-        else:
-            raise ValueError(f"Unknown similarity mode: {similarity_mode}")
+        similarities = self._cosine_to_theme(np.array(selected_vectors), self.theme_embedding)
+        theme_entries = list(zip(filtered_words_for_vectors, similarities.tolist()))
 
         # Sort and return
         theme_entries.sort(key=lambda x: x[1], reverse=True)
@@ -184,7 +169,7 @@ class ThemeManager:
         """
         self.find_theme_entries(
             min_chars=min_chars, max_chars=max_chars,
-            min_frequency=min_frequency, similarity_mode="semantic",
+            min_frequency=min_frequency,
         )
         selected = self.choose_theme_entries(
             number_of_theme_entries=1, threshold=threshold, weigh_similarity=weigh_similarity,
@@ -203,66 +188,11 @@ class ThemeManager:
         than only 5-letter seeds."""
         entries = self.find_theme_entries(
             min_chars=min_chars, max_chars=max_chars,
-            min_frequency=min_frequency, similarity_mode="semantic",
+            min_frequency=min_frequency,
         )
         return [word.upper() for word, _score in entries[:pool_size]]
 
 
-    def calculate_similarity(
-        self,
-        word: str,
-        theme: str = None,
-        mode: str = "semantic",  # options: 'semantic' or 'string'
-        theme_embedding: np.ndarray = None,
-    ) -> float:
-        """
-        Calculate similarity between a word and the theme.
-
-        Args:
-            word: Single word to compare.
-            theme: Full theme string (required for string similarity).
-            mode: 'semantic' (default) or 'string'
-            theme_embedding: Precomputed theme embedding (only for semantic)
-
-        Returns:
-            Similarity score between 0 and 1.
-        """
-        if mode == "semantic":
-            if theme_embedding is None:
-                raise ValueError("theme_embedding must be provided for semantic similarity.")
-            if self.embedding_provider is None:
-                raise RuntimeError("Embedding provider unavailable for semantic similarity.")
-            word_vec = self.embedding_provider.embed([word])[0]
-            return float(
-                np.dot(word_vec, theme_embedding) /
-                (np.linalg.norm(word_vec) * np.linalg.norm(theme_embedding) + 1e-12)
-            )
-        
-        elif mode == "string":
-            if theme is None:
-                raise ValueError("theme must be provided for string similarity.")
-            
-            word_lower = word.lower()
-            theme_lower = theme.lower()
-            
-            # Direct substring match
-            if word_lower in theme_lower or theme_lower in word_lower:
-                return 1.0
-
-            # Basic ratio
-            similarity = SequenceMatcher(None, word_lower, theme_lower).ratio()
-            
-            # Bonus for overlap with theme components
-            for t in theme_lower.split():
-                if len(t) > 2:
-                    similarity = max(similarity, SequenceMatcher(None, word_lower, t).ratio())
-            
-            return similarity
-        
-        else:
-            raise ValueError(f"Unknown similarity mode: {mode}")
-
-        
     def choose_theme_entries(
         self, 
         number_of_theme_entries: int = 1,
@@ -345,7 +275,6 @@ def generate_theme_entry(
     min_chars: int = None,
     max_chars: int = None,
     min_frequency: int = 0,
-    similarity_mode: str = "semantic",
     similarity_threshold: float = 0.5,
     weigh_similarity: bool = True,
     word_db_manager: WordDatabaseManager = None,
@@ -366,7 +295,6 @@ def generate_theme_entry(
         min_chars=min_chars,
         max_chars=max_chars,
         min_frequency=min_frequency,
-        similarity_mode=similarity_mode
     )
     logger.info(f"Found {len(theme_entries)} potential theme entries for theme '{theme}'.")
     

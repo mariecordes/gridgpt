@@ -5,6 +5,8 @@ import argparse
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from src.gridgpt.utils import init_logging  # noqa: E402
+
 from word_database.crossword_tracker import combine_and_filter_words, save_word_database_formats
 
 INPUT_DIR = "data/01_raw/crossword_tracker"
@@ -14,6 +16,7 @@ OUTPUT_FILE_ADDITIONAL = f"{OUTPUT_DIR}/word_database_filtered"
 
 def main():
     """Command line interface for creating word database."""
+    init_logging()
     parser = argparse.ArgumentParser(
         description="Create a filtered crossword word database from individual letter files",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter
