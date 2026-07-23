@@ -38,7 +38,7 @@ from typing import Optional, Tuple
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(REPO_ROOT)
 
-from src.gridgpt.utils import load_catalog  # noqa: E402
+from src.gridgpt.utils import init_logging, load_catalog  # noqa: E402
 
 DATE_FMT = "%Y-%m-%d"
 
@@ -114,6 +114,7 @@ def _rebuild_embeddings() -> int:
 
 
 def main() -> int:
+    init_logging()
     parser = argparse.ArgumentParser(
         description="Refresh the word database and embedding cache end to end."
     )

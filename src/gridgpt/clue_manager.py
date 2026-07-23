@@ -9,7 +9,6 @@ from .word_database_manager import WordDatabaseManager, is_reference_clue
 from .llm_connection import LLMConnection
 from .utils import load_prompts
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 

@@ -26,5 +26,4 @@ The strict limit on how themed a 5x5 can get is the **raw material**, not the al
 
 - **A single crossword orchestrator.** `CrosswordGenerator` is really a grid filler, and the API route currently does the orchestration (theme scoring, anchor selection, generation, clues). Renaming it and introducing one orchestrator that takes the frontend inputs and returns a finished crossword would make the pipeline readable in one place and keep the route thin.
 - **Multi-provider LLM support.** Turn `LLMConnection` into a small interface with per-provider implementations, so the clue and theme-anchor calls are not tied to one vendor.
-- **Consolidate logging.** Several modules call `logging.basicConfig` at import time, which reconfigures the root logger as a side effect of importing them. That is why notebooks have to silence logging by hand. Library modules should only take a `logger`, leaving configuration to the entry points via the existing `init_logging` helper.
 - **Frontend de-duplication.** The across and down clue blocks are near-identical and could be one `ClueList` component, and the Tab handler and `navigateToSlot` could share a single navigation helper.
