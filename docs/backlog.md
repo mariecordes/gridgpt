@@ -23,6 +23,6 @@ The strict limit on how themed a 5x5 can get is the **raw material**, not the al
 
 ## Architecture and code
 
-- **A single crossword orchestrator.** `CrosswordGenerator` is really a grid filler, and the API route currently does the orchestration (theme scoring, anchor selection, generation, clues). Renaming it and introducing one orchestrator that takes the frontend inputs and returns a finished crossword would make the pipeline readable in one place and keep the route thin.
+- **Rename the grid filler.** The layer names are inverted: `CrosswordGenerator` is actually the lowest layer (it fills a template's slots and produces no clues), while `CrosswordBuilder` is the one that returns a finished puzzle. Renaming it to `GridFiller` (and `generate_themed_crossword` to `fill_themed_grid`) would let the pipeline read top-down. Cosmetic, but not trivial: around 70 references across ~15 files, including a config key that has to move in lockstep with the code and four notebooks whose embedded outputs would need regenerating.
 - **Multi-provider LLM support.** Turn `LLMConnection` into a small interface with per-provider implementations, so the clue and theme-anchor calls are not tied to one vendor.
 - **Frontend de-duplication.** The across and down clue blocks are near-identical and could be one `ClueList` component, and the Tab handler and `navigateToSlot` could share a single navigation helper.

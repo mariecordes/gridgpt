@@ -76,11 +76,11 @@ def test_generate_crossword_reports_theme_entries(client, monkeypatch):
         "theme_entries": {"1A": "CAT", "1D": "ARTS"},
         "slots": [],
     }
-    monkeypatch.setattr("api.routes.ThemeManager", _FakeThemeManager)
-    monkeypatch.setattr("api.routes.ThemeAnchorSelector", lambda: _FakeAnchorSelector())
-    monkeypatch.setattr("api.routes.generate_themed_crossword", lambda *a, **k: dict(fixed_crossword))
+    monkeypatch.setattr("src.gridgpt.crossword_builder.ThemeManager", _FakeThemeManager)
+    monkeypatch.setattr("src.gridgpt.crossword_builder.ThemeAnchorSelector", lambda: _FakeAnchorSelector())
+    monkeypatch.setattr("src.gridgpt.crossword_builder.generate_themed_crossword", lambda *a, **k: dict(fixed_crossword))
     monkeypatch.setattr(
-        "api.routes.retrieve_existing_clues", lambda cw, wdb: {k: "a clue" for k in cw["filled_slots"]}
+        "src.gridgpt.crossword_builder.retrieve_existing_clues", lambda cw, wdb: {k: "a clue" for k in cw["filled_slots"]}
     )
 
     response = client.post(
@@ -96,7 +96,7 @@ def test_generate_crossword_reports_theme_entries(client, monkeypatch):
 
 def test_generate_crossword_failure_returns_clean_error(client, monkeypatch):
     """A failed fill (None crossword) must surface as a 503, not a 500 crash."""
-    monkeypatch.setattr("api.routes.generate_themed_crossword", lambda *a, **k: None)
+    monkeypatch.setattr("src.gridgpt.crossword_builder.generate_themed_crossword", lambda *a, **k: None)
 
     response = client.post(
         "/api/generate-crossword",
